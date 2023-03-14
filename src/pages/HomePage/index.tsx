@@ -1,75 +1,165 @@
-import {Comic, ComicService} from '@services';
+import {Category, CategoryService, Comic, ComicService} from '@services';
 import { Carousel } from 'react-responsive-carousel';
-import {useQuery} from 'react-query';
-import styled, {useTheme} from 'styled-components';
-import { ComicItem, Text } from '@components';
+import { useQuery } from 'react-query';
+import { Button, Card, ComicItem, Page, Text, View } from '@components';
 import { ScrollMenu, VisibilityContext } from 'react-horizontal-scrolling-menu';
-
-const Container = styled.div`
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-
-  @media (min-width: 1295px) {
-    align-items: center;
-  }
-`;
-
-const ScrollMenuContainer = styled.div`
-  overflow: hidden;
-  overflow-x: hidden;
-
-  &::-webkit-scrollbar {
-    backgruond-color: blue
-  }
-
-  -ms-overflow-style: none;
-  scrollbar-width: none;
-`;
+import {useNavigate} from 'react-router';
+import LoadingPage from '../LoadingPage';
+import ErrorPage from '../ErrorPage';
+import React from 'react';
+import {Icon} from '@iconify/react';
+import './index.scss';
+import {Link} from 'react-router-dom';
+import {useTheme} from 'styled-components';
 
 function HomePage() {
+  const navigate = useNavigate();
   const theme = useTheme();
 
-  const query = useQuery({
-    queryKey: 'newest',
+  const categoryQuery = useQuery({
+    queryKey: ['categories'],
+    queryFn: CategoryService.getAllAsync
+  });
+
+  const readQuery = useQuery({
+    queryKey: ['comics', 'read'],
+    queryFn: () => ComicService.getReadAsync({per_page: 10})
+  });
+
+  const newestQuery = useQuery({
+    queryKey: ['comics', 'newest'],
     queryFn: () => ComicService.getAllAsync({sort_by: 'updated_at-desc', per_page: 10})
   });
 
-  if (query.isLoading) {
-    return <div>Loading...</div>
+  if (newestQuery.isLoading || readQuery.isLoading || categoryQuery.isLoading) {
+    return <LoadingPage />
   }
 
+  if (newestQuery.isError || readQuery.isError || categoryQuery.isError) {
+    return <ErrorPage onButtonClick={() => {
+      categoryQuery.refetch();
+      readQuery.refetch();
+      newestQuery.refetch();
+    }}/>
+  }
+
+function LeftArrow() {
+  const { isFirstItemVisible, scrollPrev } =
+    React.useContext(VisibilityContext);
+
   return (
-    <Container>
-      <div style={{
-        flex: 1,
-        display: 'flex',
-        flexDirection: 'column',
-        maxWidth: 1280,
-        flexGrow: 1
-      }}>
+    <Button shadowEffect style={{margin: 8, height: 'auto', width: 40}} disabled={isFirstItemVisible} onClick={() => scrollPrev()}>
+      <Icon icon={'mingcute:left-line'} style={{height: 24, width: 24}} />
+    </Button>
+  );
+}
+
+function RightArrow() {
+  const { isLastItemVisible, scrollNext } = React.useContext(VisibilityContext);
+
+  return (
+    <Button shadowEffect style={{margin: 8, height: 'auto', width: 40}} disabled={isLastItemVisible} onClick={() => scrollNext()}>
+      <Icon icon={'mingcute:right-line'} style={{height: 24, width: 24}} />
+    </Button>
+  );
+}
+
+  return (
+    <Page.Container>
+      <Page.Content gap={32}>
         <Carousel
           showThumbs={false}
           showStatus={false}
           showArrows={false}
-          swipeable={true}
-          showIndicators={true}
         >
-          {query.data.comics.map((item: Comic) => <ComicItem.Slide _data={item} />)}
-         </Carousel>
+          {newestQuery.data.comics.map((item: Comic) => <ComicItem.Slide shadowEffect _data={item} style={{margin: 8}} />)}
+        </Carousel>
 
-        <ScrollMenuContainer>
-        <ScrollMenu>
-          {query.data.comics.map((item : Comic) => (
-            <div style={{display: 'flex', flexDirection: 'column', gap: 8}}>
-              <img src={item.image} style={{height: 300}} />
-              <Text numberOfLines={1} style={{textAlign: 'center'}}>{item.name}</Text>
-            </div>
-          ))}
+        <ScrollMenu
+          LeftArrow={LeftArrow}
+          RightArrow={RightArrow}
+          scrollContainerClassName={'scroll-menu-container'}
+        >
+          {categoryQuery.data.categories.map((item : Category) => (
+            <Card
+              key={item.id.toString()}
+              shadowEffect
+              style={{marginLeft: 4, marginRight: 4, marginTop: 8, marginBottom: 8, height: 56, width: 180, justifyContent: 'center', alignItems: 'center'}}
+              onClick={() => navigate(`/comics?category_ids=${item.id}`)}
+            >
+              <Text>{item.name}</Text>
+            </Card>
+           ))}
         </ScrollMenu>
-        </ScrollMenuContainer>
-      </div>
-    </Container>
+
+        <View gap={8}>
+            <View horizontal style={{marginLeft: 8, marginRight: 8, alignItems: 'center'}}>
+              <Text variant='large-title' style={{flex: 1}}>Đã đọc gần đây</Text>
+            </View>
+            <Card style={{paddingLeft: 0, paddingRight: 0}}>
+              <ScrollMenu
+                LeftArrow={LeftArrow}
+                RightArrow={RightArrow}
+                scrollContainerClassName={'scroll-menu-container'}
+                itemClassName={'scroll-menu-item'}
+              >
+                {readQuery.data.comics.map((item : Comic) => <ComicItem.Horizontal shadowEffect _data={item} style={{width: 440}}/>)}
+              </ScrollMenu>
+            </Card>
+        </View>
+
+        <View gap={8}>
+          <View horizontal style={{marginLeft: 8, marginRight: 8, alignItems: 'center'}}>
+            <Text variant='large-title' style={{flex: 1}}>Mới cập nhật</Text>
+            <Link style={{textDecoration: 'none', color: theme.colors.themeColor, fontWeight: 'bold'}} to={'/comics?sort_by=updated_at-desc'}>Xem thêm</Link>
+          </View>
+          <Card style={{paddingLeft: 0, paddingRight: 0}}>
+            <ScrollMenu
+              LeftArrow={LeftArrow}
+              RightArrow={RightArrow}
+              scrollContainerClassName={'scroll-menu-container'}
+              itemClassName={'scroll-menu-item'}
+            >
+              {newestQuery.data.comics.map((item : Comic) => <ComicItem.Vertical shadowEffect _data={item}/>)}
+            </ScrollMenu>
+          </Card>
+        </View>
+
+        <View gap={8}>
+          <View horizontal style={{marginLeft: 8, marginRight: 8, alignItems: 'center'}}>
+            <Text variant='large-title' style={{flex: 1}}>Được yêu thích nhất</Text>
+            <Link style={{textDecoration: 'none', color: theme.colors.themeColor, fontWeight: 'bold'}} to={'/comics?sort_by=likes-desc'}>Xem thêm</Link>
+          </View>
+          <Card style={{paddingLeft: 0, paddingRight: 0}}>
+            <ScrollMenu
+              LeftArrow={LeftArrow}
+              RightArrow={RightArrow}
+              scrollContainerClassName={'scroll-menu-container'}
+              itemClassName={'scroll-menu-item'}
+            >
+              {newestQuery.data.comics.map((item : Comic) => <ComicItem.Horizontal shadowEffect _data={item} style={{width: 440}}/>)}
+            </ScrollMenu>
+          </Card>
+        </View>
+
+        <View gap={8}>
+          <View horizontal style={{marginLeft: 8, marginRight: 8, alignItems: 'center'}}>
+            <Text variant='large-title' style={{flex: 1}}>Được xem nhiều nhất</Text>
+            <Link style={{textDecoration: 'none', color: theme.colors.themeColor, fontWeight: 'bold'}} to={'/comics?sort_by=views-desc'}>Xem thêm</Link>
+          </View>
+          <Card style={{paddingLeft: 0, paddingRight: 0}}>
+            <ScrollMenu
+              LeftArrow={LeftArrow}
+              RightArrow={RightArrow}
+              scrollContainerClassName={'scroll-menu-container'}
+              itemClassName={'scroll-menu-item'}
+            >
+              {newestQuery.data.comics.map((item : Comic) => <ComicItem.Slide shadowEffect style={{width: 1024}} _data={item}/>)}
+            </ScrollMenu>
+          </Card>
+        </View>
+      </Page.Content>
+    </Page.Container>
   )
 }
 

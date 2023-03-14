@@ -1,14 +1,48 @@
+import {useAppSelector} from "@hooks";
+import styled, {useTheme} from "styled-components";
+import Text from "../Text";
+import View from "../View";
+
+const Container = styled.div`
+  display: flex;
+  flex-direction: row;
+  padding: 32px;
+  gap: 8px;
+
+  @media (max-width: 720px) {
+    flex-direction: column;
+  }
+`;
+
+const Image = styled.img`
+  height: 60px;
+  width: 142px;
+  border-radius: 8px;
+`;
+
 function Footer() {
+  const { themeMode } = useAppSelector(state => state.theme);
+  const theme = useTheme();
+
   return (
-    <div style={{display: 'flex', flexDirection: 'row', padding: 8, backgroundColor: 'inherit', color: 'inherit'}}>
-      <div style={{flex: 1}}>
-        <p style={{margin: 2, textAlign: 'left', fontWeight: 'bold'}}>Hello</p>
-        <p style={{margin: 2, textAlign: 'left'}}>Hello</p>
-        <p style={{margin: 2, textAlign: 'left'}}>Hello</p>
-        <p style={{margin: 2, textAlign: 'left'}}>Hello</p>
-      </div>
-      <div style={{flex: 1}}>hello</div>
-    </div>
+    <Container>
+      <View flex={1} gap={8} style={{alignItems: 'center', justifyContent: 'center'}}>
+        <Image src={themeMode === 'dark' ? './logo_light.png' : './logo_dark.png'}/>
+        <Text style={{textAlign: 'center', color: theme.colors.quinaryForeground}}>Delta & Kakaa Projects</Text>
+        <Text style={{textAlign: 'center', color: theme.colors.quinaryForeground}}>Được phát triển bởi <b>RK</b></Text>
+      </View>
+      <View flex={1} gap={8} style={{alignItems: 'center', justifyContent: 'center'}}>
+        <Text variant="medium-title">Về Komik</Text>
+        <Text>Giới thiệu</Text>
+        <Text>Chính sách và điều khoản</Text>
+      </View>
+      <View flex={1} gap={8} style={{alignItems: 'center', justifyContent: 'center'}}>
+        <Text variant="medium-title">Liên hệ</Text>
+        <Text>Số điện thoại: 0341234567</Text>
+        <Text>Email: admin@komik.fortisiks.space</Text>
+        <Text>Twitter: Komik Offical</Text>
+      </View>
+    </Container>
   )
 }
 

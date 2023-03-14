@@ -1,3 +1,10 @@
+export type ResponseFormat<T> = {
+    status: string;
+    message: string;
+    data?: any | T;
+    error?: any;
+}
+
 export type SignUpForm = {
   username: string;
   email: string;
@@ -83,3 +90,10 @@ export type Notification = {
   seen: boolean;
   created_at: Date;
 }
+
+export type Suggestion = {
+  keyword: string;
+  type: string;
+  data?: any;
+}
+

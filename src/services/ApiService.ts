@@ -1,7 +1,8 @@
-import axios, { AxiosInstance, AxiosRequestConfig, AxiosResponse, AxiosError, isAxiosError, RawAxiosRequestHeaders } from "axios";
+import axios, { AxiosInstance, AxiosRequestConfig, AxiosResponse, AxiosError, isAxiosError, InternalAxiosRequestConfig } from "axios";
 import { setUserTokens, eraseUserTokens, setIsRefreshing } from "@redux/sessionSlice";
 import store from "@redux/store";
 import * as SessionService from './SessionService';
+import Cookies from "js-cookie";
 
 interface ResponseData {
   status: string;
@@ -22,12 +23,9 @@ class ApiService {
     });
 
     this.axiosInstance.interceptors.request.use(
-      (config: any) => {
-        const userTokens = store.getState().session.userTokens;
-        config.headers = {
-          ...config.headers,
-          Authorization: `Bearer ${userTokens.access_token}`,
-        };
+      (config: InternalAxiosRequestConfig) => {
+        let access_token = Cookies.get('AccessToken') || '';
+        config.headers.Authorization = `Bearer ${access_token}`;
         return config;
       },
       (error: AxiosError) => {
@@ -47,23 +45,32 @@ class ApiService {
         console.log(`[API] ${error.config?.method} ${error.config?.url} [${error.response?.status}]`);
 
         if (error.response && error.response.status === 401 && !store.getState().session.isRefreshing) {
-          // fetch tokens
-          try {
-            store.dispatch(setIsRefreshing(true));
-            let tokens = await SessionService.refreshTokensAsync(store.getState().session.userTokens);
-            store.dispatch(setUserTokens(tokens));
-          } catch(error) {
-            if (isAxiosError(error) && error.response?.status == 422) {
-              store.dispatch(eraseUserTokens());
-            } 
+          let access_token = Cookies.get('AccessToken');
+          let refresh_token = Cookies.get('RefreshToken');
 
-            return Promise.reject(error);
-          } finally {
-            store.dispatch(setIsRefreshing(false));
-          }
+          console.log('Access token: ' + access_token);
+          console.log('refresh_token: ' + refresh_token);
 
-          if (error.config) {
-            return axios.request(error.config);
+          if (access_token && refresh_token) {
+            try {
+              store.dispatch(setIsRefreshing(true));
+              let tokens = await SessionService.refreshTokensAsync({access_token, refresh_token});
+              store.dispatch(setUserTokens(tokens));
+            } catch(error) {
+              if (isAxiosError(error) && error.response?.status == 422) {
+                store.dispatch(eraseUserTokens());
+              } 
+
+              return Promise.reject(error);
+            } finally {
+              store.dispatch(setIsRefreshing(false));
+            }
+
+            if (error.config) {
+              return axios.request(error.config);
+            }
+          } else {
+            store.dispatch(eraseUserTokens());
           }
         }
 

@@ -4,7 +4,6 @@ import {setUserTokens} from "@redux/sessionSlice";
 import {SessionService} from "@services";
 import {useState} from "react";
 import {Link} from "react-router-dom";
-import styled from "styled-components";
 
 function SignInPage() {
   const [usernameOrEmail, setUsernameOrEmail] = useState('');
@@ -50,7 +49,7 @@ function SignInPage() {
 
           <Link to={'/'} style={{textAlign: 'right'}}>Quên mật khẩu?</Link>
 
-          <Button onClick={signIn}>Sign In</Button>
+          <Button variant="primary" onClick={signIn}>Sign In</Button>
         </div>
       </div>
     </div>

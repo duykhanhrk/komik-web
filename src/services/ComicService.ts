@@ -1,6 +1,6 @@
 import ApiService from './ApiService';
 
-export const getAllAsync = (params: {page?: number, per_page?: number, category_ids?: string, sort_by?:string}) => {
+export const getAllAsync = (params: {page?: number, per_page?: number, category_ids?: string, sort_by?:string, query?: string}) => {
   return ApiService.get('/app/comics', {params: {per_page: 20, sort_by: 'updated_at-desc', ...params}});
 }
 
@@ -12,6 +12,10 @@ export const getLikedAsync = (params: {page?: number, per_page?: number}) => {
 
 export const getFollowedAsync = (params: {page?: number, per_page?: number}) => {
   return ApiService.get('/app/comics/followed', {params: {per_page: 20, ...params}});
+}
+
+export const getReadAsync = (params: {page?: number, per_page?: number}) => {
+  return ApiService.get('/app/comics/read', {params: {per_page: 20, ...params}});
 }
 
 export const likeAsync = (id: number, like: boolean) => {

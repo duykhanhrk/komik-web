@@ -1,8 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit'
-import {ThemeMode} from '../constants/ColorScheme'
 
 interface ThemeState {
-  themeMode: ThemeMode
+  themeMode: 'light' | 'dark' | string
 }
 
 const initialState: ThemeState = {

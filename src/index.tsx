@@ -8,6 +8,7 @@ import store from './redux/store';
 import {BrowserRouter} from 'react-router-dom';
 import { QueryClient, QueryClientProvider } from 'react-query'
 import 'react-responsive-carousel/lib/styles/carousel.min.css';
+import ThemeProvider from './components/ThemeProvider';
 
 const queryClient = new QueryClient();
 
@@ -20,7 +21,9 @@ root.render(
     <Provider store={store}>
       <QueryClientProvider client={queryClient}>
         <BrowserRouter>
-          <App />
+          <ThemeProvider>
+            <App />
+          </ThemeProvider>
         </BrowserRouter>
       </QueryClientProvider>
     </Provider>

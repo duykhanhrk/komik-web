@@ -41,7 +41,6 @@ const LightTheme: DefaultTheme = {
     themeForeground: '#FFFFFF',
     themeBackground: '#101014',
 
-
     secondaryThemeForeground: '#DDDDDD',
     secondaryThemeBackground: '#010101',
 
@@ -87,19 +86,19 @@ const DarkTheme: DefaultTheme = {
     thirdThemeColor: '#E5DE00',
 
     foreground: '#FFFFFF',
-    background: '#010104',
+    background: '#101014',
 
     secondaryForeground: '#DDDDDD',
-    secondaryBackground: '#111111',
+    secondaryBackground: '#010101',
 
     tertiaryForeground: '#BBBBBB',
-    tertiaryBackground: '#212121',
+    tertiaryBackground: '#111111',
 
     quaternaryForeground: '#999999',
-    quaternaryBackground: '#313131',
+    quaternaryBackground: '#212121',
   
     quinaryForeground: '#777777',
-    quinaryBackground: '#414141',
+    quinaryBackground: '#313131',
 
     themeForeground: '#000000',
     themeBackground: '#EFEFF3',
@@ -126,5 +125,4 @@ const DarkTheme: DefaultTheme = {
   }
 }
 
-export type ThemeMode = 'light' | 'dark' | string;
 export default { LightTheme, DarkTheme };

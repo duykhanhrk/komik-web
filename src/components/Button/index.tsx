@@ -1,7 +1,8 @@
 import styled from "styled-components";
 
 export interface ButtonProps {
-  variant?: 'primary' | 'secondary' | 'tertiary' | 'quaternary' | 'quinary'
+  variant?: 'primary' | 'secondary' | 'tertiary' | 'quaternary' | 'quinary' | 'transparent';
+  shadowEffect?: boolean;
 }
 
 const Button = styled.button<ButtonProps>`
@@ -17,25 +18,27 @@ const Button = styled.button<ButtonProps>`
   border-radius: ${props => props.theme.dimensions.borderRadius};
   opacity: 1;
   color: ${
-    props => !props.variant || props.variant === 'primary'?
+    props => props.variant && props.variant === 'primary'?
       props.theme.colors.themeForeground
       : props.theme.colors.foreground
   };
   background-color: ${
-    props => !props.variant || props.variant === 'primary' ? props.theme.colors.themeBackground
-      : props.variant === 'secondary' ? props.theme.colors.secondaryBackground
+    props => !props.variant || props.variant === 'secondary' ? props.theme.colors.secondaryBackground
+      : props.variant === 'primary' ? props.theme.colors.themeBackground
       : props.variant === 'tertiary' ? props.theme.colors.tertiaryBackground
       : props.variant === 'quaternary' ? props.theme.colors.quaternaryBackground
       : props.variant === 'quinary' ? props.theme.colors.quinaryBackground
+      : props.variant === 'transparent' ? 'transparent'
       : props.theme.colors.themeBackground
   };
+  ${props => props.shadowEffect ?  'transition: box-shadow 0.5s;' : ''};
 
   :hover {
-    opacity: 0.9;
+    ${props => props.shadowEffect ?  'box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;' : 'opacity: 0.9;'}
   }
 
   :active {
-    opacity: 1;
+    ${props => props.shadowEffect ?  'box-shadow: rgba(99, 99, 99, 0) 0px 0px 0px 0px;;' : 'opacity: 1;'}
   }
 `;
 

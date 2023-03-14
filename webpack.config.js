@@ -2,6 +2,7 @@ const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const Dotenv = require('dotenv-webpack');
+const CopyPlugin = require('copy-webpack-plugin');
 
 module.exports = {
   mode: 'development',
@@ -34,6 +35,14 @@ module.exports = {
           'sass-loader',
         ],
       },
+      {
+        test: /\.(png|jpe?g|gif)$/i,
+        use: [
+          {
+            loader: 'file-loader',
+          },
+        ],
+      },
     ],
   },
   plugins: [
@@ -41,7 +50,16 @@ module.exports = {
     new HtmlWebpackPlugin({
       template: './public/index.html',
     }),
-    new Dotenv()
+    new Dotenv(),
+    new CopyPlugin({
+      patterns: [
+        './public/favicon.png',
+        './public/logo192.png',
+        './public/logo_light.png',
+        './public/logo_dark.png',
+        './public/manifest.json'
+      ]
+    })
   ],
   devServer: {
     static: path.join(__dirname, 'dist'),
