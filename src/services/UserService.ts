@@ -10,16 +10,9 @@ export const updateAccount = (user: { username?: string, email?: string, passwor
   return ApiService.put('/app/user/change_login_info', { user });
 }
 
-export const updateAvatar = async (avatar: string) => {
+export const updateAvatar = async (avatar: File) => {
   const formData = new FormData();
-
-  let uriParts = avatar.split('.');
-  let fileType = uriParts[uriParts.length - 1];
-
-  const response = await fetch(avatar);
-  const blob = await response.blob();
-
-  formData.append('avatar', blob, `avatar.${fileType}`);
+  formData.append('avatar', avatar);
 
   return ApiService.put('/app/user/upload_avatar', formData, {
     headers: {

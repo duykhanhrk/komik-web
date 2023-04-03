@@ -1,4 +1,5 @@
 import {useAppSelector} from "@hooks";
+import {Link} from "react-router-dom";
 import styled, {useTheme} from "styled-components";
 import Text from "../Text";
 import View from "../View";
@@ -33,8 +34,8 @@ function Footer() {
       </View>
       <View flex={1} gap={8} style={{alignItems: 'center', justifyContent: 'center'}}>
         <Text variant="medium-title">Về Komik</Text>
-        <Text>Giới thiệu</Text>
-        <Text>Chính sách và điều khoản</Text>
+        <Link to={'/introduction'} style={{textDecoration: 'none', color: theme.colors.foreground}}>Giới thiệu</Link>
+        <Link to={'/policy_and_terms'} style={{textDecoration: 'none', color: theme.colors.foreground}}>Chính sách và điều khoản</Link>
       </View>
       <View flex={1} gap={8} style={{alignItems: 'center', justifyContent: 'center'}}>
         <Text variant="medium-title">Liên hệ</Text>

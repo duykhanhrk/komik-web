@@ -45,7 +45,7 @@ function Vertical(props: VerticalProps) {
         key={_data.id.toString()}
         style={style}
       >
-        <Image style={{borderRadius: 8}} variant="medium" src={_data.image}/>
+        <Image style={{borderRadius: 8}} variant="medium" src={_data.image_url}/>
         <TextContainer>
           <Text variant="title" numberOfLines={1} style={{textAlign: 'center'}}>{_data.name}</Text>
         </TextContainer>

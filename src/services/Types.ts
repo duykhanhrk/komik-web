@@ -24,12 +24,13 @@ export type UserTokens = {
 export type Category = {
   id: number;
   name: string;
+  description: string;
 }
 
 export type Chapter = {
   id: number;
   name: string;
-  images: Array<{url: string}>;
+  image_urls: Array<string>;
   free: boolean;
 }
 
@@ -41,7 +42,7 @@ export type Comic = {
   description: string;
   views: number;
   likes: number;
-  image: string;
+  image_url: string;
   status: string;
   liked: boolean;
   categories?: Array<Category>;

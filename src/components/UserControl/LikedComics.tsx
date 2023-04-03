@@ -4,10 +4,12 @@ import {Comic, ComicService} from "@services";
 import {useMemo} from "react";
 import InfiniteScroll from "react-infinite-scroller";
 import {useInfiniteQuery} from "react-query";
+import {useTheme} from "styled-components";
 import Text from "../Text";
 import View from "../View";
 
 function LikedComics() {
+  const theme = useTheme();
   const query = useInfiniteQuery({
     queryKey: ['user', 'comis', 'liked'],
     queryFn: ({ pageParam = 1 }) => ComicService.getLikedAsync({page: pageParam}),
@@ -27,6 +29,14 @@ function LikedComics() {
 
   if (query.isLoading) {
     return <LoadingPage />;
+  }
+
+  if (comics?.length === 0) {
+    return (
+      <View centerContent flex={1}>
+        <Text style={{color: theme.colors.quinaryForeground}}>Không có nội dung</Text>
+      </View>
+    )
   }
 
   return (

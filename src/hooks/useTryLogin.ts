@@ -12,6 +12,7 @@ export default function useTryLogin() {
   const dispatch = useAppDispatch();
 
   const tryLogin = async () => {
+    console.log('try login');
     setIsLoading(true);
     setIsError(false);
     try {

@@ -1,26 +1,14 @@
-import {Icon} from '@iconify/react';
-import React from 'react';
+import {useState} from 'react';
+import { ReactNode } from 'react';
+import { useTheme } from 'styled-components';
 import Modal from 'react-modal';
-import {useTheme} from 'styled-components';
-import Button from '../Button';
-import Text from '../Text';
 import View from '../View';
-import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
-import 'react-tabs/style/react-tabs.css';
+import Button from '../Button';
 
-Modal.setAppElement('#root');
+function Info({children}: {children: ReactNode}) {
+  const [isOpen, setIsOpen] = useState<boolean>(false);
 
-function Test() {
-  const [isOpen, setIsOpen] = React.useState(false);
   const theme = useTheme();
-
-  function openModal() {
-    setIsOpen(true);
-  }
-
-  function closeModal() {
-    setIsOpen(false);
-  }
 
   const customStyles = {
     content: {
@@ -30,37 +18,32 @@ function Test() {
       bottom: 'auto',
       marginRight: '-50%',
       transform: 'translate(-50%, -50%)',
-      zIndex: 66,
-      backgroundColor: theme.colors.secondaryBackground,
-      borderWidth: 0,
-      boxShadow: 'rgba(99, 99, 99, 0.2) 0px 2px 8px 0px',
-      padding: 0
+      border: `0 solid ${theme.colors.secondaryBackground}`,
+      borderRadius: 8,
+      padding: 16,
+      backgroundColor: theme.colors.secondaryBackground
     },
     overlay: {
-      zIndex: 64,
-      backgroundColor: theme.colors.background + 'DD',
+      backgroundColor: `${theme.colors.background}99`
     }
   };
 
   return (
-    <View>
-      <Button onClick={openModal}>Open Modal</Button>
-      <Modal
-        isOpen={isOpen}
-        onRequestClose={closeModal}
-        style={customStyles}
-      >
-        <View horizontal style={{justifyContent: 'flex-end', alignItems: 'center'}}>
-          <Text numberOfLines={1} variant={'medium-title'} style={{flex: 1, paddingLeft: 8}}>Hello wold</Text>
-          <Button variant='transparent'>
-            <Icon icon={'mingcute:close-line'} style={{height: 24, width: 24}} />
-          </Button>
+    <Modal
+      isOpen={isOpen}
+      onRequestClose={() => setIsOpen(false)}
+      style={customStyles}
+    >
+      <View gap={16}>
+        <View>
+          {children}
+       </View>
+        <View horizontal gap={8}>
+          <Button variant="tertiary" style={{flex: 1}} onClick={() => setIsOpen(false)}>Đóng</Button>
         </View>
-        <View style={{padding: 8}}>
-        </View>
-      </Modal>
-    </View>
+      </View>
+    </Modal>
   )
 }
 
-export default {Test};
+export default {Info};

@@ -43,10 +43,10 @@ function Slide(props: SlideProps) {
       <SlideContainer shadowEffect={props.shadowEffect} style={style}>
         <BackgroundImage
           style={{flex: 1, alignItems: 'center', borderRadius: 8, overflow: 'hidden'}}
-          src={_data.image}
+          src={_data.image_url}
           blur={8}
         >
-          <Image style={{width: 225}} variant="medium" src={_data.image}/>
+          <Image style={{width: 225}} variant="medium" src={_data.image_url}/>
         </BackgroundImage>
         <TextContainer>
           <Text variant='large-title' numberOfLines={1}>{_data.name}</Text>

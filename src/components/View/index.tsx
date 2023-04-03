@@ -21,7 +21,7 @@ const View = styled.div<ViewProps>`
     :
     ''
   }
-  ${props => props.scrollable ? 'overflow: auto; padding: 8px 8px 8px 0;' : ''}
+  ${props => props.scrollable ? 'overflow: auto;' : ''}
 `;
 
 export default View;

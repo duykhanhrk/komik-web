@@ -1,17 +1,17 @@
 import styled from "styled-components";
 
-export interface InputProps {
+export interface TextAreaProps {
   variant?: 'primary' | 'secondary' | 'tertiary' | 'quaternary' | 'quinary';
   shadowEffect?: boolean;
 }
 
-const Input = styled.input<InputProps>`
-  height: 40px;
+const TextArea = styled.textarea<TextAreaProps>`
   outline: none;
   padding: 8px;
   font-size: 1.0em;
   border-style: none;
   border-radius: 8px;
+  resize: none;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
     'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
     sans-serif;
@@ -49,4 +49,4 @@ const Input = styled.input<InputProps>`
   }
 `;
 
-export default Input;
+export default TextArea;

@@ -1,0 +1,47 @@
+.date-input div, .date-input input {
+  outline: none;
+  font-size: 1.0em;
+  border-style: none;
+  color: #FFFFFF;
+
+  &.--light {
+    color: #000000;
+  }
+
+  &.--dark {
+    color: #FFFFFF;
+  }
+}
+
+.date-input {
+  flex: 1;
+  height: 40px;
+  background-color: #EEEEEE;
+  color: #000000;
+  border-radius: 8px;
+  transition: background-color 0.5s, box-shadow 0.5s;
+
+  &.--light {
+    background-color: #EEEEEE;
+    color: #000000;
+  }
+
+  &.--dark {
+    background-color: #111111;
+    color: #FFFFFF;
+  }
+}
+
+.date-input:hover, .date-input:focus {
+  box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+  background-color: #FEFEFE;
+
+  &.--light {
+    background-color: #FEFEFE;
+  }
+
+  &.--dark {
+    background-color: #010101;
+  }
+}
+

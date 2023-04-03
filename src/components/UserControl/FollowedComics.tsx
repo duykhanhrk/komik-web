@@ -4,10 +4,13 @@ import {Comic, ComicService} from "@services";
 import {useMemo} from "react";
 import InfiniteScroll from "react-infinite-scroller";
 import {useInfiniteQuery} from "react-query";
+import {useTheme} from "styled-components";
 import Text from "../Text";
 import View from "../View";
 
 function FollowedComics() {
+  const theme = useTheme();
+
   const query = useInfiniteQuery({
     queryKey: ['user', 'comis', 'followed'],
     queryFn: ({ pageParam = 1 }) => ComicService.getFollowedAsync({page: pageParam}),
@@ -29,6 +32,14 @@ function FollowedComics() {
     return <LoadingPage />;
   }
 
+  if (comics?.length === 0) {
+    return (
+      <View centerContent flex={1}>
+        <Text style={{color: theme.colors.quinaryForeground}}>Không có nội dung</Text>
+      </View>
+    )
+  }
+
   return (
     <View scrollable>
       <InfiniteScroll
@@ -37,7 +48,7 @@ function FollowedComics() {
         loader={<Text>Loading...</Text>}
       >
         <View gap={4} style={{alignContent: 'flex-start'}}>
-          {comics?.map((item: Comic) => <ComicItem.Horizontal _data={item} variant="tertiary" _size="small" style={{flex: 1, margin: 0}}/>)}
+          {comics?.map((item: Comic) => <ComicItem.Horizontal _data={item} variant={'tertiary'} _size="small" style={{flex: 1, margin: 0}}/>)}
         </View>
       </InfiniteScroll>
     </View>

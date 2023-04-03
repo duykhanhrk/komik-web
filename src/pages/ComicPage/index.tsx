@@ -92,9 +92,6 @@ function ComicsList() {
     }
   });
 
-  console.log(searchText + 'rednerjlaskfjsadl f');
-
-
   const comics = useMemo(() => query.data?.pages.flatMap(page => page.comics), [query.data]);
 
   if (query.isLoading) {

@@ -10,6 +10,8 @@ import * as PurchaseService from './PurchaseService';
 import * as SearchingService from './SearchingService';
 import * as FeedbackService from './FeedbackService';
 
+import * as CategoryMNService from './CategoryMNService';
+
 export {
   SessionService,
   CategoryService,
@@ -21,7 +23,9 @@ export {
   NotificationService,
   DocumentService,
   SearchingService,
-  FeedbackService
+  FeedbackService,
+
+  CategoryMNService
 };
 
 export * from './Types';

@@ -12,6 +12,10 @@ import {
   useElements,
 } from '@stripe/react-stripe-js';
 import './index.scss';
+import {useNavigate} from "react-router";
+import {useUserProfileQuery} from "@hooks";
+import {useNotifications} from "reapop";
+import {isAxiosError} from "axios";
 
 const stripePromise = loadStripe('pk_test_51IFwpWCpBejooWZYsmTcqPL7wfAcx58B6lQNiE3K8XEueAbjRJCRzczedDQO3LbJ1afIh6oln6VT6SZXOZYtiL6G00Ow7S9qTG');
 
@@ -111,15 +115,47 @@ const CheckoutForm = ({onSubmitted}: {onSubmitted: (token: string) => void}) => 
 function PlanPage() {
   const [plan, setPlan] = useState<Plan>();
   const [paymentMethod, setPaymentMethod] = useState<PaymentMethod>();
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+
+  const query = useUserProfileQuery();
+  const {notify} = useNotifications();
+
+  const navigate = useNavigate();
 
   function cardPayment(token: string) {
+    setIsLoading(true);
     PurchaseService.paymentByCardAsync({plan_id: plan?.id || 0, token: token})
       .then(() => {
-        alert('Thanh toán thành công!');
+        query.refetch();
+        navigate(-1);
+        notify({
+          title: 'Thành công',
+          message: 'Thanh toán thành công!',
+          status: 'success'
+        });
       })
-      .catch(() => {
-        alert('Thanh toán không thành công!');
+      .catch((error) => {
+        if (isAxiosError(error) && error.response) {
+          notify({
+            title: 'Lỗi',
+            message: error.response.data.message,
+            status: 'error'
+          });
+        } else {
+          notify({
+            title: 'Lỗi',
+            message: 'Thanh toán không thành công!',
+            status: 'error'
+          });
+        }
       })
+      .finally(() => {
+        setIsLoading(false);
+      })
+  }
+
+  if (isLoading) {
+    return <LoadingPage />
   }
 
   return (

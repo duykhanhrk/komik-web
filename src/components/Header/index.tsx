@@ -1,14 +1,14 @@
-import {useUserProfileQuery} from "@hooks";
-import {NavLink} from "react-router-dom";
+import {useAppSelector, useUserProfileQuery} from "@hooks";
+import {NavLink, useNavigate} from "react-router-dom";
 import styled, {useTheme} from "styled-components";
 import useAppDispatch from "../../hooks/useAppDispatch";
 import {toggleTheme} from "../../redux/themeSlice";
 import { Icon } from '@iconify/react';
 import Button from "../Button";
 import {default as Dropdown} from '../Dropdown';
-import {useEffect, useRef, useState} from "react";
 import Card from "../Card";
 import {SearchInput, UserControl} from "@components";
+import {toggleRole} from "@redux/sessionSlice";
 
 const Container = styled.div`
   display: flex;
@@ -75,6 +75,9 @@ function Header() {
   const dispatch = useAppDispatch();
   const query = useUserProfileQuery();
   const theme = useTheme();
+  const navigate = useNavigate();
+
+  const {userRole} = useAppSelector(state => state.session);
 
   const navItemStyle = {
     display: 'flex',
@@ -137,7 +140,7 @@ function Header() {
         </Card>
       </NavigationContainer>
       <SearchContainer>
-        <Card shadowEffect style={{padding: 0, flex: 1}}>
+        <Card style={{padding: 0, flex: 1}}>
           <SearchInput.Comic />
         </Card>
       </SearchContainer>
@@ -156,6 +159,17 @@ function Header() {
       </NavigationIconContainer>
       <UserControlContainer>
         <Card horizontal shadowEffect style={{padding: 4}}>
+          {userRole !== 0 &&
+          <Button
+            style={{height: 36, width: 36, padding: 6, backgroundColor: 'transparent'}}
+            onClick={() => {
+              dispatch(toggleRole());
+              navigate('/');
+            }}
+          >
+            <Icon icon={'mingcute:fan-2-line'} style={{color: theme.colors.foreground, height: 24, width: 24}}/>
+          </Button>
+          }
           <Button style={{height: 36, width: 36, padding: 6, backgroundColor: 'transparent'}} onClick={() => dispatch(toggleTheme())}>
             <Icon icon={theme.mode === 'dark' ? 'mingcute:sun-line' : 'mingcute:moon-line'} style={{color: theme.colors.foreground, height: 24, width: 24}}/>
           </Button>
@@ -172,6 +186,10 @@ function Header() {
                 name: 'notifications',
                 content: <UserControl.Notification />,
                 buttonContent: <Icon icon={'mingcute:notification-line'} style={{color: theme.colors.foreground, height: 24, width: 24}}/>
+              }, {
+                name: 'plan',
+                content: <UserControl.Plan />,
+                buttonContent: <Icon icon={'mingcute:vip-4-line'} style={{color: theme.colors.foreground, height: 24, width: 24}} />
               }, {
                 name: 'main-panel',
                 content: <UserControl.MainPanel />,

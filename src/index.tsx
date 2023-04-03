@@ -9,6 +9,8 @@ import {BrowserRouter} from 'react-router-dom';
 import { QueryClient, QueryClientProvider } from 'react-query'
 import 'react-responsive-carousel/lib/styles/carousel.min.css';
 import ThemeProvider from './components/ThemeProvider';
+import {NotificationsProvider} from 'reapop';
+import AppNotificationsSystem from './components/AppNotificationsSystem';
 
 const queryClient = new QueryClient();
 
@@ -16,15 +18,21 @@ const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
 );
 
+
 root.render(
   <React.StrictMode>
     <Provider store={store}>
       <QueryClientProvider client={queryClient}>
-        <BrowserRouter>
+        <NotificationsProvider>
           <ThemeProvider>
-            <App />
+            <BrowserRouter>
+              <ThemeProvider>
+                <AppNotificationsSystem />
+                <App />
+              </ThemeProvider>
+            </BrowserRouter>
           </ThemeProvider>
-        </BrowserRouter>
+        </NotificationsProvider>
       </QueryClientProvider>
     </Provider>
   </React.StrictMode>

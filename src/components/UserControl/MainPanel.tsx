@@ -1,11 +1,12 @@
 import {useAppDispatch, useUserProfileQuery} from "@hooks";
 import {Icon} from "@iconify/react";
+import {LoadingPage} from "@pages";
 import {eraseUserTokens} from "@redux/sessionSlice";
 import {useQueryClient} from "react-query";
+import {useNavigate} from "react-router";
 import styled, {useTheme} from "styled-components";
 import Button from "../Button";
 import Card from "../Card";
-import Modal from "../Modal";
 import Text from "../Text";
 import View from "../View";
 
@@ -21,19 +22,27 @@ const HoriLine = styled.div`
   column-gap: 8px;
 `;
 
-function MainPanel() {
+interface MainPanelProps {
+  onItemClick?: () => void;
+}
+
+function MainPanel(props: MainPanelProps) {
   const dispatch = useAppDispatch();
   const theme = useTheme();
   const query = useUserProfileQuery();
   const queryClient = useQueryClient();
+  const navigate = useNavigate();
 
   if (query.isLoading) {
-    return <Text>Loading...</Text>;
+    return <LoadingPage />
   }
 
   return (
     <View gap={8}>
-      <View horizontal gap={8} style={{alignItems: 'center'}}>
+      <Card
+        horizontal
+        style={{alignItems: 'center'}}
+      >
         <Avatar src={query.isSuccess ? query.data.user.avatar_url : ''}/>
         <View flex={1} gap={4} style={{justifyContent: 'center'}}>
           <Text variant="title">
@@ -52,45 +61,32 @@ function MainPanel() {
             <Text>{`${query.data.user.birthday}`}</Text>
           </HoriLine>
         </View>
-      </View>
-      <Button
-        variant="primary"
-        onClick={() => {
-          dispatch(eraseUserTokens());
-          queryClient.clear();
-        }}
-        style={{columnGap: 8}}
-      >
-        <Icon icon={'mingcute:exit-line'} style={{height: 20, width: 20, color: theme.colors.themeForeground}} />
-        <Text style={{color: theme.colors.themeForeground}}>Đăng xuất</Text>
-      </Button>
-      <Card style={{backgroundColor: theme.colors.tertiaryBackground, rowGap: 8}}>
-        <Text variant="title">Cá nhân</Text>
-        <Button variant="secondary" style={{columnGap: 8}}>
+      </Card>
+      <View horizontal gap={8}>
+        <Button
+          variant="tertiary"
+          onClick={() => {
+            props.onItemClick && props.onItemClick();
+            navigate('/profile');
+          }}
+          style={{columnGap: 8, flex: 1}}
+        >
           <Icon icon={'mingcute:edit-line'} style={{height: 20, width: 20, color: theme.colors.foreground}} />
-          <Text style={{flex: 1}}>Chỉnh sửa thông tin cá nhân</Text>
-          <Icon icon={'mingcute:right-line'} style={{height: 20, width: 20, color: theme.colors.foreground}} />
+          <Text style={{color: theme.colors.foreground}}>Chỉnh sửa</Text>
         </Button>
-        <Button variant="secondary" style={{columnGap: 8}}>
-          <Icon icon={'mingcute:key-1-line'} style={{height: 20, width: 20, color: theme.colors.foreground}} />
-          <Text style={{flex: 1}}>Chỉnh sửa thông tin đăng nhập</Text>
-          <Icon icon={'mingcute:right-line'} style={{height: 20, width: 20, color: theme.colors.foreground}} />
+        <Button
+          variant="primary"
+          onClick={() => {
+            props.onItemClick && props.onItemClick();
+            dispatch(eraseUserTokens());
+            queryClient.clear();
+          }}
+          style={{columnGap: 8, flex: 1}}
+        >
+          <Icon icon={'mingcute:exit-line'} style={{height: 20, width: 20, color: theme.colors.themeForeground}} />
+          <Text style={{color: theme.colors.themeForeground}}>Đăng xuất</Text>
         </Button>
-      </Card>
-      <Card style={{backgroundColor: theme.colors.tertiaryBackground, rowGap: 8}}>
-        <Text variant="title">Gói</Text>
-        <Button variant="secondary" style={{columnGap: 8}}>
-          <Icon icon={'mingcute:vip-4-line'} style={{height: 20, width: 20, color: theme.colors.foreground}} />
-          <Text style={{flex: 1}}>Mua gói ngay</Text>
-          <Icon icon={'mingcute:right-line'} style={{height: 20, width: 20, color: theme.colors.foreground}} />
-        </Button>
-        <Button variant="secondary" style={{columnGap: 8}}>
-          <Icon icon={'mingcute:history-line'} style={{height: 20, width: 20, color: theme.colors.foreground}} />
-          <Text style={{flex: 1}}>Lịch sử đăng ký gói</Text>
-          <Icon icon={'mingcute:right-line'} style={{height: 20, width: 20, color: theme.colors.foreground}} />
-        </Button>
-      </Card>
-      <Modal.Test />
+      </View>
     </View>
   )
 }

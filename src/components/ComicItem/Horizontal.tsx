@@ -62,7 +62,7 @@ function Horizontal(props: HorizontalProps) {
         shadowEffect={props.shadowEffect}
       >
         <View centerContent>
-          <Image variant={props._size} style={{borderRadius: 8}} src={_data.image}/>
+          <Image variant={props._size} style={{borderRadius: 8}} src={_data.image_url}/>
         </View>
         <TextContainer _size={props._size}>
           <Text variant="title" numberOfLines={2}>{_data.name}</Text>

@@ -1,7 +1,7 @@
 import ApiService from './ApiService';
 
 export const getAllAsync = (params: {page?: number, per_page?: number, category_ids?: string, sort_by?:string, query?: string}) => {
-  return ApiService.get('/app/comics', {params: {per_page: 20, sort_by: 'updated_at-desc', ...params}});
+  return ApiService.get('/app/comics', {params: {per_page: 20, sort_by: 'last_updated_chapter_at-desc', ...params}});
 }
 
 export const getDetailAsync = (id: number) => ApiService.get(`/app/comics/${id}`);

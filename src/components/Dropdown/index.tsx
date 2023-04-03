@@ -18,12 +18,10 @@ const Content = styled.div`
   background-color: ${props => props.theme.colors.secondaryBackground};
   overflow: hidden;
   padding: 8px;
-  min-height: 240px;
+  min-height: 140px;
   max-height: 540px;
   width: 340px;
   box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
-  overflow-x: hidden;
-  overflow-y: auto;
 `;
 
 const Item = styled.div`

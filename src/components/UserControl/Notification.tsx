@@ -33,6 +33,7 @@ function NotificationItem({_data}: {_data: Notification}) {
 }
 
 function Notifications() {
+  const theme = useTheme();
   const query = useInfiniteQuery({
     queryKey: ['user', 'notifications'],
     queryFn: ({ pageParam = 1 }) => NotificationService.getAllAsync({page: pageParam, per_page: 10}),
@@ -52,6 +53,14 @@ function Notifications() {
 
   if (query.isLoading) {
     return <LoadingPage />;
+  }
+
+  if (notifications?.length === 0) {
+    return (
+      <View centerContent flex={1}>
+        <Text style={{color: theme.colors.quinaryForeground}}>Không có nội dung</Text>
+      </View>
+    )
   }
 
   return (

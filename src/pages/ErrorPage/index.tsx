@@ -1,9 +1,9 @@
 import {Button, Text, View} from "@components";
 import {isAxiosError} from "axios";
-import {error} from "console";
 import {useTheme} from "styled-components";
 
 interface ErrorPageProps {
+  messages?: Array<string>;
   buttonText?: string;
   onButtonClick?: () => void;
   error?: unknown;
@@ -11,6 +11,7 @@ interface ErrorPageProps {
 
 function ErrorPage(props: ErrorPageProps) {
   const theme = useTheme();
+
   if (isAxiosError(props.error) && props.error.response?.status === 404) {
     return (
       <View flex={1} centerContent gap={8}>
@@ -22,7 +23,13 @@ function ErrorPage(props: ErrorPageProps) {
 
   return (
     <View flex={1} centerContent gap={8}>
-      <Text>Đã xảy ra sự cố</Text>
+      {props.messages?
+        props.messages.map((item, index) => (
+          <Text key={index} style={{color: theme.colors.foreground}}>{item}</Text>
+        ))
+        :
+        <Text>Đã xảy ra sự cố</Text>
+      }
       <Button variant="primary" onClick={props.onButtonClick}>{props.buttonText || 'Tải lại'}</Button>
     </View>
   )
