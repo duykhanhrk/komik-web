@@ -56,6 +56,7 @@ function App() {
   const PolicyAndTermsPage = React.lazy(() => import('./pages/PolicyAndTermsPage'));
 
   const CategoryManagentPage = React.lazy(() => import('./pages/CategoryManagentPage'));
+  const PlanMNPage = React.lazy(() => import('./pages/PlanMNPage'));
 
   if (isLoading) {
     return (
@@ -87,6 +88,7 @@ function App() {
                 <>
                   <Route path="/" element={<UserProfilePage />} />
                   <Route path="/categories" element={<CategoryManagentPage />} />
+                  <Route path="/plans" element={<PlanMNPage />} />
                   <Route path="/profile" element={<UserProfilePage />}></Route>
                 </>
                 :

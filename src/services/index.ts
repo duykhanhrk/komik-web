@@ -11,6 +11,7 @@ import * as SearchingService from './SearchingService';
 import * as FeedbackService from './FeedbackService';
 
 import * as CategoryMNService from './CategoryMNService';
+import * as PlanMNService from './PlanMNService';
 
 export {
   SessionService,
@@ -25,7 +26,8 @@ export {
   SearchingService,
   FeedbackService,
 
-  CategoryMNService
+  CategoryMNService,
+  PlanMNService
 };
 
 export * from './Types';

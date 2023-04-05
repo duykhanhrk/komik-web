@@ -1,6 +1,6 @@
 import {Button, Card, Input, Page, Text, TextArea, View} from "@components"
 import {Icon} from "@iconify/react";
-import {Category, CategoryMNService} from "@services";
+import {Plan, PlanMNService} from "@services";
 import {useEffect, useMemo, useState} from "react";
 import InfiniteScroll from "react-infinite-scroller";
 import {useInfiniteQuery, useMutation, UseMutationResult} from "react-query";
@@ -13,7 +13,7 @@ import { actCUDHelper } from "@helpers/CUDHelper";
 
 function CategoryManegentPage() {
   const [searchText, setSearchText] = useState<string>('');
-  const [selectedItem, setSelectedItem] = useState<Category | undefined>();
+  const [selectedItem, setSelectedItem] = useState<Plan | undefined>();
   const [modalMode, setModalMode] = useState<'create' | 'update' | 'close'>('close');
 
   const theme = useTheme();
@@ -38,8 +38,8 @@ function CategoryManegentPage() {
   };
 
   const query = useInfiniteQuery({
-    queryKey: ['admin', 'categories'],
-    queryFn: ({ pageParam = 1 }) => CategoryMNService.getAllAsync({page: pageParam, query: searchText}),
+    queryKey: ['admin', 'plans'],
+    queryFn: ({ pageParam = 1 }) => PlanMNService.getAllAsync({page: pageParam, query: searchText}),
     getNextPageParam: (lastPage) => {
       if (lastPage.paginate.page >= lastPage.paginate.total_pages) {
         return null;
@@ -50,17 +50,17 @@ function CategoryManegentPage() {
   });
 
   const create: UseMutationResult = useMutation({
-    mutationFn: () => CategoryMNService.createAsync(selectedItem!),
+    mutationFn: () => PlanMNService.createAsync(selectedItem!),
     onSettled: query.refetch
   })
 
   const update = useMutation({
-    mutationFn: () => CategoryMNService.updateAsync(selectedItem!),
+    mutationFn: () => PlanMNService.updateAsync(selectedItem!),
     onSettled: query.refetch
   });
 
   const remove = useMutation({
-    mutationFn: (id: number) => CategoryMNService.deleteAsync(id),
+    mutationFn: (id: number) => PlanMNService.deleteAsync(id),
     onSettled: query.refetch
   });
 
@@ -68,7 +68,7 @@ function CategoryManegentPage() {
     query.refetch();
   }, [searchText])
 
-  const categories = useMemo(() => query.data?.pages.flatMap(page => page.categories), [query.data]);
+  const plans = useMemo(() => query.data?.pages.flatMap(page => page.plans), [query.data]);
 
   if (query.isLoading) {
     return <LoadingPage />
@@ -93,6 +93,26 @@ function CategoryManegentPage() {
               placeholder="Tên"
               value={selectedItem?.name}
               onChange={(e) => selectedItem && setSelectedItem({...selectedItem, name: e.target.value})}
+            />
+          </View>
+          <View gap={8}>
+            <Text variant="title">Giá</Text>
+            <Input
+              type={'number'}
+              variant="tertiary"
+              placeholder="Giá"
+              value={selectedItem?.price}
+              onChange={(e) => selectedItem && setSelectedItem({...selectedItem, price: parseInt(e.target.value)})}
+            />
+          </View>
+          <View gap={8}>
+            <Text variant="title">Thời gian</Text>
+            <Input
+              type={'number'}
+              variant="tertiary"
+              placeholder="Thời gian"
+              value={selectedItem?.value}
+              onChange={(e) => selectedItem && setSelectedItem({...selectedItem, value: parseInt(e.target.value)})}
             />
           </View>
           <View gap={8}>
@@ -128,7 +148,7 @@ function CategoryManegentPage() {
               shadowEffect
               style={{width: 120}}
               onClick={() => {
-                setSelectedItem({id: 0, name: '', description: ''});
+                setSelectedItem({id: 0, name: '', description: '', price: 0, value: 0});
                 setModalMode('create');
               }}
             >
@@ -154,7 +174,7 @@ function CategoryManegentPage() {
           getScrollParent={() => document.getElementById('rootScrollable')}
         >
           <View gap={8} wrap style={{justifyContent: 'center'}}>
-            {categories?.map((item: Category) => (
+            {plans?.map((item: Plan) => (
               <Card
                 horizontal
                 shadowEffect
