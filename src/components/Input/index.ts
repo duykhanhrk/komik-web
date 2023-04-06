@@ -3,9 +3,11 @@ import styled from "styled-components";
 export interface InputProps {
   variant?: 'primary' | 'secondary' | 'tertiary' | 'quaternary' | 'quinary';
   shadowEffect?: boolean;
+  flex?: number;
 }
 
 const Input = styled.input<InputProps>`
+  ${props => props.flex ? `flex: ${props.flex};` : ''}
   height: 40px;
   outline: none;
   padding: 8px;

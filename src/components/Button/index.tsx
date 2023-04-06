@@ -3,6 +3,7 @@ import styled from "styled-components";
 export interface ButtonProps {
   variant?: 'primary' | 'secondary' | 'tertiary' | 'quaternary' | 'quinary' | 'transparent';
   shadowEffect?: boolean;
+  selected?: boolean;
 }
 
 const Button = styled.button<ButtonProps>`
@@ -31,6 +32,8 @@ const Button = styled.button<ButtonProps>`
       : props.variant === 'transparent' ? 'transparent'
       : props.theme.colors.themeBackground
   };
+  ${props => props.selected ? 'box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;' : ''}
+
   ${props => props.shadowEffect ?  'transition: box-shadow 0.5s;' : ''};
 
   :hover {

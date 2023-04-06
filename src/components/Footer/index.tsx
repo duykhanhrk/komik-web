@@ -21,6 +21,12 @@ const Image = styled.img`
   border-radius: 8px;
 `;
 
+const SilverLink = styled.a`
+  text-decoration: none;
+  color: ${props => props.theme.colors.quinaryForeground};
+  font-weight: bold;
+`
+
 function Footer() {
   const { themeMode } = useAppSelector(state => state.theme);
   const theme = useTheme();
@@ -29,13 +35,18 @@ function Footer() {
     <Container>
       <View flex={1} gap={8} style={{alignItems: 'center', justifyContent: 'center'}}>
         <Image src={themeMode === 'dark' ? './logo_light.png' : './logo_dark.png'}/>
-        <Text style={{textAlign: 'center', color: theme.colors.quinaryForeground}}>Delta & Kakaa Projects</Text>
-        <Text style={{textAlign: 'center', color: theme.colors.quinaryForeground}}>Được phát triển bởi <b>RK</b></Text>
+        <Text style={{fontSize: 12, textAlign: 'center', color: theme.colors.quinaryForeground}}>
+          <SilverLink href="https://github.com/duykhanhrk/komik-web">Delta</SilverLink> & <SilverLink href="https://github.com/duykhanhrk/komik">Kakaa</SilverLink> Projects
+        </Text>
+        <Text style={{fontSize: 12, textAlign: 'center', color: theme.colors.quinaryForeground}}>
+          Được phát triển bởi <SilverLink href="https://github.com/duykhanhrk">RK</SilverLink>
+        </Text>
       </View>
       <View flex={1} gap={8} style={{alignItems: 'center', justifyContent: 'center'}}>
         <Text variant="medium-title">Về Komik</Text>
         <Link to={'/introduction'} style={{textDecoration: 'none', color: theme.colors.foreground}}>Giới thiệu</Link>
         <Link to={'/policy_and_terms'} style={{textDecoration: 'none', color: theme.colors.foreground}}>Chính sách và điều khoản</Link>
+        <Link to={'/feedbacks'} style={{textDecoration: 'none', color: theme.colors.foreground}}>Phản hồi</Link>
       </View>
       <View flex={1} gap={8} style={{alignItems: 'center', justifyContent: 'center'}}>
         <Text variant="medium-title">Liên hệ</Text>

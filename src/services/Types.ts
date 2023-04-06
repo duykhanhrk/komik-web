@@ -40,12 +40,13 @@ export type Comic = {
   other_names: string;
   author: string;
   description: string;
-  views: number;
-  likes: number;
-  image_url: string;
-  status: string;
-  liked: boolean;
+  views?: number;
+  likes?: number;
+  image_url?: string;
+  status?: string;
+  liked?: boolean;
   categories?: Array<Category>;
+  category_ids?: Array<number>;
   chapters?: Array<Chapter>
 }
 
@@ -57,6 +58,9 @@ export type User = {
   username: string;
   email: string;
   current_plan?: Purchase;
+  role?: number;
+  locked?: boolean;
+  password?: string;
 }
 
 export type Plan = {
@@ -98,3 +102,9 @@ export type Suggestion = {
   data?: any;
 }
 
+export type Feedback = {
+  user?: User;
+  title: string;
+  content: string;
+  created_at?: string;
+}

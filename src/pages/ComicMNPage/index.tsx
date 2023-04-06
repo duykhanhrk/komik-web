@@ -1,6 +1,6 @@
-import {Button, Card, Input, Page, Text, TextArea, View} from "@components"
+import {Button, Card, ComicItem, Input, Page, Text, TextArea, View} from "@components"
 import {Icon} from "@iconify/react";
-import {Plan, PlanMNService} from "@services";
+import {Comic, ComicMNService} from "@services";
 import {useEffect, useMemo, useState} from "react";
 import InfiniteScroll from "react-infinite-scroller";
 import {useInfiniteQuery, useMutation, UseMutationResult} from "react-query";
@@ -10,14 +10,16 @@ import Modal from 'react-modal';
 import LoadingPage from "../LoadingPage";
 import ErrorPage from "../ErrorPage";
 import { actCUDHelper } from "@helpers/CUDHelper";
+import {useNavigate} from "react-router";
 
-function PlanMNPage() {
+function ComicManegentPage() {
   const [searchText, setSearchText] = useState<string>('');
-  const [selectedItem, setSelectedItem] = useState<Plan | undefined>();
+  const [selectedItem, setSelectedItem] = useState<Comic | undefined>();
   const [modalMode, setModalMode] = useState<'create' | 'update' | 'close'>('close');
 
   const theme = useTheme();
   const noti = useNotifications();
+  const navigate = useNavigate();
 
   const customStyles = {
     content: {
@@ -38,8 +40,8 @@ function PlanMNPage() {
   };
 
   const query = useInfiniteQuery({
-    queryKey: ['admin', 'plans'],
-    queryFn: ({ pageParam = 1 }) => PlanMNService.getAllAsync({page: pageParam, query: searchText}),
+    queryKey: ['admin', 'comics'],
+    queryFn: ({ pageParam = 1 }) => ComicMNService.getAllAsync({page: pageParam, query: searchText}),
     getNextPageParam: (lastPage) => {
       if (lastPage.paginate.page >= lastPage.paginate.total_pages) {
         return null;
@@ -50,17 +52,17 @@ function PlanMNPage() {
   });
 
   const create: UseMutationResult = useMutation({
-    mutationFn: () => PlanMNService.createAsync(selectedItem!),
+    mutationFn: () => ComicMNService.createAsync(selectedItem!),
     onSettled: query.refetch
   })
 
   const update = useMutation({
-    mutationFn: () => PlanMNService.updateAsync(selectedItem!),
+    mutationFn: () => ComicMNService.updateAsync(selectedItem!),
     onSettled: query.refetch
   });
 
   const remove = useMutation({
-    mutationFn: (id: number) => PlanMNService.deleteAsync(id),
+    mutationFn: (id: number) => ComicMNService.deleteAsync(id),
     onSettled: query.refetch
   });
 
@@ -68,7 +70,7 @@ function PlanMNPage() {
     query.refetch();
   }, [searchText])
 
-  const plans = useMemo(() => query.data?.pages.flatMap(page => page.plans), [query.data]);
+  const comics = useMemo(() => query.data?.pages.flatMap(page => page.comics), [query.data]);
 
   if (query.isLoading) {
     return <LoadingPage />
@@ -96,23 +98,21 @@ function PlanMNPage() {
             />
           </View>
           <View gap={8}>
-            <Text variant="title">Giá</Text>
+            <Text variant="title">Tên khác</Text>
             <Input
-              type={'number'}
               variant="tertiary"
-              placeholder="Giá"
-              value={selectedItem?.price}
-              onChange={(e) => selectedItem && setSelectedItem({...selectedItem, price: parseInt(e.target.value)})}
+              placeholder="Tên khác"
+              value={selectedItem?.other_names}
+              onChange={(e) => selectedItem && setSelectedItem({...selectedItem, other_names: e.target.value})}
             />
           </View>
           <View gap={8}>
-            <Text variant="title">Thời gian</Text>
+            <Text variant="title">Tác giả</Text>
             <Input
-              type={'number'}
               variant="tertiary"
-              placeholder="Thời gian"
-              value={selectedItem?.value}
-              onChange={(e) => selectedItem && setSelectedItem({...selectedItem, value: parseInt(e.target.value)})}
+              placeholder="Tác giả"
+              value={selectedItem?.author}
+              onChange={(e) => selectedItem && setSelectedItem({...selectedItem, author: e.target.value})}
             />
           </View>
           <View gap={8}>
@@ -148,7 +148,13 @@ function PlanMNPage() {
               shadowEffect
               style={{width: 120}}
               onClick={() => {
-                setSelectedItem({id: 0, name: '', description: '', price: 0, value: 0});
+                setSelectedItem({
+                  id: 0,
+                  name: '',
+                  description: '',
+                  other_names: '',
+                  author: ''
+                });
                 setModalMode('create');
               }}
             >
@@ -174,30 +180,25 @@ function PlanMNPage() {
           getScrollParent={() => document.getElementById('rootScrollable')}
         >
           <View gap={8} wrap style={{justifyContent: 'center'}}>
-            {plans?.map((item: Plan) => (
+            {comics?.map((item: Comic) => (
               <Card
                 horizontal
                 shadowEffect
+                onClick={() => navigate(`/admin/comics/${item.id}`)}
               >
                 <View flex={1} style={{justifyContent: 'center'}}>
-                  <Text variant="title">{item.name}</Text>
-                </View>
-                <View horizontal>
-                  <Button
-                    style={{width: 40}}
-                    onClick={() => {
-                      setSelectedItem(item);
-                      setModalMode('update');
-                    }}
-                  >
-                    <Icon icon={'mingcute:edit-line'} style={{height: 20, width: 20, color: theme.colors.foreground}} />
-                  </Button>
-                  <Button
-                    style={{width: 40}}
-                    onClick={() => actCUDHelper(remove, noti, 'delete', item.id)}
-                  >
-                    <Icon icon={'mingcute:delete-2-line'} style={{height: 20, width: 20, color: theme.colors.foreground}} />
-                  </Button>
+                  <View horizontal gap={8}>
+                    <ComicItem.Image src={item.image_url} style={{borderRadius: 8}} />
+                    <View flex={1} gap={4}>
+                      <Text numberOfLines={1} variant="medium-title">{item.name}</Text>
+                      <Text numberOfLines={1}><b>Tên khác: </b>{item.other_names}</Text>
+                      <Text numberOfLines={1}><b>Tác giả: </b>{item.author}</Text>
+                      <Text numberOfLines={1}><b>Trạng thái: </b>{item.status}</Text>
+                      <Text numberOfLines={1}><b>Số lượt thích: </b>{item.likes}</Text>
+                      <Text numberOfLines={1}><b>Số lượt xem: </b>{item.views}</Text>
+                      <Text numberOfLines={2}><b>Mô tả: </b>{item.description}</Text>
+                    </View>
+                  </View>
                 </View>
               </Card>
             ))}
@@ -208,4 +209,4 @@ function PlanMNPage() {
   )
 }
 
-export default PlanMNPage;
+export default ComicManegentPage;

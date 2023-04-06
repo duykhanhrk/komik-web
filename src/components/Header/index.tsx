@@ -164,7 +164,7 @@ function Header() {
             style={{height: 36, width: 36, padding: 6, backgroundColor: 'transparent'}}
             onClick={() => {
               dispatch(toggleRole());
-              navigate('/');
+              navigate('/admin/profile');
             }}
           >
             <Icon icon={'mingcute:fan-2-line'} style={{color: theme.colors.foreground, height: 24, width: 24}}/>

@@ -1,4 +1,4 @@
-import {Card, ComicItem, Dropdown, Text, View} from "@components";
+import {Button, Card, ComicItem, Dropdown, Text, View} from "@components";
 import {Category, CategoryService, Comic, ComicService} from "@services";
 import {useEffect, useMemo, useState} from "react";
 import InfiniteScroll from "react-infinite-scroller";
@@ -17,16 +17,18 @@ const sortByOptions = [
 const NavigationPanelContianer = styled.div`
   display: flex;
   flex-direction: column;
-  flex-basis: 240px:
+  flex-basis: 256px:
   flex-shrink: 0;
   border-radius: 8px;
   background-color: ${props => props.theme.colors.secondaryBackground};
   position: sticky;
   top: 60px;
+  height: calc(100vh - 68px);
   max-height: calc(100vh - 68px);
   overflow: auto;
-  width: 240px;
+  width: 256px;
   transition: box-shadow 0.5s;
+  padding: 8px;
 
   &:hover {
     box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
@@ -34,6 +36,17 @@ const NavigationPanelContianer = styled.div`
 `;
 
 function NavigationPanel() {
+  const [searchParams] = useSearchParams();
+
+  let paramable = searchParams.get('category_id');
+  const _categoryId = paramable === null ? undefined : paramable;
+
+  const [categoryId, setCategoryId] = useState<string | undefined>();
+
+  useEffect(() => {
+    setCategoryId(_categoryId);
+  }, [searchParams])
+
   const categoryQuery = useQuery<{ categories: Array<Category> }>({
     queryKey: ['categories'],
     queryFn: CategoryService.getAllAsync,
@@ -42,14 +55,14 @@ function NavigationPanel() {
   return (
     <NavigationPanelContianer>
       <Link to={`/comics`} style={{textDecoration: 'none'}}>
-        <Card>
-          <Text>Tất cả</Text>
+        <Card variant={categoryId === undefined ? 'primary' : undefined} style={{flex: 1}}>
+          <Text variant="inhirit">Tất cả</Text>
         </Card>
       </Link>
       {categoryQuery.data?.categories.map((item) => (
-        <Link to={`/comics?category_id=${item.id}`} style={{textDecoration: 'none'}}>
-          <Card>
-            <Text>{item.name}</Text>
+        <Link to={`/comics?category_id=${item.id}`} style={{textDecoration: 'none', display: 'flex'}}>
+          <Card variant={categoryId === item.id.toString() ? 'primary' : undefined} style={{flex: 1}}>
+            <Text variant="inhirit">{item.name}</Text>
           </Card>
         </Link>
       ))}

@@ -1,12 +1,12 @@
 import styled from "styled-components";
 
 export interface TextProps {
-  variant?: 'default' | 'small' | 'medium' | 'large' |  'title' | 'small-title' | 'medium-title' | 'large-title';
+  variant?: 'default' | 'small' | 'medium' | 'large' |  'title' | 'small-title' | 'medium-title' | 'large-title' | 'inhirit';
   numberOfLines?: number;
 }
 
 const Text = styled.p<TextProps>`
-  color: ${props => props.theme.colors.foreground};
+  color: ${props => props.variant === 'inhirit' ? 'inhirit' : props.theme.colors.foreground};
   font-size: ${
     props => !props.variant || props.variant === 'default' || props.variant === 'title' ? '1.0em'
       : props.variant === 'small' || props.variant === 'small-title' ? '0.8em'

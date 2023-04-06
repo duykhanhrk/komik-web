@@ -12,6 +12,11 @@ const Card = styled.div<CardProps>`
   display: flex;
   flex-direction: ${props => props.horizontal ? 'row' : 'column'};
   gap: 8px;
+  color: ${
+    props => props.variant && props.variant === 'primary'?
+      props.theme.colors.themeForeground
+      : props.theme.colors.foreground
+  };
   background-color: ${
     props => !props.variant || props.variant === 'secondary' ? props.theme.colors.secondaryBackground
       : props.variant === 'primary' ? props.theme.colors.themeBackground
