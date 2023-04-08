@@ -11,7 +11,7 @@ import LoadingPage from "../LoadingPage";
 import ErrorPage from "../ErrorPage";
 import { actCUDHelper } from "@helpers/CUDHelper";
 
-function CategoryManegentPage() {
+function CategoryMNPage() {
   const [searchText, setSearchText] = useState<string>('');
   const [selectedItem, setSelectedItem] = useState<Category | undefined>();
   const [modalMode, setModalMode] = useState<'create' | 'update' | 'close'>('close');
@@ -188,4 +188,4 @@ function CategoryManegentPage() {
   )
 }
 
-export default CategoryManegentPage;
+export default CategoryMNPage;

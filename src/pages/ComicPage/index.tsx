@@ -1,4 +1,4 @@
-import {Button, Card, ComicItem, Dropdown, Text, View} from "@components";
+import {Card, ComicItem, Dropdown, Text, View} from "@components";
 import {Category, CategoryService, Comic, ComicService} from "@services";
 import {useEffect, useMemo, useState} from "react";
 import InfiniteScroll from "react-infinite-scroller";
@@ -9,7 +9,7 @@ import ErrorPage from "../ErrorPage";
 import LoadingPage from "../LoadingPage";
 
 const sortByOptions = [
-  {label: 'Ngày cập nhật', value: 'updated_at-desc'},
+  {label: 'Ngày cập nhật', value: 'last_updated_chapter_at-desc'},
   {label: 'Lượt xem', value: 'views-desc'},
   {label: 'Lượt thích', value: 'likes-desc'}
 ]
@@ -79,7 +79,7 @@ function ComicsList() {
   let paramable = searchParams.get('category_id');
   const _categoryId = paramable === null ? undefined : paramable;
   paramable = searchParams.get('sort_by');
-  const _sortBy = paramable === null ? 'updated_at-desc' : paramable;
+  const _sortBy = paramable === null ? 'last_updated_chapter_at-desc' : paramable;
   paramable = searchParams.get('query');
   const _searchText = paramable === null ? undefined : paramable;
 

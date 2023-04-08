@@ -37,3 +37,4 @@ export {
 };
 
 export * from './Types';
+export * from './Default';

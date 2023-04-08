@@ -28,9 +28,9 @@ export type Category = {
 }
 
 export type Chapter = {
-  id: number;
+  id?: number;
   name: string;
-  image_urls: Array<string>;
+  image_urls?: Array<string>;
   free: boolean;
 }
 
@@ -45,9 +45,12 @@ export type Comic = {
   image_url?: string;
   status?: string;
   liked?: boolean;
+  followed?: boolean;
+  active?: boolean;
   categories?: Array<Category>;
   category_ids?: Array<number>;
-  chapters?: Array<Chapter>
+  chapters?: Array<Chapter>;
+  up_coming?: boolean;
 }
 
 export type User = {

@@ -177,23 +177,23 @@ function Header() {
             dropdowns={[{
                 name: 'followed-comics',
                 content: <UserControl.FollowedComics />,
-                buttonContent: <Icon icon={'mingcute:book-5-line'} style={{color: theme.colors.foreground, height: 24, width: 24}}/>
+                buttonContent: ({isActive}) => <Icon icon={isActive ? 'mingcute:book-5-fill' : 'mingcute:book-5-line'} style={{color: theme.colors.foreground, height: 24, width: 24}}/>,
               }, {
                 name: 'liked-comics',
                 content: <UserControl.LikedComics />,
-                buttonContent: <Icon icon={'mingcute:heart-line'} style={{color: theme.colors.foreground, height: 24, width: 24}}/>
+                buttonContent: ({isActive}) => <Icon icon={isActive ? 'mingcute:heart-fill' : 'mingcute:heart-line'} style={{color: theme.colors.foreground, height: 24, width: 24}}/>,
               }, {
                 name: 'notifications',
                 content: <UserControl.Notification />,
-                buttonContent: <Icon icon={'mingcute:notification-line'} style={{color: theme.colors.foreground, height: 24, width: 24}}/>
+                buttonContent: ({isActive}) => <Icon icon={isActive ? 'mingcute:notification-fill' : 'mingcute:notification-line'} style={{color: theme.colors.foreground, height: 24, width: 24}}/>,
               }, {
                 name: 'plan',
                 content: <UserControl.Plan />,
-                buttonContent: <Icon icon={'mingcute:vip-4-line'} style={{color: theme.colors.foreground, height: 24, width: 24}} />
+                buttonContent: ({isActive}) => <Icon icon={isActive ? 'mingcute:vip-4-fill' : 'mingcute:vip-4-line'} style={{color: theme.colors.foreground, height: 24, width: 24}} />,
               }, {
                 name: 'main-panel',
                 content: <UserControl.MainPanel />,
-                buttonContent: <Avatar src={query.isSuccess ? query.data.user.avatar_url : ''}/>
+                buttonContent: () =>  <Avatar src={query.isSuccess ? query.data.user.avatar_url : ''}/>
               }
             ]}
             buttonStyle={{height: 36, width: 36, padding: 6, backgroundColor: 'transparent'}}

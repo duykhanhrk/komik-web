@@ -38,7 +38,7 @@ interface GroupProps {
   dropdowns?: Array<{
     name: string,
     content?: ReactNode;
-    buttonContent?: ReactNode
+    buttonContent?: ({isActive}: {isActive: boolean}) => ReactNode;
     buttonStyle?: CSSProperties;
     contentStyle?: CSSProperties;
   }>;
@@ -73,7 +73,7 @@ function Group(props: GroupProps) {
           <Button
             style={{...props.buttonStyle, ...item.buttonStyle}}
             onClick={() => setOpen(open !== item.name ? item.name : '')}>
-              {item.buttonContent}
+            {item.buttonContent && item.buttonContent({isActive: open === item.name})}
           </Button>
         ))}
       </View>

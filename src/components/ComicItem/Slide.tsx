@@ -52,7 +52,7 @@ function Slide(props: SlideProps) {
           <Text variant='large-title' numberOfLines={1}>{_data.name}</Text>
           <Text numberOfLines={1}><b>Tên khác: </b>{_data.other_names}</Text>
           <Text numberOfLines={1}><b>Tác giả: </b>{_data.author}</Text>
-          <Text numberOfLines={1}><b>Trạng thái: </b>{_data.status}</Text>
+          <Text numberOfLines={1}><b>Trạng thái: </b>{_data.status === 'unfinished' ? 'Đang tiến hành' : 'Đã hoàn thành'}</Text>
           <Text numberOfLines={5}><b>Tóm tắt: </b>{_data.description}</Text>
         </TextContainer>
       </SlideContainer>

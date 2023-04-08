@@ -1,18 +1,18 @@
-import {Button, Card, ComicItem, Input, Page, Text, TextArea, View} from "@components"
+import {Button, Card, ComicItem, Input, Page, Tag, Text, TextArea, View} from "@components"
 import {Icon} from "@iconify/react";
 import {Comic, ComicMNService} from "@services";
 import {useEffect, useMemo, useState} from "react";
 import InfiniteScroll from "react-infinite-scroller";
 import {useInfiniteQuery, useMutation, UseMutationResult} from "react-query";
 import {useNotifications} from "reapop";
-import { useTheme } from "styled-components";
+import {useTheme} from "styled-components";
 import Modal from 'react-modal';
 import LoadingPage from "../LoadingPage";
 import ErrorPage from "../ErrorPage";
-import { actCUDHelper } from "@helpers/CUDHelper";
+import {actCUDHelper} from "@helpers/CUDHelper";
 import {useNavigate} from "react-router";
 
-function ComicManegentPage() {
+function ComicMNPage() {
   const [searchText, setSearchText] = useState<string>('');
   const [selectedItem, setSelectedItem] = useState<Comic | undefined>();
   const [modalMode, setModalMode] = useState<'create' | 'update' | 'close'>('close');
@@ -52,7 +52,14 @@ function ComicManegentPage() {
   });
 
   const create: UseMutationResult = useMutation({
-    mutationFn: () => ComicMNService.createAsync(selectedItem!),
+    mutationFn: () => ComicMNService.createAsync({
+      id: 0,
+      name: `[Tên truyện ${new Date().getTime()}]`,
+      description: '[Mô tả]',
+      other_names: '[Tên khác]',
+      author: '[Tên tác giả]',
+      status: 'unfinished'
+    }),
     onSettled: query.refetch
   })
 
@@ -145,7 +152,7 @@ function ComicManegentPage() {
         <View style={{position: 'sticky', top: 0, marginTop: -8, paddingTop: 8, paddingBottom: 8, backgroundColor: theme.colors.background}} horizontal>
           <View horizontal flex={1}>
             <Button
-              shadowEffect
+              variant="primary"
               style={{width: 120}}
               onClick={() => {
                 setSelectedItem({
@@ -155,11 +162,11 @@ function ComicManegentPage() {
                   other_names: '',
                   author: ''
                 });
-                setModalMode('create');
+                actCUDHelper(create, noti, 'create');
               }}
             >
-              <Icon icon={'mingcute:add-line'} style={{height: 20, width: 20, color: theme.colors.foreground}} />
-              <Text style={{marginLeft: 8, color: theme.colors.foreground}}>Thêm</Text>
+              <Icon icon={'mingcute:add-line'} style={{height: 20, width: 20, color: 'inhirit'}} />
+              <Text variant="inhirit" style={{marginLeft: 8}}>Thêm</Text>
             </Button>
           </View>
           <View horizontal>
@@ -184,12 +191,13 @@ function ComicManegentPage() {
               <Card
                 horizontal
                 shadowEffect
+                key={item.id.toString()}
                 onClick={() => navigate(`/admin/comics/${item.id}`)}
               >
                 <View flex={1} style={{justifyContent: 'center'}}>
                   <View horizontal gap={8}>
                     <ComicItem.Image src={item.image_url} style={{borderRadius: 8}} />
-                    <View flex={1} gap={4}>
+                    <View flex={1} gap={2}>
                       <Text numberOfLines={1} variant="medium-title">{item.name}</Text>
                       <Text numberOfLines={1}><b>Tên khác: </b>{item.other_names}</Text>
                       <Text numberOfLines={1}><b>Tác giả: </b>{item.author}</Text>
@@ -209,4 +217,4 @@ function ComicManegentPage() {
   )
 }
 
-export default ComicManegentPage;
+export default ComicMNPage;

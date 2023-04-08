@@ -34,6 +34,9 @@ export const sessionSlice = createSlice({
       state.userRole = 0;
       state.currentRole = 0;
     },
+    setRole: (state, payload) => {
+      state.currentRole = payload.payload
+    },
     toggleRole: (state) => {
       state.currentRole = state.currentRole === 0 ? state.userRole : 0;
     },
@@ -43,6 +46,6 @@ export const sessionSlice = createSlice({
   }
 })
 
-export const { setUserTokens, eraseUserTokens, toggleRole, setIsRefreshing } = sessionSlice.actions;
+export const { setUserTokens, eraseUserTokens, toggleRole, setIsRefreshing, setRole } = sessionSlice.actions;
 
 export default sessionSlice.reducer

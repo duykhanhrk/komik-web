@@ -67,7 +67,7 @@ function Horizontal(props: HorizontalProps) {
         <TextContainer _size={props._size}>
           <Text variant="title" numberOfLines={2}>{_data.name}</Text>
           {props._size === 'small' && <Text variant="small" numberOfLines={1}><b>Tên khác: </b>{_data.other_names}</Text>}
-          {props._size === 'small' && <Text variant="small" numberOfLines={1}><b>Trạng thái: </b>{_data.status}</Text>}
+          {props._size === 'small' && <Text variant="small" numberOfLines={1}><b>Trạng thái: </b>{_data.status === 'unfinished' ? 'Đang tiến hành' : 'Đã hoàn thành'}</Text>}
           {props._size === 'small' && <Text variant="small" numberOfLines={1}><b>Tác giả: </b>{_data.author}</Text>}
           {props._size !== 'small' && <Text numberOfLines={6}>{_data.description}</Text>}
         </TextContainer>

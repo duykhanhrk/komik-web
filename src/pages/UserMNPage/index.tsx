@@ -1,4 +1,4 @@
-import {Button, Card, Input, Page, Text, TextArea, View} from "@components"
+import {Button, Card, Input, Page, Tag, Text, TextArea, View} from "@components"
 import {Icon} from "@iconify/react";
 import {Plan, PlanMNService, User, UserMNService} from "@services";
 import {useEffect, useMemo, useState} from "react";
@@ -13,8 +13,8 @@ import { actCUDHelper } from "@helpers/CUDHelper";
 import Moment from 'moment';
 
 const Avatar = styled.img`
-  height: 100px;
-  width: 100px;
+  height: 40px;
+  width: 40px;
   border-radius: 8px;
 `;
 
@@ -273,25 +273,17 @@ function UserMNPage() {
                   style={{alignItems: 'center'}}
                 >
                   <Avatar src={item.avatar_url}/>
-                  <View flex={1} gap={4} style={{justifyContent: 'center'}}>
+                  <View gap={4} style={{justifyContent: 'center'}}>
                     <Text variant="title">
                       { item.lastname !== '' || item.lastname !== '' ? `${item.lastname} ${item.firstname}` : `${item.username}`}
                     </Text>
-                    <HoriLine>
-                      <Icon icon={'mingcute:user-2-line'} style={{height: 20, width: 20, color: theme.colors.foreground}} />
-                      <Text>{`${item.username}`}</Text>
-                    </HoriLine>
-                    <HoriLine>
-                      <Icon icon={'mingcute:mail-line'} style={{height: 20, width: 20, color: theme.colors.foreground}} />
-                      <Text>{`${item.email}`}</Text>
-                    </HoriLine>
-                    <HoriLine>
-                      <Icon icon={'mingcute:cake-line'} style={{height: 20, width: 20, color: theme.colors.foreground}} />
-                      <Text>{`${Moment(item.birthday).format('DD/MM/YYYY')}`}</Text>
-                    </HoriLine>
                   </View>
+                  {searchText !== '' && !!item.username.match(`^.*(${searchText}).*$`) && <Tag variant={{ct: 'tertiary'}}>{item.username}</Tag>}
+                  {searchText !== '' && !!item.email.match(`^.*(${searchText}).*$`) && <Tag variant={{ct: 'tertiary'}}>{item.email}</Tag>}
                 </View>
-                <View horizontal style={{alignItems: 'center'}}>
+                <View horizontal gap={8} style={{alignItems: 'center'}}>
+                  {item.role !== 0 && <Tag variant={{ct: 'tertiary'}}>Quản trị viên</Tag>}
+                  {item.locked && <Tag variant={{ct: 'tertiary'}}>Bị khóa</Tag>}
                   <Button
                     style={{width: 40}}
                     onClick={() => {

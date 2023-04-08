@@ -14,6 +14,10 @@ export const getFollowedAsync = (params: {page?: number, per_page?: number}) => 
   return ApiService.get('/app/comics/followed', {params: {per_page: 20, ...params}});
 }
 
+export const getUpComingAsync = (params: {page?: number, per_page?: number}) => {
+  return ApiService.get('/app/comics/up_coming', {params: {per_page: 20, ...params}});
+}
+
 export const getReadAsync = (params: {page?: number, per_page?: number}) => {
   return ApiService.get('/app/comics/read', {params: {per_page: 20, ...params}});
 }

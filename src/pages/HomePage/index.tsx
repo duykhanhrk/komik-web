@@ -17,29 +17,47 @@ function HomePage() {
   const theme = useTheme();
 
   const categoryQuery = useQuery({
-    queryKey: ['categories'],
+    queryKey: ['app', 'categories'],
     queryFn: CategoryService.getAllAsync
   });
 
   const readQuery = useQuery({
-    queryKey: ['comics', 'read'],
+    queryKey: ['app', 'comics', 'read'],
     queryFn: () => ComicService.getReadAsync({per_page: 10})
   });
 
   const newestQuery = useQuery({
-    queryKey: ['comics', 'newest'],
-    queryFn: () => ComicService.getAllAsync({sort_by: 'updated_at-desc', per_page: 10})
+    queryKey: ['app', 'comics', 'newest'],
+    queryFn: () => ComicService.getAllAsync({sort_by: 'last_updated_chapter_at-desc', per_page: 10})
   });
 
-  if (newestQuery.isLoading || readQuery.isLoading || categoryQuery.isLoading) {
+  const mostFavoriteQuery = useQuery({
+    queryKey: ['app', 'comics', 'most_favorite'],
+    queryFn: () => ComicService.getAllAsync({sort_by: 'likes-desc', per_page: 10})
+  });
+
+  const mostViewedQuery = useQuery({
+    queryKey: ['app', 'comics', 'most_viewed'],
+    queryFn: () => ComicService.getAllAsync({sort_by: 'views-desc', per_page: 10})
+  });
+
+  const upComingQuery = useQuery({
+    queryKey: ['app', 'comics', 'up_coming'],
+    queryFn: () => ComicService.getUpComingAsync({per_page: 10})
+  });
+
+  if (newestQuery.isLoading || readQuery.isLoading || categoryQuery.isLoading || upComingQuery.isLoading || mostFavoriteQuery.isLoading || mostViewedQuery.isLoading) {
     return <LoadingPage />
   }
 
-  if (newestQuery.isError || readQuery.isError || categoryQuery.isError) {
+  if (newestQuery.isError || readQuery.isError || categoryQuery.isError || upComingQuery.isError || mostFavoriteQuery.isError || mostViewedQuery.isError) {
     return <ErrorPage onButtonClick={() => {
       categoryQuery.refetch();
       readQuery.refetch();
       newestQuery.refetch();
+      mostFavoriteQuery.refetch();
+      mostViewedQuery.refetch();
+      upComingQuery.refetch();
     }}/>
   }
 
@@ -85,13 +103,14 @@ function RightArrow() {
               key={item.id.toString()}
               shadowEffect
               style={{marginLeft: 4, marginRight: 4, marginTop: 8, marginBottom: 8, height: 56, width: 180, justifyContent: 'center', alignItems: 'center'}}
-              onClick={() => navigate(`/comics?category_ids=${item.id}`)}
+              onClick={() => navigate(`/comics?category_id=${item.id}`)}
             >
               <Text>{item.name}</Text>
             </Card>
            ))}
         </ScrollMenu>
 
+        {readQuery.data.comics.length !== 0 &&
         <View gap={8}>
             <View horizontal style={{marginLeft: 8, marginRight: 8, alignItems: 'center'}}>
               <Text variant='large-title' style={{flex: 1}}>Đã đọc gần đây</Text>
@@ -107,11 +126,30 @@ function RightArrow() {
               </ScrollMenu>
             </Card>
         </View>
+        }
+
+        {upComingQuery.data.comics.length !== 0 &&
+        <View gap={8}>
+            <View horizontal style={{marginLeft: 8, marginRight: 8, alignItems: 'center'}}>
+              <Text variant='large-title' style={{flex: 1}}>Sắp ra mắt</Text>
+            </View>
+            <Card style={{paddingLeft: 0, paddingRight: 0}}>
+              <ScrollMenu
+                LeftArrow={LeftArrow}
+                RightArrow={RightArrow}
+                scrollContainerClassName={'scroll-menu-container'}
+                itemClassName={'scroll-menu-item'}
+              >
+                {upComingQuery.data.comics.map((item : Comic) => <ComicItem.Horizontal shadowEffect _data={item} style={{width: 440}}/>)}
+              </ScrollMenu>
+            </Card>
+        </View>
+        }
 
         <View gap={8}>
           <View horizontal style={{marginLeft: 8, marginRight: 8, alignItems: 'center'}}>
             <Text variant='large-title' style={{flex: 1}}>Mới cập nhật</Text>
-            <Link style={{textDecoration: 'none', color: theme.colors.themeColor, fontWeight: 'bold'}} to={'/comics?sort_by=updated_at-desc'}>Xem thêm</Link>
+            <Link style={{textDecoration: 'none', color: theme.colors.themeColor, fontWeight: 'bold'}} to={'/comics?sort_by=last_updated_chapter_at-desc'}>Xem thêm</Link>
           </View>
           <Card style={{paddingLeft: 0, paddingRight: 0}}>
             <ScrollMenu
@@ -137,7 +175,7 @@ function RightArrow() {
               scrollContainerClassName={'scroll-menu-container'}
               itemClassName={'scroll-menu-item'}
             >
-              {newestQuery.data.comics.map((item : Comic) => <ComicItem.Horizontal shadowEffect _data={item} style={{width: 440}}/>)}
+              {mostFavoriteQuery.data.comics.map((item : Comic) => <ComicItem.Horizontal shadowEffect _data={item} style={{width: 440}}/>)}
             </ScrollMenu>
           </Card>
         </View>
@@ -154,7 +192,7 @@ function RightArrow() {
               scrollContainerClassName={'scroll-menu-container'}
               itemClassName={'scroll-menu-item'}
             >
-              {newestQuery.data.comics.map((item : Comic) => <ComicItem.Slide shadowEffect style={{width: 1024}} _data={item}/>)}
+              {mostViewedQuery.data.comics.map((item : Comic) => <ComicItem.Slide shadowEffect style={{width: 1024}} _data={item}/>)}
             </ScrollMenu>
           </Card>
         </View>

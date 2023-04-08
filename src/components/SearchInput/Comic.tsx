@@ -75,10 +75,20 @@ function Comic() {
         value={searchText}
         placeholder={'Tìm kiếm truyện tranh'}
       />
-      {searchDropdownOpen === 'search' && (suggestions.length !== 0 || searchText === '') &&
+      {searchDropdownOpen === 'search' &&
         <Dropdown.Content style={{left: 0, right: 0, width: 'auto', minHeight: 'auto'}}>
           <View gap={8}>
-            {searchText !== '' ? suggestions.map((item: Suggestion) => (
+            {searchText !== '' ?
+              <>
+              <Card
+                onClick={() => {
+                  setSearchDropdownOpen('');
+                  navigate(`/comics?query=${searchText}`);
+                }}
+              >
+                <Text>{searchText}</Text>
+              </Card>
+              {suggestions.map((item: Suggestion) => (
                 <Card
                   onClick={() => {
                     setSearchDropdownOpen('');
@@ -87,7 +97,8 @@ function Comic() {
                 >
                   <Text>{item.keyword}</Text>
                 </Card>
-              ))
+              ))}
+              </>
             :
               <>
                 <Text variant="title">Tìm kiếm gần đây</Text>

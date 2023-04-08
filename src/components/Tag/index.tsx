@@ -12,7 +12,11 @@ const Tag = styled.p<TagProps>`
   display: flex;
   justify-content: center;
   align-items: center;
-  color: ${props => props.theme.colors.foreground};
+  color: ${
+    props => props.variant && props.variant.ct === 'primary' ?
+      props.theme.colors.themeForeground
+      : props.theme.colors.foreground
+  };
   font-size: 0.8em;
   text-align: center;
   padding: 8px;
