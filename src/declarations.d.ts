@@ -3,6 +3,9 @@ import 'styled-components';
 declare module 'styled-components' {
   export interface DefaultTheme {
     mode: string;
+    assets: {
+      defaultAvatar: string;
+    },
     colors: {
       metal: string;
       wood: string;

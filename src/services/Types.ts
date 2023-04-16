@@ -99,10 +99,10 @@ export type Notification = {
   created_at: Date;
 }
 
-export type Suggestion = {
+export type Suggestion<T = any> = {
   keyword: string;
   type: string;
-  data?: any;
+  data?: T;
 }
 
 export type Feedback = {

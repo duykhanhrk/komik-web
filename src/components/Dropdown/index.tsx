@@ -71,16 +71,17 @@ function Group(props: GroupProps) {
       <View horizontal gap={8}>
         {props.dropdowns?.map((item) => (
           <Button
+            key={item.name}
             style={{...props.buttonStyle, ...item.buttonStyle}}
-            onClick={() => setOpen(open !== item.name ? item.name : '')}>
-            {item.buttonContent && item.buttonContent({isActive: open === item.name})}
+            onClick={() => setOpen(open === item.name ? '' : item.name)}>
+            {item.buttonContent && item.buttonContent({isActive: false})}
           </Button>
         ))}
       </View>
       {props.dropdowns?.map((item) => (
         <>
           {open === item.name &&
-            <Content style={{...props.contentStyle, ...item.contentStyle}}>
+            <Content key={item.name} style={{...props.contentStyle, ...item.contentStyle}}>
               {item.content}
             </Content>
           }

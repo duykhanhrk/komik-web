@@ -10,6 +10,9 @@ const Container = styled.div`
   padding: 32px;
   gap: 8px;
 
+  background-color: ${props => props.theme.colors.background};
+  color: ${props => props.theme.colors.foreground};
+
   @media (max-width: 720px) {
     flex-direction: column;
   }

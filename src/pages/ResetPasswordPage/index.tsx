@@ -1,9 +1,10 @@
-import {Button, Input, Page, View} from "@components";
+import {Button, Card, Input, Page, View} from "@components";
 import {SessionService, UserService} from "@services";
 import {isAxiosError} from "axios";
 import {useState} from "react";
 import {useNavigate, useParams} from "react-router";
 import {useNotifications} from "reapop";
+import {useTheme} from "styled-components";
 import LoadingPage from "../LoadingPage";
 
 function ResetPasswordPage() {
@@ -14,6 +15,7 @@ function ResetPasswordPage() {
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
   const navigate = useNavigate();
+  const theme = useTheme();
   const {notify} = useNotifications();
 
   function resetPassword() {
@@ -50,18 +52,42 @@ function ResetPasswordPage() {
   }
 
   return (
-    <Page.Container>
-      <Page.Content>
-        <View horizontal centerContent flex={1}>
-          <View gap={8}>
-            <Input placeholder="Mã xác thực" value={verificationCode} onChange={(e) => setVerificatonCode(e.target.value)} />
-            <Input type="password" placeholder="Mật khẩu mới" value={newPassword} onChange={(e) => setNewPassword(e.target.value)} />
-            <Input type="password" placeholder="Mật khẩu mới nhập lại" value={newPasswordConfirmation} onChange={(e) => setNewPasswordConfirmation(e.target.value)} />
-            <Button variant="primary" onClick={resetPassword}>Xác nhận</Button>
-          </View>
-        </View>
-      </Page.Content>
-    </Page.Container>
+    <Card shadowEffect flex={1} style={{rowGap: 16, padding: 24, justifyContent: 'center', backgroundColor: theme.colors.secondaryBackground}}>
+      <View horizontal style={{alignItems: 'center'}}>
+        <Input
+          variant="tertiary"
+          type="text"
+          value={verificationCode}
+          placeholder="Mã xác thực"
+          onChange={(e) => setVerificatonCode(e.target.value)}
+          style={{flex: 1}}
+        />
+      </View>
+
+      <View horizontal style={{alignItems: 'center'}}>
+        <Input
+          variant="tertiary"
+          type="password"
+          value={newPassword}
+          placeholder="Mật khẩu mới"
+          onChange={(e) => setNewPassword(e.target.value)}
+          style={{flex: 1}}
+        />
+      </View>
+
+      <View horizontal style={{alignItems: 'center'}}>
+        <Input
+          variant="tertiary"
+          type="password"
+          value={newPasswordConfirmation}
+          placeholder="Mật khẩu mới nhập lại"
+          onChange={(e) => setNewPasswordConfirmation(e.target.value)}
+          style={{flex: 1}}
+        />
+      </View>
+
+      <Button variant="primary" onClick={resetPassword}>Xác nhận</Button>
+    </Card>
   )
 }
 

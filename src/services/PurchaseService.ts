@@ -2,6 +2,10 @@ import ApiService from './ApiService';
 
 export const getAllPaymentMethods = () => [{ key: 'master-visa-card', name: 'Thẻ master/Visa' }];
 
+export const getStripeKeyAsync = () => {
+  return ApiService.get('/app/purchases/stripe_key');
+}
+
 export const getAllAsync = (params: {page?: number, per_page?: number}) => {
   return ApiService.get('/app/purchases', {params: {per_page: 20, ...params}});
 }

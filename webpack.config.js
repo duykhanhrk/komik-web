@@ -57,7 +57,12 @@ module.exports = {
         './public/logo192.png',
         './public/logo_light.png',
         './public/logo_dark.png',
-        './public/manifest.json'
+        './public/manifest.json',
+        './public/silver_next.jpeg',
+        './public/komik-icon-light.png',
+        './public/komik-icon-dark.png',
+        './public/default-avatar-dark.png',
+        './public/default-avatar-light.png'
       ]
     })
   ],

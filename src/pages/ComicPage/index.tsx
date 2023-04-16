@@ -1,5 +1,7 @@
-import {Card, ComicItem, Dropdown, Text, View} from "@components";
-import {Category, CategoryService, Comic, ComicService} from "@services";
+import {Card, ComicItem, Dropdown, Tag, Text, View} from "@components";
+import {useCategoriesQuery} from "@hooks";
+import {Icon} from "@iconify/react";
+import {Category, CategoryService, Comic, ComicService, Suggestion} from "@services";
 import {useEffect, useMemo, useState} from "react";
 import InfiniteScroll from "react-infinite-scroller";
 import {useInfiniteQuery, useQuery} from "react-query";
@@ -23,8 +25,8 @@ const NavigationPanelContianer = styled.div`
   background-color: ${props => props.theme.colors.secondaryBackground};
   position: sticky;
   top: 60px;
+  bottom: 0;
   height: calc(100vh - 68px);
-  max-height: calc(100vh - 68px);
   overflow: auto;
   width: 256px;
   transition: box-shadow 0.5s;
@@ -37,35 +39,101 @@ const NavigationPanelContianer = styled.div`
 
 function NavigationPanel() {
   const [searchParams] = useSearchParams();
+  const [categoryIds, setCategoryIds] = useState<Array<number> | undefined>();
+  const [queryText, setQueryText ] = useState<string | undefined>();
+  const [recentlyKeywords, setRecentlyKeywords] = useState<Array<Suggestion>>([]);
 
-  let paramable = searchParams.get('category_id');
-  const _categoryId = paramable === null ? undefined : paramable;
+  const  navigate = useNavigate();
 
-  const [categoryId, setCategoryId] = useState<string | undefined>();
+  function buildSuggestion() {
+    return {
+      keyword: queryText || '',
+      type: 'Keyword',
+      data: categoryIds ? {categoryIds} : undefined
+    }
+  }
 
   useEffect(() => {
-    setCategoryId(_categoryId);
+    let paramable = searchParams.get('category_id');
+    const _categoryIds = paramable === null || paramable === '' ? undefined : paramable.split(',').map(item => parseInt(item)).sort((a, b) => a - b);
+    paramable = searchParams.get('query');
+    const _queryText = paramable === null || paramable === '' ? undefined : paramable;
+
+    setCategoryIds(_categoryIds);
+    setQueryText(_queryText);
+
+    if (_queryText) {
+      let suggestion = {
+        keyword: _queryText,
+        type: 'Keyword',
+        data: categoryIds ? {categoryIds} : undefined
+      }
+
+      let keywords = JSON.parse(localStorage.getItem('RecentlyKeywords') || '[]');
+
+      if (!keywords.find((item: Suggestion) => JSON.stringify(item) === JSON.stringify(suggestion))) {
+        setRecentlyKeywords([suggestion, ...keywords]);
+        localStorage.setItem('RecentlyKeywords', JSON.stringify([suggestion, ...keywords]));
+      } else {
+        setRecentlyKeywords(keywords);
+      }
+    }
   }, [searchParams])
 
-  const categoryQuery = useQuery<{ categories: Array<Category> }>({
-    queryKey: ['categories'],
-    queryFn: CategoryService.getAllAsync,
-  });
+  const categoryQuery = useCategoriesQuery();
 
   return (
     <NavigationPanelContianer>
-      <Link to={`/comics`} style={{textDecoration: 'none'}}>
-        <Card variant={categoryId === undefined ? 'primary' : undefined} style={{flex: 1}}>
-          <Text variant="inhirit">Tất cả</Text>
-        </Card>
-      </Link>
-      {categoryQuery.data?.categories.map((item) => (
-        <Link to={`/comics?category_id=${item.id}`} style={{textDecoration: 'none', display: 'flex'}}>
-          <Card variant={categoryId === item.id.toString() ? 'primary' : undefined} style={{flex: 1}}>
-            <Text variant="inhirit">{item.name}</Text>
+      {queryText ?
+      <>
+        {recentlyKeywords.map((item, index) => (
+          <Card
+            variant={JSON.stringify(item) === JSON.stringify(buildSuggestion()) ? 'tertiary' : 'secondary'}
+            horizontal
+            style={{alignItems: 'center'}}
+            key={index.toString()}
+          >
+            <View
+              flex={1}
+              horizontal
+              gap={8}
+              style={{alignItems: 'center'}}
+              onClick={() => {
+                if (item.data) {
+                  navigate(`/comics?category_id=${item.data.categoryIds.join(',')}&query=${item.keyword}`);
+                } else {
+                  navigate(`/comics?query=${item.keyword}`);
+                }
+              }}
+            >
+              <Text numberOfLines={1} style={{flex: 1}}>{item.keyword}</Text>
+              <Tag variant={{ct: JSON.stringify(item) === JSON.stringify(buildSuggestion()) ? 'quaternary' : 'tertiary'}} style={{gap: 8, display: item.data ? 'flex' : 'none'}}>
+                <Icon icon={'mingcute:filter-line'} style={{height: 16, width: 16, color: 'inhirit'}} />
+                {item.data ? item.data.categoryIds.length : null}
+              </Tag>
+              <Tag variant={{ct: JSON.stringify(item) === JSON.stringify(buildSuggestion()) ? 'quaternary' : 'tertiary'}} style={{gap: 8}}>
+                <Icon icon={'mingcute:history-line'} style={{height: 16, width: 16, color: 'inhirit'}} />
+              </Tag>
+            </View>
           </Card>
-        </Link>
-      ))}
+        ))}
+      </>
+      :
+        <>
+          <Link to={`/comics`} style={{textDecoration: 'none'}}>
+            <Card variant={categoryIds ? undefined : 'tertiary'} style={{flex: 1}}>
+              <Text variant="inhirit">Tất cả</Text>
+            </Card>
+          </Link>
+          {categoryQuery.data?.categories.map((item: Category) => (
+            <Link to={`/comics?category_id=${item.id}`} style={{textDecoration: 'none', display: 'flex'}}>
+              <Card variant={categoryIds?.includes(item.id) ? 'tertiary' : undefined} style={{flex: 1}}>
+                <Text variant="inhirit">{item.name}</Text>
+              </Card>
+            </Link>
+          ))}
+        </>
+      }
     </NavigationPanelContianer>
   )
 }
@@ -118,10 +186,10 @@ function ComicsList() {
   }
 
   return (
-    <View flex={1} style={{flexShrink: 1}}>
+    <View flex={1} style={{flexShrink: 1, paddingBottom: 8}}>
       {comics?.length !== 0 ?
         <>
-          <Card horizontal style={{justifyContent: 'flex-end', position: 'sticky', top: 60, backgroundColor: theme.colors.background}}>
+          <View horizontal style={{justifyContent: 'flex-end', padding: '0 0 8px 8px', position: 'sticky', top: 60, backgroundColor: theme.colors.background}}>
             <Card shadowEffect style={{padding: 0}}>
               <Dropdown.SelectionList<{label: string, value: string}>
                 _data={sortByOptions}
@@ -136,7 +204,7 @@ function ComicsList() {
                 selectedItem={sortByOptions.find(item => item.value === sortBy)}
               />
             </Card>
-          </Card>
+          </View>
           <InfiniteScroll
             pageStart={0}
             loadMore={() => query.fetchNextPage()}
@@ -145,7 +213,7 @@ function ComicsList() {
             useWindow={false}
             getScrollParent={() => document.getElementById('rootScrollable')}
           >
-            <View gap={8} horizontal wrap style={{justifyContent: 'center'}}>
+            <View gap={8} horizontal wrap style={{justifyContent: 'flex-start'}}>
               {comics?.map((item: Comic) => <ComicItem.Vertical shadowEffect _data={item}/>)}
             </View>
           </InfiniteScroll>

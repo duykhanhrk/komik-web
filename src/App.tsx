@@ -3,9 +3,9 @@ import { Navigate, Routes, Route } from "react-router-dom";
 import { ComicDetailPage, ComicPage, ErrorPage, HomePage, IntroductionPage, LoadingPage, PlanPage, ResetPasswordPage, SendVerificationCodePage, SignInPage, SignUpPage, UserProfilePage } from '@pages';
 import styled from 'styled-components';
 import { useAppDispatch, useAppSelector } from "@hooks";
-import { Header, Footer, Text, AdminNavigation } from "@components";
+import { Header, Footer, Text, AdminNavigation, SessionLayout, Layout } from "@components";
 import useTryLogin from "./hooks/useTryLogin";
-import {Suspense, useEffect} from "react";
+import {useEffect} from "react";
 import ReadingPage from "./pages/ReadingPage";
 import PlanMNPage from "./pages/PlanMNPage";
 import UserMNPage from "./pages/UserMNPage";
@@ -17,37 +17,6 @@ import ComicMNPage from "./pages/ComicMNPage";
 import CategoryMNPage from "./pages/CategoryMNPage";
 import { useLocation, matchPath } from "react-router";
 import {setRole} from "@redux/sessionSlice";
-
-const ScrollView = styled.div`
-  height: 100vh;
-  width: 100vw;
-  background-color: ${props => props.theme.colors.background};
-  color: ${props => props.theme.colors.foreground};
-  overflow: auto;
-`;
-
-const Container = styled.div`
-  min-height: 100vh;
-  display: flex;
-  text-align: center;
-  flex-direction: column;
-  font-size: 1.0em;
-  align-items: stretch;
-  justify-content: stretch;
-  background-color: ${props => props.theme.colors.background};
-  color: ${props => props.theme.colors.foreground};
-`;
-
-const Content = styled.div`
-  display: flex;
-  flex: 1;
-  flex-direction: column;
-  align-items: stretch;
-  justify-items: center;
-  min-height: 100vh;
-  color: ${props => props.theme.colors.foreground};
-  background-color: ${props => props.theme.colors.background};
-`;
 
 function App() {
   const { userTokens, userRole, currentRole } = useAppSelector(state => state.session);
@@ -64,17 +33,21 @@ function App() {
 
   if (isLoading) {
     return (
-      <Container>
-        <LoadingPage />
-      </Container>
+      <Layout.AppContainer>
+        <Layout.AppScalableContainer>
+          <LoadingPage />
+        </Layout.AppScalableContainer>
+      </Layout.AppContainer>
     )
   }
 
   if (isError) {
     return (
-      <Container>
-        <ErrorPage onButtonClick={() => tryLogin()}/>;
-      </Container>
+      <Layout.AppContainer>
+        <Layout.AppScalableContainer>
+          <ErrorPage onButtonClick={() => tryLogin()}/>;
+        </Layout.AppScalableContainer>
+      </Layout.AppContainer>
     )
   }
 
@@ -90,10 +63,13 @@ function App() {
   }
 
   return (
-    <ScrollView id="rootScrollable">
-      <Container style={{flexDirection: isAuthenticated && isAdmin ? 'row' : 'column'}}>
-        {isAuthenticated ? (isAdmin ? <AdminNavigation /> : <Header/>) : null}
-        <Content>
+    <Layout.AppContainer id="rootScrollable">
+      <Layout.AppScalableContainer horizontal={(isAuthenticated && isAdmin) || (!isAuthenticated)}>
+        <Layout.AppHeaderContainer horizontal={(isAuthenticated && isAdmin) || (!isAuthenticated)} scalable={!isAuthenticated}>
+          {isAuthenticated ? (isAdmin ? <AdminNavigation /> : <Header/>) : <SessionLayout.SilverSpace />}
+        </Layout.AppHeaderContainer>
+        <Layout.AppContentContainer horizontal={(isAuthenticated && isAdmin) || (!isAuthenticated)} scalable={isAuthenticated} ebonsaiShelf={!isAuthenticated}>
+          {!isAuthenticated && <SessionLayout.NavigationOrnament />}
           <Routes>
             <Route path="/admin/profile" element={isAuthenticated ? (isAdmin ? <UserProfilePage /> : <Text>403</Text>) : <Navigate to={'/sign_in'} />}/>
             <Route path="/admin/categories" element={isAuthenticated ? (isAdmin ? <CategoryMNPage /> : <Text>403</Text>) : <Navigate to={'/sign_in'} />}/>
@@ -118,10 +94,10 @@ function App() {
             <Route path="/sign_in" element={isAuthenticated ? (isAdmin ? <Navigate to={'/admin/profile'} /> : <Navigate to={'/'} />) : <SignInPage/>} />
             <Route path="*" element={<p>404</p>} />
           </Routes>
-        </Content>
-        {isAuthenticated && !isAdmin ? <Footer/> : null}
-      </Container>
-    </ScrollView>
+          {!isAuthenticated && <SessionLayout.ControlOrnament />}
+        </Layout.AppContentContainer>
+      </Layout.AppScalableContainer>
+    </Layout.AppContainer>
   );
 }
 

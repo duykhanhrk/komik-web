@@ -16,8 +16,8 @@ import {useNavigate} from "react-router";
 import {useUserProfileQuery} from "@hooks";
 import {useNotifications} from "reapop";
 import {isAxiosError} from "axios";
+import {error} from "console";
 
-const stripePromise = loadStripe('pk_test_51IFwpWCpBejooWZYsmTcqPL7wfAcx58B6lQNiE3K8XEueAbjRJCRzczedDQO3LbJ1afIh6oln6VT6SZXOZYtiL6G00Ow7S9qTG');
 
 function PaymentMethodSelectionList({onSelectedItemChanged} : {onSelectedItemChanged?: (item: PaymentMethod) => void}) {
   const paymentMethods = PurchaseService.getAllPaymentMethods();
@@ -115,15 +115,29 @@ const CheckoutForm = ({onSubmitted}: {onSubmitted: (token: string) => void}) => 
 function PlanPage() {
   const [plan, setPlan] = useState<Plan>();
   const [paymentMethod, setPaymentMethod] = useState<PaymentMethod>();
-  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [processStatus, setProcessStatus] = useState<{isLoading: boolean, isError: boolean, error?: Error}>({isLoading: true, isError: false});
+  const [stripePromise, setStripePromise] = useState<Promise<any>>();
 
   const query = useUserProfileQuery();
   const {notify} = useNotifications();
 
   const navigate = useNavigate();
 
+  useEffect(() => {
+    setProcessStatus({isLoading: true, isError: false});
+    PurchaseService.getStripeKeyAsync()
+      .then((response) => {
+        console.log(response)
+        setStripePromise(loadStripe(response.key))
+        setProcessStatus({isLoading: false, isError: false});
+      })
+      .catch((error) => {
+        setProcessStatus({isLoading: false, isError: true, error});
+      })
+  }, [])
+
   function cardPayment(token: string) {
-    setIsLoading(true);
+    setProcessStatus({isLoading: true, isError: false});
     PurchaseService.paymentByCardAsync({plan_id: plan?.id || 0, token: token})
       .then(() => {
         query.refetch();
@@ -150,12 +164,16 @@ function PlanPage() {
         }
       })
       .finally(() => {
-        setIsLoading(false);
+        setProcessStatus({isLoading: false, isError: false});
       })
   }
 
-  if (isLoading) {
+  if (processStatus.isLoading) {
     return <LoadingPage />
+  }
+
+  if (processStatus.isError) {
+    return <ErrorPage error={processStatus.error} />
   }
 
   return (
@@ -178,7 +196,7 @@ function PlanPage() {
               <Text><b>Tổng tiền: </b>{plan?.price}đ</Text>
               <Text><b>Phương thức thanh toán: </b>{paymentMethod?.name}</Text>
               <View>
-                <Elements stripe={stripePromise}>
+                <Elements stripe={stripePromise || null}>
                   <CheckoutForm onSubmitted={cardPayment} />
                 </Elements>
               </View>

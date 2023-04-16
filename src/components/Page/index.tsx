@@ -20,6 +20,7 @@ const Content = styled.div<ContentProps>`
   flex-direction: column;
   width: 1366px
   max-width: auto;
+  min-height: calc(100vh - 60px);
   flex-grow: 1;
   gap: ${props => props.gap || 8}px;
   padding: 8px;

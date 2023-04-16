@@ -14,6 +14,8 @@ export {default as AppNotificationsSystem } from './AppNotificationsSystem';
 export {default as AdminNavigation } from './AdminNavigation';
 export {default as TextArea } from './TextArea';
 export {default as PreText } from './PreText';
+export {default as SessionLayout } from './SessionLayout';
+export {default as Layout } from './Layout';
 export * as ComicItem  from './ComicItem';
 export * as UserControl from './UserControl';
 export * as SearchInput from './SearchInput';

@@ -13,16 +13,8 @@ import {toggleRole} from "@redux/sessionSlice";
 const Container = styled.div`
   display: flex;
   flex-direction: row;
-  height: 60px;
   padding: 8px;
   gap: 8px;
-  position: sticky;
-  left: 0;
-  right: 0;
-  top: 0;
-  background-color: ${props => props.theme.colors.background};
-  color: ${props => props.theme.colors.foreground};
-  z-index: 46
 `;
 
 const NavigationContainer = styled.div`
@@ -134,7 +126,7 @@ function Header() {
   return (
     <Container>
       <NavigationContainer>
-        <Card horizontal style={{padding: 4}} shadowEffect>
+        <Card ebonsaiSnippet>
           <NavLink to="/" style={({isActive}) => isActive ? navItemActiveStyle : navItemStyle}>Trang chủ</NavLink>
           <NavLink to="/comics" style={({isActive}) => isActive ? navItemActiveStyle : navItemStyle}>Danh mục</NavLink>
         </Card>
@@ -145,7 +137,7 @@ function Header() {
         </Card>
       </SearchContainer>
       <NavigationIconContainer>
-        <Card horizontal style={{padding: 4}}>
+        <Card ebonsaiSnippet>
           <NavLink to="/" style={({isActive}) => isActive ? navIconItemActiveStyle : navIconItemStyle}>
             <Icon icon={'mingcute:home-2-line'} style={{color: 'inherit', height: 24, width: 24}}/>
           </NavLink>
@@ -158,10 +150,11 @@ function Header() {
         </Card>
       </NavigationIconContainer>
       <UserControlContainer>
-        <Card horizontal shadowEffect style={{padding: 4}}>
+        <Card ebonsaiSnippet>
           {userRole !== 0 &&
           <Button
-            style={{height: 36, width: 36, padding: 6, backgroundColor: 'transparent'}}
+            ebonsai
+            square
             onClick={() => {
               dispatch(toggleRole());
               navigate('/admin/profile');
@@ -170,7 +163,7 @@ function Header() {
             <Icon icon={'mingcute:fan-2-line'} style={{color: theme.colors.foreground, height: 24, width: 24}}/>
           </Button>
           }
-          <Button style={{height: 36, width: 36, padding: 6, backgroundColor: 'transparent'}} onClick={() => dispatch(toggleTheme())}>
+          <Button ebonsai square onClick={() => dispatch(toggleTheme())}>
             <Icon icon={theme.mode === 'dark' ? 'mingcute:sun-line' : 'mingcute:moon-line'} style={{color: theme.colors.foreground, height: 24, width: 24}}/>
           </Button>
           <Dropdown.Group
@@ -193,7 +186,7 @@ function Header() {
               }, {
                 name: 'main-panel',
                 content: <UserControl.MainPanel />,
-                buttonContent: () =>  <Avatar src={query.isSuccess ? query.data.user.avatar_url : ''}/>
+                buttonContent: () =>  <Avatar src={query.isSuccess && query.data.user.avatar_url ? query.data.user.avatar_url : theme.assets.defaultAvatar}/>
               }
             ]}
             buttonStyle={{height: 36, width: 36, padding: 6, backgroundColor: 'transparent'}}

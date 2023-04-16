@@ -7,6 +7,7 @@ interface ViewProps {
   wrap?: boolean;
   centerContent?: boolean;
   scrollable?: boolean;
+  ebonsaiShelf?: boolean;
   variant?: 'primary' | 'secondary' | 'tertiary' | 'quaternary' | 'quinary';
 }
 
@@ -37,6 +38,7 @@ const View = styled.div<ViewProps>`
     ''
   }
   ${props => props.scrollable ? 'overflow: auto;' : ''}
+  ${props => props.ebonsaiShelf ? 'padding: 8px; gap: 8px;' : ''}
 `;
 
 export default View;

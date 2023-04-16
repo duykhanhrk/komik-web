@@ -1,4 +1,4 @@
-import {Button, Card, Input, Page, Text, TextArea, View} from "@components"
+import {Button, Card, Input, Page, Tag, Text, TextArea, View} from "@components"
 import {Feedback, FeedbackMNService} from "@services";
 import {useEffect, useMemo, useState} from "react";
 import InfiniteScroll from "react-infinite-scroller";
@@ -143,13 +143,14 @@ function FeedbackMNPage() {
                   setSelectedItem(item);
                   setModalMode('open');
                 }}
-                style={{height: 40}}
               >
-                <View flex={1} style={{justifyContent: 'center'}}>
+                <View flex={1} horizontal gap={8} style={{alignItems: 'center'}}>
                   <Text numberOfLines={1} variant="title">{item.title}</Text>
+                  <Tag>{item.user?.username}</Tag>
+                  <Tag>{item.user?.email}</Tag>
                 </View>
                 <View horizontal style={{alignItems: 'center'}}>
-                  <Text variant="title">{Moment(item.created_at).format('DD/MM/YYYY HH:MM:SS')}</Text>
+                  <Tag>{Moment(item.created_at).format('DD/MM/YYYY HH:MM:SS')}</Tag>
                 </View>
               </Card>
             ))}

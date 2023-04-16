@@ -43,22 +43,22 @@ function MainPanel(props: MainPanelProps) {
         horizontal
         style={{alignItems: 'center'}}
       >
-        <Avatar src={query.isSuccess ? query.data.user.avatar_url : ''}/>
+        <Avatar src={query.isSuccess && query.data.user.avatar_url ? query.data.user.avatar_url : theme.assets.defaultAvatar}/>
         <View flex={1} gap={4} style={{justifyContent: 'center'}}>
-          <Text variant="title">
+          <Text variant="title" numberOfLines={1}>
             { query.data.user.lastname !== '' || query.data.user.lastname !== '' ? `${query.data.user.lastname} ${query.data.user.firstname}` : `${query.data.user.username}`}
           </Text>
           <HoriLine>
             <Icon icon={'mingcute:user-2-line'} style={{height: 20, width: 20, color: theme.colors.foreground}} />
-            <Text>{`${query.data.user.username}`}</Text>
+            <Text numberOfLines={1}>{`${query.data.user.username}`}</Text>
           </HoriLine>
           <HoriLine>
             <Icon icon={'mingcute:mail-line'} style={{height: 20, width: 20, color: theme.colors.foreground}} />
-            <Text>{`${query.data.user.email}`}</Text>
+            <Text numberOfLines={1}>{`${query.data.user.email}`}</Text>
           </HoriLine>
           <HoriLine>
             <Icon icon={'mingcute:cake-line'} style={{height: 20, width: 20, color: theme.colors.foreground}} />
-            <Text>{`${query.data.user.birthday}`}</Text>
+            <Text numberOfLines={1}>{`${query.data.user.birthday}`}</Text>
           </HoriLine>
         </View>
       </Card>

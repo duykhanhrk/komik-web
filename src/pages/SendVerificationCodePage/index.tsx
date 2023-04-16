@@ -1,9 +1,10 @@
-import {Button, Input, Page, View} from "@components";
+import {Button, Card, Input, Page, View} from "@components";
 import {SessionService} from "@services";
 import {isAxiosError} from "axios";
 import {useState} from "react";
 import {useNavigate} from "react-router";
 import {useNotifications} from "reapop";
+import {useTheme} from "styled-components";
 import LoadingPage from "../LoadingPage";
 
 function SendVerificationCodePage() {
@@ -11,6 +12,7 @@ function SendVerificationCodePage() {
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
   const navigate = useNavigate();
+  const theme = useTheme();
   const {notify} = useNotifications();
 
   function sendVerificationCode() {
@@ -40,16 +42,20 @@ function SendVerificationCodePage() {
   }
 
   return (
-    <Page.Container>
-      <Page.Content>
-        <View horizontal centerContent flex={1}>
-          <View gap={8}>
-            <Input placeholder="Email" value={email} onChange={(e) => setEmail(e.target.value)} />
-            <Button variant="primary" onClick={sendVerificationCode}>Gửi mã xác thực</Button>
-          </View>
-        </View>
-      </Page.Content>
-    </Page.Container>
+    <Card shadowEffect flex={1} style={{rowGap: 16, padding: 24, justifyContent: 'center', backgroundColor: theme.colors.secondaryBackground}}>
+      <View horizontal style={{alignItems: 'center'}}>
+        <Input
+          variant="tertiary"
+          type="text"
+          value={email}
+          placeholder="Email"
+          onChange={(e) => setEmail(e.target.value)}
+          style={{flex: 1}}
+        />
+      </View>
+
+      <Button variant="primary" onClick={sendVerificationCode}>Gửi mã xác thực</Button>
+    </Card>
   )
 }
 

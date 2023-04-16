@@ -4,6 +4,8 @@ export interface ButtonProps {
   variant?: 'primary' | 'secondary' | 'tertiary' | 'quaternary' | 'quinary' | 'transparent';
   shadowEffect?: boolean;
   selected?: boolean;
+  ebonsai?: boolean;
+  square?: boolean;
 }
 
 const Button = styled.button<ButtonProps>`
@@ -32,6 +34,14 @@ const Button = styled.button<ButtonProps>`
       : props.variant === 'transparent' ? 'transparent'
       : props.theme.colors.themeBackground
   };
+
+  ${props => props.ebonsai ? `
+    height: 36px;
+    width: ${props.square ? '36px' : '120px'};
+    padding: 6px;
+    background-color: transparent;
+  ` : ''}
+
   ${props => props.selected ? 'box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;' : ''}
 
   ${props => props.shadowEffect ?  'transition: box-shadow 0.5s;' : ''};
@@ -41,7 +51,7 @@ const Button = styled.button<ButtonProps>`
   }
 
   :active {
-    ${props => props.shadowEffect ?  'box-shadow: rgba(99, 99, 99, 0) 0px 0px 0px 0px;;' : 'opacity: 1;'}
+    ${props => props.shadowEffect ?  'box-shadow: rgba(99, 99, 99, 0) 0px 0px 0px 0px;' : 'opacity: 1;'}
   }
 `;
 

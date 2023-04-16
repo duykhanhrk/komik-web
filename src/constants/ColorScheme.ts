@@ -2,6 +2,9 @@ import {DefaultTheme} from "styled-components"
 
 const LightTheme: DefaultTheme = {
   mode: 'light',
+  assets: {
+    defaultAvatar: './default-avatar-dark.png'
+  },
   colors: {
     metal: '#FFFFFF',
     wood: '#1E97F3',
@@ -65,6 +68,9 @@ const LightTheme: DefaultTheme = {
 
 const DarkTheme: DefaultTheme = {
   mode: 'dark',
+  assets: {
+    defaultAvatar: './default-avatar-light.png'
+  },
   colors: {
     metal: '#FFFFFF',
     wood: '#1E97F3',

@@ -35,31 +35,18 @@ function ControlArea() {
   const theme = useTheme();
 
   return (
-
-    <Card shadowEffect horizontal style={{padding: 4, justifyContent: 'center'}}>
-      <Button
-        style={{height: 36, width: 36, padding: 6, backgroundColor: 'transparent'}}
-        onClick={() => {
-          dispatch(toggleRole());
-          navigate('/');
-        }}
-      >
+    <Card ebonsaiSnippet>
+      <Button ebonsai square onClick={() => {dispatch(toggleRole()); navigate('/');}}>
         <Icon icon={'mingcute:fan-2-line'} style={{color: theme.colors.foreground, height: 24, width: 24}}/>
       </Button>
-      <Button style={{height: 36, width: 36, padding: 6, backgroundColor: 'transparent'}} onClick={() => dispatch(toggleTheme())}>
+      <Button ebonsai square onClick={() => dispatch(toggleTheme())}>
         <Icon icon={theme.mode === 'dark' ? 'mingcute:sun-line' : 'mingcute:moon-line'} style={{color: theme.colors.foreground, height: 24, width: 24}}/>
       </Button>
-      <Button
-        style={{height: 36, width: 36, padding: 6, backgroundColor: 'transparent'}}
-        onClick={() => {
-          dispatch(eraseUserTokens());
-          queryClient.clear();
-        }}
-      >
+      <Button ebonsai square onClick={() => {dispatch(eraseUserTokens()); queryClient.clear();}}>
         <Icon icon={'mingcute:exit-line'} style={{color: theme.colors.foreground, height: 24, width: 24}}/>
       </Button>
-      <Button style={{height: 36, width: 36, padding: 6, backgroundColor: 'transparent'}}>
-        <Avatar src={query.isSuccess ? query.data.user.avatar_url : ''}/>
+      <Button ebonsai square>
+        <Avatar src={query.isSuccess && query.data.user.avatar_url ? query.data.user.avatar_url : theme.assets.defaultAvatar}/>
       </Button>
     </Card>
   )
@@ -146,14 +133,6 @@ function NavArea() {
           </>
         )}
       </NavLink>
-      <NavLink to="/admin/documents" style={({isActive}) => isActive ? navItemActiveStyle : navItemStyle}>
-        {({isActive}) => (
-          <>
-            <Icon icon={isActive ? 'mingcute:document-fill' : 'mingcute:document-line'} style={{color: 'inhirit', height: 20, width: 20}}/>
-            <Text variant="inhirit">Tài liệu</Text>
-          </>
-        )}
-      </NavLink>
     </Card>
   )
 }
@@ -163,10 +142,10 @@ function AdminNavigation() {
   const theme = useTheme();
 
   return (
-    <View gap={8} style={{padding: 8, position: 'sticky', left: 0, top: 0, bottom: 0, height: '100vh'}}>
+    <View flex={1} ebonsaiShelf>
       <ControlArea />
       <NavArea />
-      <Card shadowEffect style={{alignItems: 'center', justifyContent: 'center'}}>
+      <Card shadowEffect centerContent>
         <Text style={{fontSize: 12, textAlign: 'center', color: theme.colors.quinaryForeground}}>
           <SilverLink href="https://github.com/duykhanhrk/komik-web">Delta</SilverLink> & <SilverLink href="https://github.com/duykhanhrk/komik">Kakaa</SilverLink> Projects
         </Text>

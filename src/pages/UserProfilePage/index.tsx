@@ -68,7 +68,7 @@ function AvatarSection() {
   }
 
   return (
-    <Card>
+    <>
       {editorOpen ? 
         <View horizontal>
           <View gap={8}>
@@ -79,7 +79,7 @@ function AvatarSection() {
               height={250}
               border={50}
               color={hexToRgb(theme.colors.background)?.concat([0.9])} // RGBA
-              scale={1.2}
+              scale={1}
               rotate={0}
               style={{backgroundColor: theme.colors.background}}
             />
@@ -136,12 +136,12 @@ function AvatarSection() {
         <View horizontal>
           <View gap={8}>
             <input type="file" style={{ "display": "none" }} onChange={handleImageChange} ref={fileInput} />
-            <Avatar src={query.isSuccess ? query.data.user.avatar_url : ''} />
+            <Avatar src={query.isSuccess && query.data.user.avatar_url ? query.data.user.avatar_url : theme.assets.defaultAvatar} />
             <Button variant="tertiary" onClick={selectFile}>Thay đổi</Button>
           </View>
         </View>
       }
-    </Card>
+    </>
   )
 }
 
@@ -175,7 +175,7 @@ function UserInfoSection() {
   }
 
   return (
-    <Card horizontal>
+    <View horizontal>
       <View gap={8}>
         <View horizontal style={{alignItems: 'center'}}>
           <Text style={{width: 180}}>Họ</Text>
@@ -249,7 +249,7 @@ function UserInfoSection() {
           }}
         >Cập nhật</Button>
       </View>
-    </Card>
+    </View>
   )
 }
 
@@ -282,7 +282,7 @@ function LoginInfoSection() {
   }
 
   return (
-    <Card horizontal>
+    <View horizontal>
       <View gap={8}>
         <View horizontal style={{alignItems: 'center'}}>
           <Text style={{width: 180}}>Tên đăng nhập</Text>
@@ -351,7 +351,7 @@ function LoginInfoSection() {
           }}
         >Cập nhật</Button>
       </View>
-    </Card>
+    </View>
   )
 }
 
@@ -377,7 +377,7 @@ function ChangePasswordSection() {
   }
 
   return (
-    <Card horizontal>
+    <View horizontal>
       <View gap={8}>
         <View horizontal style={{alignItems: 'center'}}>
           <Text style={{width: 180}}>Mật khẩu mới</Text>
@@ -446,7 +446,7 @@ function ChangePasswordSection() {
           }}
         >Cập nhật</Button>
       </View>
-    </Card>
+    </View>
   )
 }
 

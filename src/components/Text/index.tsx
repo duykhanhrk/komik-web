@@ -3,6 +3,7 @@ import styled from "styled-components";
 export interface TextProps {
   variant?: 'default' | 'small' | 'medium' | 'large' |  'title' | 'small-title' | 'medium-title' | 'large-title' | 'inhirit';
   numberOfLines?: number;
+  shadowEffect?: boolean;
 }
 
 const Text = styled.p<TextProps>`
@@ -32,6 +33,12 @@ const Text = styled.p<TextProps>`
      -webkit-box-orient: vertical;`
     :
     ''
+  }
+
+  ${props => props.shadowEffect ?  'transition: text-shadow 0.5s;' : ''};
+
+  :hover {
+    ${props => props.shadowEffect ?  'text-shadow: 2px 7px 5px rgba(99, 99, 99, 0.2);' : ''}
   }
 `;
 

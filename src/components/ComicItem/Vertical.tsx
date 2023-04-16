@@ -1,11 +1,7 @@
 import {Comic} from "@services";
-import {useNavigate} from "react-router";
 import {Link} from "react-router-dom";
-import styled, {useTheme} from "styled-components";
-import Card from "../Card";
-import Tag from "../Tag";
+import styled from "styled-components";
 import Text from "../Text";
-import View from "../View";
 import Image from "./Image";
 
 interface VerticalProps extends React.HTMLProps<HTMLDivElement> {
@@ -13,25 +9,37 @@ interface VerticalProps extends React.HTMLProps<HTMLDivElement> {
   shadowEffect?: boolean;
 }
 
+const Container = styled.div<{shadowEffect?: boolean}>`
+  display: flex;
+  flex-direction: column;
+  background-color: ${props => props.theme.colors.secondaryBackground};
+  gap: 8px;
+  padding: 8px;
+  border-radius: 8px;
+  overflow: hidden;
+  width: 241px;
+  ${props => props.shadowEffect ?  'transition: box-shadow 0.5s;' : ''};
+  &:hover {
+    ${props => props.shadowEffect ?  'box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;' : ''}
+  }
+  @media (max-width: 720px) {
+    width: 166px;
+  }
+`;
+
 function Vertical(props: VerticalProps) {
   const { _data, style } = props;
-  const theme = useTheme();
 
   return (
     <Link key={_data.id.toString()} to={`/comics/${_data.id}`} style={{textDecoration: 'none'}}>
-      <Card
+      <Container
         shadowEffect={props.shadowEffect}
         key={_data.id.toString()}
         style={style}
       >
-        <View style={{position: 'relative'}}>
-          <Image style={{borderRadius: 8}} variant="medium" src={_data.image_url}/>
-          {_data.up_coming &&
-          <Tag style={{position: 'absolute', right: 8, top: 8, backgroundColor: theme.colors.green}}>Sắp đến</Tag>
-          }
-        </View>
+        <Image style={{borderRadius: 8}} variant="medium" src={_data.image_url}/>
         <Text variant="title" numberOfLines={1} style={{textAlign: 'center'}}>{_data.name}</Text>
-      </Card>
+      </Container>
     </Link>
   );
 }

@@ -32,10 +32,11 @@ function ComicMNPage() {
       border: `0 solid ${theme.colors.secondaryBackground}`,
       borderRadius: 8,
       padding: 16,
-      backgroundColor: theme.colors.secondaryBackground
+      backgroundColor: theme.colors.secondaryBackground,
+      width: 600
     },
     overlay: {
-      backgroundColor: `${theme.colors.background}99`
+      backgroundColor: `${theme.colors.background}99`,
     }
   };
 
@@ -197,14 +198,41 @@ function ComicMNPage() {
                 <View flex={1} style={{justifyContent: 'center'}}>
                   <View horizontal gap={8}>
                     <ComicItem.Image src={item.image_url} style={{borderRadius: 8}} />
-                    <View flex={1} gap={2}>
-                      <Text numberOfLines={1} variant="medium-title">{item.name}</Text>
-                      <Text numberOfLines={1}><b>Tên khác: </b>{item.other_names}</Text>
-                      <Text numberOfLines={1}><b>Tác giả: </b>{item.author}</Text>
-                      <Text numberOfLines={1}><b>Trạng thái: </b>{item.status}</Text>
-                      <Text numberOfLines={1}><b>Số lượt thích: </b>{item.likes}</Text>
-                      <Text numberOfLines={1}><b>Số lượt xem: </b>{item.views}</Text>
-                      <Text numberOfLines={2}><b>Mô tả: </b>{item.description}</Text>
+                    <View flex={1} gap={4}>
+                      <View horizontal gap={8} style={{alignItems: 'center'}}>
+                        <Text numberOfLines={1} variant="medium-title">{item.name}</Text>
+                        {!item.active &&
+                          <Tag style={{gap: 8}}>
+                            <Icon icon={'mingcute:eye-close-line'} style={{height: 16, width: 16, color: theme.colors.foreground}} />
+                            Đang ẩn
+                          </Tag>
+                        }
+                        {item.up_coming &&
+                          <Tag style={{gap: 8}}>
+                            <Icon icon={'mingcute:alarm-2-line'} style={{height: 16, width: 16, color: theme.colors.foreground}} />
+                            Sắp ra mắt
+                          </Tag>
+                        }
+                      </View>
+                      <View horizontal>
+                        <Tag numberOfLines={1}>{item.other_names}</Tag>
+                      </View>
+                      <View horizontal>
+                        <Tag>{item.author}</Tag>
+                      </View>
+                      <View horizontal>
+                        <Tag>{item.status === 'finished' ? 'Hoàn thành' : 'Đang tiến hành'}</Tag>
+                      </View>
+                      <View horizontal gap={4}>
+                        <Tag style={{gap: 8}}>
+                          <Icon icon={'mingcute:heart-line'} style={{height: 16, width: 16, color: theme.colors.foreground}} />
+                          {item.likes}
+                        </Tag>
+                        <Tag style={{gap: 8}}>
+                          <Icon icon={'mingcute:eye-2-line'} style={{height: 16, width: 16, color: theme.colors.foreground}} />
+                          {item.views}
+                        </Tag>
+                      </View>
                     </View>
                   </View>
                 </View>

@@ -14,7 +14,6 @@ import {actCUDHelper} from "@helpers/CUDHelper";
 import {Icon} from "@iconify/react";
 import InfiniteScroll from "react-infinite-scroller";
 import Modal from 'react-modal';
-import {updateLocale} from "moment";
 
 function hexToRgb(hex: string): number[] | null {
   const regex = /^#?([a-f\d])([a-f\d])([a-f\d])$/i;
@@ -147,7 +146,7 @@ function InfoSection({query}: {query: UseQueryResult<any, any>}) {
   const noti = useNotifications();
 
   const categoryQuery = useQuery({
-    queryKey: ['categories'],
+    queryKey: ['admin', 'comics', 'categories'],
     queryFn: () => CategoryService.getAllAsync(),
   });
 
@@ -175,6 +174,18 @@ function InfoSection({query}: {query: UseQueryResult<any, any>}) {
   }
 
   return (
+        <Card shadowEffect>
+        <View horizontal style={{alignItems: 'center'}}>
+          <Text variant="medium-title" style={{flex: 1}}>Thông tin</Text>
+          <Button
+            variant="primary"
+            style={{gap: 8, width: 120}}
+            onClick={() => actCUDHelper(update, noti, 'update')}
+          >
+            <Icon icon={'mingcute:save-line'} style={{color: 'inhirit', height: 20, width: 20}}/>
+            <Text variant="inhirit">Cập nhật</Text>
+          </Button>
+        </View>
     <View gap={8}>
       <View gap={8}>
         <View horizontal style={{alignItems: 'center'}}>
@@ -219,6 +230,19 @@ function InfoSection({query}: {query: UseQueryResult<any, any>}) {
           >{comic?.status === 'finished' ? 'Đã hoàn thành' : 'Chưa hoàn thành'}</Button>
         </View>
         <View horizontal style={{alignItems: 'center'}}>
+          <Text style={{width: 180}}>Thể loại</Text>
+          <View flex={1} horizontal gap={4} wrap>
+            {categoryQuery.data.categories.map((item: Category) => (
+              <Tag
+                variant={{ct: comic?.category_ids?.includes(item.id) ? 'quinary' : 'tertiary'}}
+                key={item.id}
+                style={{width: 120}}
+                onClick={() => comic && setComic({...comic, category_ids: !comic?.category_ids?.includes(item.id) ? comic?.category_ids?.concat([item.id]) : comic?.category_ids?.filter((id) => id !== item.id)})}
+              >{item.name}</Tag>
+            ))}
+          </View>
+        </View>
+        <View horizontal style={{alignItems: 'center'}}>
           <Text style={{width: 180}}>Mô tả</Text>
           <TextArea
             variant="tertiary"
@@ -229,26 +253,9 @@ function InfoSection({query}: {query: UseQueryResult<any, any>}) {
             style={{flex: 1}}
           />
         </View>
-        <View horizontal style={{alignItems: 'center'}}>
-          <Text style={{width: 180}}>Thể loại</Text>
-          <View flex={1} horizontal gap={4} wrap>
-            {categoryQuery.data.categories.map((item: Category) => (
-              <Tag
-                variant={{ct: comic?.category_ids?.includes(item.id) ? 'primary' : 'tertiary'}}
-                key={item.id}
-                style={{width: 120}}
-                onClick={() => comic && setComic({...comic, category_ids: !comic?.category_ids?.includes(item.id) ? comic?.category_ids?.concat([item.id]) : comic?.category_ids?.filter((id) => id !== item.id)})}
-              >{item.name}</Tag>
-            ))}
-          </View>
-        </View>
-        <Button
-          variant="primary"
-          style={{marginLeft: 180}}
-          onClick={() => actCUDHelper(update, noti, 'update')}
-        >Cập nhật</Button>
       </View>
     </View>
+    </Card>
   )
 }
 
@@ -257,6 +264,7 @@ function ActionsSection({query}: {query: UseQueryResult<any, any>}) {
 
   const noti = useNotifications();
   const navigate = useNavigate();
+  const theme = useTheme();
 
   useEffect(() => {
     if (query.data && query.data.comic) {
@@ -282,28 +290,39 @@ function ActionsSection({query}: {query: UseQueryResult<any, any>}) {
   }
 
   return (
-    <View gap={8}>
-      <Button
-        variant="primary"
-        onClick={() => {
-          actCUDHelper(update, noti, 'update');
-        }}
-        style={{gap: 8}}
-      >
-        <Icon icon={comic?.active ? 'mingcute:eye-close-line' : 'mingcute:eye-line'} style={{color: 'inhirit', height: 20, width: 20}}/>
-        <Text variant="inhirit">{comic?.active ? 'Ẩn đi' : 'Công khai'}</Text>
-      </Button>
-      <Button
-        variant="primary"
-        onClick={() => {
-          actCUDHelper(remove, noti, 'delete').then(() => navigate(-1));
-        }}
-        style={{gap: 8}}
-      >
-        <Icon icon={'mingcute:delete-2-line'} style={{color: 'inhirit', height: 20, width: 20}}/>
-        <Text variant="inhirit">Xóa</Text>
-      </Button>
-    </View>
+    <>
+      <View horizontal flex={1} gap={8}>
+        <Button
+          variant="secondary"
+          style={{gap: 8, width: 120}}
+          onClick={() => navigate(-1)}
+        >
+          <Icon icon={'mingcute:arrow-left-line'} style={{color: 'inhirit', height: 24, width: 24}}/>
+          <Text variant="inhirit">Trở về</Text>
+        </Button>
+      </View>
+      <View horizontal gap={8}>
+        <Button
+          shadowEffect
+          variant="secondary"
+          style={{gap: 8, width: 120}}
+          onClick={() => actCUDHelper(update, noti, 'update')}
+        >
+          <Icon icon={comic?.active ? 'mingcute:eye-fill' : 'mingcute:eye-line'} style={{color: theme.colors.blue, height: 20, width: 20}}/>
+          <Text style={{color: comic?.active ? theme.colors.blue : theme.colors.foreground}}>Công khai</Text>
+        </Button>
+        <Button
+          variant="primary"
+          onClick={() => {
+            actCUDHelper(remove, noti, 'delete').then(() => navigate(-1));
+          }}
+          style={{gap: 8, width: 120}}
+        >
+          <Icon icon={'mingcute:delete-2-line'} style={{color: 'inhirit', height: 20, width: 20}}/>
+          <Text variant="inhirit">Xóa</Text>
+        </Button>
+      </View>
+    </>
   )
 }
 
@@ -639,22 +658,18 @@ function ComicDetailMNPage() {
 
   return (
     <Page.Container>
+      <Page.Content style={{flexDirection: 'row', position: 'sticky', top: 0, marginTop: -8, paddingTop: 8, paddingBottom: 8, backgroundColor: theme.colors.background}}>
+        <ActionsSection query={query} />
+      </Page.Content>
       <Page.Content gap={16}>
         <Card shadowEffect>
           <Text variant="medium-title">Ảnh đại diện</Text>
           <ImageSection query={query} />
         </Card>
-        <Card shadowEffect>
-          <Text variant="medium-title">Thông tin</Text>
-          <InfoSection query={query} />
-        </Card>
+        <InfoSection query={query} />
         <Card>
           <Text variant="medium-title">Danh sách chương</Text>
           <ChaptersSection comic_id={parseInt(comic_id || '')} />
-        </Card>
-        <Card>
-          <Text variant="medium-title">Hành động</Text>
-          <ActionsSection query={query} />
         </Card>
       </Page.Content>
     </Page.Container>

@@ -95,80 +95,83 @@ function UserMNPage() {
         style={customStyles}
       >
         <View gap={16}>
-          <View gap={8}>
-            <Text variant="title">Tên</Text>
-            <Input
-              disabled={modalMode !== 'create'}
-              variant="tertiary"
-              placeholder="Họ"
-              value={selectedItem?.lastname}
-              onChange={(e) => selectedItem && setSelectedItem({...selectedItem, lastname: e.target.value})}
-            />
-          </View>
-          <View gap={8}>
-            <Text variant="title">Họ</Text>
-            <Input
-              disabled={modalMode !== 'create'}
-              variant="tertiary"
-              placeholder="Tên"
-              value={selectedItem?.firstname}
-              onChange={(e) => selectedItem && setSelectedItem({...selectedItem, firstname: e.target.value})}
-            />
-          </View>
-          <View gap={8}>
-            <Text variant="title">Tên đăng nhập</Text>
-            <Input
-              disabled={modalMode !== 'create'}
-              variant="tertiary"
-              placeholder="Tên đăng nhập"
-              value={selectedItem?.username}
-              onChange={(e) => selectedItem && setSelectedItem({...selectedItem, username: e.target.value})}
-            />
-          </View>
-          <View gap={8}>
-            <Text variant="title">Email</Text>
-            <Input
-              disabled={modalMode !== 'create'}
-              variant="tertiary"
-              placeholder="Email"
-              value={selectedItem?.email}
-              onChange={(e) => selectedItem && setSelectedItem({...selectedItem, email: e.target.value})}
-            />
-          </View>
-          {modalMode === 'create' &&
-          <View gap={8}>
-            <Text variant="title">Mật khẩu</Text>
-            <Input
-              variant="tertiary"
-              placeholder="Mật khẩu"
-              type="password"
-              value={selectedItem?.password}
-              onChange={(e) => selectedItem && setSelectedItem({...selectedItem, password: e.target.value})}
-            />
-          </View>
-          }
-          <View gap={8}>
-            <Text variant="title">Vai trò</Text>
-            <View horizontal gap={8}>
+          <View horizontal>
+            <img src={selectedItem?.avatar_url || theme.assets.defaultAvatar} style={{height: 100, width: 100, borderRadius: 8}}/>
+            <View flex={1} gap={4} horizontal style={{justifyContent: 'flex-end'}}>
               <Button
-                shadowEffect
-                selected={selectedItem?.role !== 0}
-                style={{flex: 1}}
-                onClick={() => selectedItem && setSelectedItem({...selectedItem, role: selectedItem?.role === 0 ? 1 : 0})}
+                variant={selectedItem?.role !== 0 ? 'quaternary' : 'tertiary'}
+                square
+                onClick={() => selectedItem && setSelectedItem({...selectedItem, role: selectedItem.role === 0 ? 1 : 0})}
               >
-              {selectedItem?.role !== 0 ? 'Quản trị viên' : 'Người dùng'}</Button>
+                <Icon icon={selectedItem?.role !== 0 ? 'mingcute:badge-fill' : 'mingcute:badge-line'} style={{height: 24, width: 24, color: 'inherit'}} />
+              </Button>
+              <Button
+                variant={selectedItem?.locked ? 'quaternary' : 'tertiary'}
+                square
+                onClick={() => selectedItem && setSelectedItem({...selectedItem, locked: !selectedItem.locked})}
+              >
+                <Icon icon={selectedItem?.locked ? 'mingcute:lock-fill' : 'mingcute:lock-line'} style={{height: 24, width: 24, color: 'inherit'}} />
+              </Button>
             </View>
           </View>
-          <View gap={8}>
-            <Text variant="title">Khóa</Text>
-            <View horizontal gap={8}>
-              <Button
-                shadowEffect
-                selected={selectedItem?.locked}
-                style={{flex: 1}}
-                onClick={() => selectedItem && setSelectedItem({...selectedItem, locked: !selectedItem?.locked})}
-              >
-              {selectedItem?.locked ? 'Đã bị khóa' : 'Đang hoạt động'}</Button>
+          <View gap={16}>
+            <View gap={16} horizontal>
+              <View gap={8}>
+                <Text variant="title">Tên</Text>
+                <Input
+                  disabled={modalMode !== 'create'}
+                  variant="tertiary"
+                  placeholder="Họ"
+                  value={selectedItem?.lastname}
+                  onChange={(e) => selectedItem && setSelectedItem({...selectedItem, lastname: e.target.value})}
+                />
+              </View>
+              <View gap={8}>
+                <Text variant="title">Họ</Text>
+                <Input
+                  disabled={modalMode !== 'create'}
+                  variant="tertiary"
+                  placeholder="Tên"
+                  value={selectedItem?.firstname}
+                  onChange={(e) => selectedItem && setSelectedItem({...selectedItem, firstname: e.target.value})}
+                />
+              </View>
+            </View>
+            <View gap={16} horizontal>
+              <View gap={8}>
+                <Text variant="title">Tên đăng nhập</Text>
+                <Input
+                  disabled={modalMode !== 'create'}
+                  variant="tertiary"
+                  placeholder="Tên đăng nhập"
+                  value={selectedItem?.username}
+                  onChange={(e) => selectedItem && setSelectedItem({...selectedItem, username: e.target.value})}
+                />
+              </View>
+              <View gap={8}>
+                <Text variant="title">Email</Text>
+                <Input
+                  disabled={modalMode !== 'create'}
+                  variant="tertiary"
+                  placeholder="Email"
+                  value={selectedItem?.email}
+                  onChange={(e) => selectedItem && setSelectedItem({...selectedItem, email: e.target.value})}
+                />
+              </View>
+            </View>
+            <View gap={16} horizontal>
+              {modalMode === 'create' &&
+              <View gap={8}>
+                <Text variant="title">Mật khẩu</Text>
+                <Input
+                  variant="tertiary"
+                  placeholder="Mật khẩu"
+                  type="password"
+                  value={selectedItem?.password}
+                  onChange={(e) => selectedItem && setSelectedItem({...selectedItem, password: e.target.value})}
+                />
+              </View>
+              }
             </View>
           </View>
           <View horizontal gap={8}>
@@ -272,14 +275,14 @@ function UserMNPage() {
                   gap={8}
                   style={{alignItems: 'center'}}
                 >
-                  <Avatar src={item.avatar_url}/>
+                  <Avatar src={item.avatar_url || theme.assets.defaultAvatar}/>
                   <View gap={4} style={{justifyContent: 'center'}}>
                     <Text variant="title">
                       { item.lastname !== '' || item.lastname !== '' ? `${item.lastname} ${item.firstname}` : `${item.username}`}
                     </Text>
                   </View>
-                  {searchText !== '' && !!item.username.match(`^.*(${searchText}).*$`) && <Tag variant={{ct: 'tertiary'}}>{item.username}</Tag>}
-                  {searchText !== '' && !!item.email.match(`^.*(${searchText}).*$`) && <Tag variant={{ct: 'tertiary'}}>{item.email}</Tag>}
+                  {new RegExp(`^.*(${searchText}).*$`, 'i').test(item.username) && <Tag variant={{ct: 'tertiary'}}>{item.username}</Tag>}
+                  {new RegExp(`^.*(${searchText}).*$`, 'i').test(item.email) && <Tag variant={{ct: 'tertiary'}}>{item.email}</Tag>}
                 </View>
                 <View horizontal gap={8} style={{alignItems: 'center'}}>
                   {item.role !== 0 && <Tag variant={{ct: 'tertiary'}}>Quản trị viên</Tag>}
