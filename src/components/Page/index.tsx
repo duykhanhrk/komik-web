@@ -18,15 +18,13 @@ const Content = styled.div<ContentProps>`
   flex: 1;
   display: flex;
   flex-direction: column;
-  width: 1366px
+  width: 1366px;
   max-width: auto;
-  min-height: calc(100vh - 60px);
   flex-grow: 1;
   gap: ${props => props.gap || 8}px;
   padding: 8px;
 
   @media (min-width: 1381px) {
-    width: auto;
     width: 1366px;
   }
 `;
