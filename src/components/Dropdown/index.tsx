@@ -194,6 +194,7 @@ function SelectionList<T>(props: SelectionListDrops<T>) {
                     props.onItemSelected(item);
                   }
                 }}
+                animation="slideTopIn"
               >
                 {props.renderItem(item, index)}
               </View>

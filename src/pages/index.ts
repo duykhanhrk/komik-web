@@ -10,3 +10,4 @@ export {default as UserProfilePage} from './UserProfilePage';
 export {default as SendVerificationCodePage} from './SendVerificationCodePage';
 export {default as ResetPasswordPage} from './ResetPasswordPage';
 export {default as IntroductionPage} from './IntroductionPage';
+export {default as ReportMNPage} from './ReportMNPage';

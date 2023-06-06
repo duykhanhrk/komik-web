@@ -85,13 +85,15 @@ function RightArrow() {
   return (
     <Page.Container>
       <Page.Content gap={32}>
-        <Carousel
-          showThumbs={false}
-          showStatus={false}
-          showArrows={false}
-        >
-          {newestQuery.data.comics.map((item: Comic) => <ComicItem.Slide shadowEffect _data={item} style={{margin: 8}} />)}
-        </Carousel>
+        <Card style={{backgroundColor: 'transparent', padding: 0}} animation="slideRightIn">
+          <Carousel
+            showThumbs={false}
+            showStatus={false}
+            showArrows={false}
+          >
+            {newestQuery.data.comics.map((item: Comic) => <ComicItem.Slide shadowEffect _data={item} style={{margin: 8}} />)}
+          </Carousel>
+        </Card>
 
         <ScrollMenu
           LeftArrow={LeftArrow}
@@ -104,6 +106,7 @@ function RightArrow() {
               shadowEffect
               style={{marginLeft: 4, marginRight: 4, marginTop: 8, marginBottom: 8, height: 56, width: 180, justifyContent: 'center', alignItems: 'center'}}
               onClick={() => navigate(`/comics?category_id=${item.id}`)}
+              animation="slideLeftIn"
             >
               <Text>{item.name}</Text>
             </Card>
@@ -115,7 +118,7 @@ function RightArrow() {
             <View horizontal style={{marginLeft: 8, marginRight: 8, alignItems: 'center'}}>
               <Text variant='large-title' style={{flex: 1}}>Đã đọc gần đây</Text>
             </View>
-            <Card style={{paddingLeft: 0, paddingRight: 0}}>
+            <Card style={{paddingLeft: 0, paddingRight: 0}} animation="slideRightIn">
               <ScrollMenu
                 LeftArrow={LeftArrow}
                 RightArrow={RightArrow}
@@ -133,7 +136,7 @@ function RightArrow() {
             <View horizontal style={{marginLeft: 8, marginRight: 8, alignItems: 'center'}}>
               <Text variant='large-title' style={{flex: 1}}>Sắp ra mắt</Text>
             </View>
-            <Card style={{paddingLeft: 0, paddingRight: 0}}>
+            <Card style={{paddingLeft: 0, paddingRight: 0}} animation="slideLeftIn">
               <ScrollMenu
                 LeftArrow={LeftArrow}
                 RightArrow={RightArrow}
@@ -151,7 +154,7 @@ function RightArrow() {
             <Text variant='large-title' style={{flex: 1}}>Mới cập nhật</Text>
             <Link style={{textDecoration: 'none', color: theme.colors.themeColor, fontWeight: 'bold'}} to={'/comics?sort_by=last_updated_chapter_at-desc'}>Xem thêm</Link>
           </View>
-          <Card style={{paddingLeft: 0, paddingRight: 0}}>
+          <Card style={{paddingLeft: 0, paddingRight: 0}} animation="slideLeftIn">
             <ScrollMenu
               LeftArrow={LeftArrow}
               RightArrow={RightArrow}

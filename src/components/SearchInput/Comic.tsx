@@ -105,119 +105,121 @@ function Comic() {
             width: 'auto',
             minHeight: 'auto',
             gap: 8,
-            display: searchDropdownOpen === 'search' && (suggestion.keyword !== '' || recentlyKeywords.length !== 0) ? 'flex' : 'none'
+            display: searchDropdownOpen === 'search' && (suggestion.keyword !== '' || recentlyKeywords.length !== 0) ? 'flex' : 'none',
         }}>
-          <View horizontal style={{alignItems: 'center'}}>
-            <View horizontal gap={4} flex={1} style={{alignItems: 'center'}}>
-              <Tag
-                onClick={submitSearch}
-                style={{gap: 8, display: suggestion.keyword !== '' ? 'flex' : 'none'}}
-              >
-                <Icon icon={'mingcute:search-line'} style={{height: 20, width: 20, color: theme.colors.foreground}} />
-                {suggestion.keyword}
-              </Tag>
+          <View gap={8} animation="slideTopIn">
+            <View horizontal style={{alignItems: 'center'}}>
+              <View horizontal gap={4} flex={1} style={{alignItems: 'center'}}>
+                <Tag
+                  onClick={submitSearch}
+                  style={{gap: 8, display: suggestion.keyword !== '' ? 'flex' : 'none'}}
+                >
+                  <Icon icon={'mingcute:search-line'} style={{height: 20, width: 20, color: theme.colors.foreground}} />
+                  {suggestion.keyword}
+                </Tag>
+              </View>
+              <View horizontal gap={4} style={{alignItems: 'center', justifyContent: 'flex-end'}}>
+                <Tag
+                  variant={{ct: suggestion.data ? 'quinary' : 'tertiary'}}
+                  style={{gap: 8}}
+                  onClick={() => {
+                    setSuggestion({...suggestion, data: suggestion.data ? undefined : {categoryIds: []}});
+                  }}
+                >
+                  <Icon icon={suggestion.data ? 'mingcute:filter-fill' : 'mingcute:filter-line'} style={{height: 20, width: 20, color: theme.colors.foreground}} />
+                  <Text>Tùy chọn lọc</Text>
+                </Tag>
+              </View>
             </View>
-            <View horizontal gap={4} style={{alignItems: 'center', justifyContent: 'flex-end'}}>
-              <Tag
-                variant={{ct: suggestion.data ? 'quinary' : 'tertiary'}}
-                style={{gap: 8}}
-                onClick={() => {
-                  setSuggestion({...suggestion, data: suggestion.data ? undefined : {categoryIds: []}});
-                }}
-              >
-                <Icon icon={suggestion.data ? 'mingcute:filter-fill' : 'mingcute:filter-line'} style={{height: 20, width: 20, color: theme.colors.foreground}} />
-                <Text>Tùy chọn lọc</Text>
-              </Tag>
-            </View>
-          </View>
-          <View
-            horizontal
-            gap={4}
-            wrap
-            style={{alignContent: 'flex-start', display: suggestion.data ? 'flex' : 'none'}}
-          >
-            {categoriesQuery.isSuccess && categoriesQuery.data.categories.map((item: Category, index: number) => (
-              <Tag
-                variant={{ct: suggestion.data && suggestion.data.categoryIds.includes(item.id) ? 'quinary' : 'tertiary'}}
-                onClick={() => {
-                  if (suggestion.data) {
-                    if (suggestion.data.categoryIds.includes(item.id)) {
-                      setSuggestion({...suggestion, data: {categoryIds: suggestion.data.categoryIds.filter((id)  => id !== item.id)}});
-                    } else {
-                      setSuggestion({...suggestion, data: {categoryIds: [...suggestion.data.categoryIds, item.id].sort((a, b) => a - b)}});
+            <View
+              horizontal
+              gap={4}
+              wrap
+              style={{alignContent: 'flex-start', display: suggestion.data ? 'flex' : 'none'}}
+            >
+              {categoriesQuery.isSuccess && categoriesQuery.data.categories.map((item: Category, index: number) => (
+                <Tag
+                  variant={{ct: suggestion.data && suggestion.data.categoryIds.includes(item.id) ? 'quinary' : 'tertiary'}}
+                  onClick={() => {
+                    if (suggestion.data) {
+                      if (suggestion.data.categoryIds.includes(item.id)) {
+                        setSuggestion({...suggestion, data: {categoryIds: suggestion.data.categoryIds.filter((id)  => id !== item.id)}});
+                      } else {
+                        setSuggestion({...suggestion, data: {categoryIds: [...suggestion.data.categoryIds, item.id].sort((a, b) => a - b)}});
+                      }
                     }
-                  }
-                }}
-              >{item.name}</Tag>
-            ))}
-          </View>
-          <View
-            gap={8}
-            scrollable
-            style={{display: suggestions.length !== 0 || recentlyKeywords.length !== 0 ? 'flex' : 'none'}}
-          >
-            {suggestions.length !== 0 && suggestions.map((item: Suggestion) => (
-              <Card
-                variant="tertiary"
-                onClick={() => {
-                  setSearchDropdownOpen('');
-                  navigate(`/comics?query=${item.keyword}`);
-                }}
-              >
-                <Text>{item.keyword}</Text>
-              </Card>
-            ))}
-            {recentlyKeywords.map((item, index) => (
-              <Card
-                variant="tertiary"
-                horizontal
-                style={{alignItems: 'center', display: suggestion.keyword === '' ? 'flex' : 'none'}}
-                key={index.toString()}
-              >
-                <View
-                  flex={1}
-                  horizontal
-                  gap={8}
-                  style={{alignItems: 'center'}}
+                  }}
+                >{item.name}</Tag>
+              ))}
+            </View>
+            <View
+              gap={8}
+              scrollable
+              style={{display: suggestions.length !== 0 || recentlyKeywords.length !== 0 ? 'flex' : 'none'}}
+            >
+              {suggestions.length !== 0 && suggestions.map((item: Suggestion) => (
+                <Card
+                  variant="tertiary"
                   onClick={() => {
                     setSearchDropdownOpen('');
-                    if (item.data && item.data.filter && item.data.filter.category_ids) {
-                      navigate(`/comics?category_id=${item.data.filter.category_ids.join(',')}&query=${item.keyword}`);
-                    } else {
-                      navigate(`/comics?query=${item.keyword}`);
-                    }
+                    navigate(`/comics?query=${item.keyword}`);
                   }}
                 >
-                  <Text style={{flex: 1}}>{item.keyword}</Text>
-                  <Tag variant={{ct: 'quaternary'}} style={{gap: 8, display: item.data ? 'flex' : 'none'}}>
-                    <Icon icon={'mingcute:filter-line'} style={{height: 16, width: 16, color: theme.colors.foreground}} />
-                    {item.data ? item.data.categoryIds.length : null}
+                  <Text>{item.keyword}</Text>
+                </Card>
+              ))}
+              {recentlyKeywords.map((item, index) => (
+                <Card
+                  variant="tertiary"
+                  horizontal
+                  style={{alignItems: 'center', display: suggestion.keyword === '' ? 'flex' : 'none'}}
+                  key={index.toString()}
+                >
+                  <View
+                    flex={1}
+                    horizontal
+                    gap={8}
+                    style={{alignItems: 'center'}}
+                    onClick={() => {
+                      setSearchDropdownOpen('');
+                      if (item.data && item.data.filter && item.data.filter.category_ids) {
+                        navigate(`/comics?category_id=${item.data.filter.category_ids.join(',')}&query=${item.keyword}`);
+                      } else {
+                        navigate(`/comics?query=${item.keyword}`);
+                      }
+                    }}
+                  >
+                    <Text style={{flex: 1}}>{item.keyword}</Text>
+                    <Tag variant={{ct: 'quaternary'}} style={{gap: 8, display: item.data ? 'flex' : 'none'}}>
+                      <Icon icon={'mingcute:filter-line'} style={{height: 16, width: 16, color: theme.colors.foreground}} />
+                      {item.data ? item.data.categoryIds.length : null}
+                    </Tag>
+                    <Tag variant={{ct: 'quaternary'}} style={{gap: 8}}>
+                      <Icon icon={'mingcute:history-line'} style={{height: 16, width: 16, color: theme.colors.foreground}} />
+                    </Tag>
+                  </View>
+                  <Tag
+                    style={{gap: 8}}
+                    onClick={() => {
+                      setSuggestion(item);
+                      inputRef.current?.focus();
+                    }}
+                  >
+                    <Icon icon={'mingcute:edit-2-line'} style={{height: 16, width: 16, color: theme.colors.foreground}} />
                   </Tag>
-                  <Tag variant={{ct: 'quaternary'}} style={{gap: 8}}>
-                    <Icon icon={'mingcute:history-line'} style={{height: 16, width: 16, color: theme.colors.foreground}} />
+                  <Tag
+                    style={{gap: 8}}
+                    onClick={() => {
+                      const keywords = recentlyKeywords.filter((_keyword, _index) => index !== _index);
+                      setRecentlyKeywords(keywords);
+                      localStorage.setItem('RecentlyKeywords', JSON.stringify(keywords));
+                    }}
+                  >
+                    <Icon icon={'mingcute:delete-2-line'} style={{height: 16, width: 16, color: theme.colors.foreground}} />
                   </Tag>
-                </View>
-                <Tag
-                  style={{gap: 8}}
-                  onClick={() => {
-                    setSuggestion(item);
-                    inputRef.current?.focus();
-                  }}
-                >
-                  <Icon icon={'mingcute:edit-2-line'} style={{height: 16, width: 16, color: theme.colors.foreground}} />
-                </Tag>
-                <Tag
-                  style={{gap: 8}}
-                  onClick={() => {
-                    const keywords = recentlyKeywords.filter((_keyword, _index) => index !== _index);
-                    setRecentlyKeywords(keywords);
-                    localStorage.setItem('RecentlyKeywords', JSON.stringify(keywords));
-                  }}
-                >
-                  <Icon icon={'mingcute:delete-2-line'} style={{height: 16, width: 16, color: theme.colors.foreground}} />
-                </Tag>
-              </Card>
-            ))}
+                </Card>
+              ))}
+            </View>
           </View>
         </Dropdown.Content>
     </Dropdown.Container>

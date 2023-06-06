@@ -1,4 +1,5 @@
-import styled from "styled-components";
+import styled, {css} from 'styled-components';
+import {default as Animations} from '../Animations';
 
 interface CardProps {
   variant?: 'primary' | 'secondary' | 'tertiary' | 'quaternary' | 'quinary';
@@ -8,6 +9,10 @@ interface CardProps {
   flex?: number;
   shadowEffect?: boolean;
   centerContent?: boolean | 'horizontal' | 'vertical';
+  animation?: 'slideBottomIn' | 'slideLeftIn' | 'slideRightIn' | 'slideTopIn' | 'SilverSlideTopIn' | 'SilverSlideBottomIn' | 'SilverSlideLeftIn' | 'SilverSlideRightIn';
+  animationDuration?: number;
+  animationInfinite?: boolean;
+  animationAlternate?: boolean;
 }
 
 const Card = styled.div<CardProps>`
@@ -47,7 +52,29 @@ const Card = styled.div<CardProps>`
     height: 44px;
   ` : ''}
 
-  ${props => props.shadowEffect || props.ebonsaiSnippet ?  'transition: box-shadow 0.5s;' : ''};
+  animation: ${
+    props => props.animation === 'slideBottomIn'
+      ? Animations.slideBottomIn
+      : props.animation === 'slideLeftIn'
+      ? Animations.slideLeftIn
+      : props.animation === 'slideRightIn'
+      ? Animations.slideRightIn
+      : props.animation === 'slideTopIn'
+      ? Animations.slideTopIn
+      : props.animation === 'SilverSlideTopIn'
+      ? Animations.SilverSlideTopIn
+      : props.animation === 'SilverSlideBottomIn'
+      ? Animations.SilverSlideBottomIn
+      : props.animation === 'SilverSlideLeftIn'
+      ? Animations.SilverSlideLeftIn
+      : props.animation === 'SilverSlideRightIn'
+      ? Animations.SilverSlideRightIn
+      : ''
+  } ${
+    props => props.animationDuration ? `${props.animationDuration}s` : '0.5s'
+  } ease ${props => props.animationInfinite ? 'infinite' : ''} ${props => props.animationAlternate ? 'alternate' : ''};
+
+  ${props => props.shadowEffect || props.ebonsaiSnippet ?  'transition: box-shadow 0.5s;' : ''}
 
   &:hover {
     ${props => props.shadowEffect || props.ebonsaiSnippet ?  'box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;' : ''}

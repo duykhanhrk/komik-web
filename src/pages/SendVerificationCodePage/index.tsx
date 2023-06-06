@@ -37,24 +37,30 @@ function SendVerificationCodePage() {
       .finally(() => setIsLoading(false));
   }
 
-  if (isLoading) {
-    return <LoadingPage />
-  }
-
   return (
-    <Card shadowEffect flex={1} style={{rowGap: 16, padding: 24, justifyContent: 'center', backgroundColor: theme.colors.secondaryBackground}}>
-      <View horizontal style={{alignItems: 'center'}}>
-        <Input
-          variant="tertiary"
-          type="text"
-          value={email}
-          placeholder="Email"
-          onChange={(e) => setEmail(e.target.value)}
-          style={{flex: 1}}
-        />
-      </View>
+    <Card shadowEffect flex={1} style={{zIndex: 100}}>
+      <View flex={1} style={{rowGap: 16, padding: 18, justifyContent: 'center'}}>
+        {isLoading ?
+          <View flex={1} centerContent>
+            <LoadingPage />
+          </View>
+        :
+        <>
+          <View horizontal style={{alignItems: 'center'}} animation="slideBottomIn">
+            <Input
+              variant="tertiary"
+              type="text"
+              value={email}
+              placeholder="Email"
+              onChange={(e) => setEmail(e.target.value)}
+              style={{flex: 1}}
+            />
+          </View>
 
-      <Button variant="primary" onClick={sendVerificationCode}>Gửi mã xác thực</Button>
+          <Button variant="primary" animation="slideTopIn" onClick={sendVerificationCode}>Gửi mã xác thực</Button>
+        </>
+        }
+      </View>
     </Card>
   )
 }

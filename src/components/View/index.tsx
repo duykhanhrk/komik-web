@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import {default as Animations} from '../Animations';
 
 interface ViewProps {
   horizontal?: boolean;
@@ -9,6 +10,8 @@ interface ViewProps {
   scrollable?: boolean;
   ebonsaiShelf?: boolean;
   variant?: 'primary' | 'secondary' | 'tertiary' | 'quaternary' | 'quinary';
+  animation?: 'slideBottomIn' | 'slideLeftIn' | 'slideRightIn' | 'slideTopIn';
+  animationDuration?: number;
 }
 
 const View = styled.div<ViewProps>`
@@ -37,6 +40,19 @@ const View = styled.div<ViewProps>`
     :
     ''
   }
+  animation: ${
+    props => props.animation === 'slideBottomIn'
+      ? Animations.slideBottomIn
+      : props.animation === 'slideLeftIn'
+      ? Animations.slideLeftIn
+      : props.animation === 'slideRightIn'
+      ? Animations.slideRightIn
+      : props.animation === 'slideTopIn'
+      ? Animations.slideTopIn
+      : ''
+  } ${
+    props => props.animationDuration ? `${props.animationDuration}s` : '0.5s'
+  } ease;
   ${props => props.scrollable ? 'overflow: auto;' : ''}
   ${props => props.ebonsaiShelf ? 'padding: 8px; gap: 8px;' : ''}
 `;

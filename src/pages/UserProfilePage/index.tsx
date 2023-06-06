@@ -454,19 +454,19 @@ function UserProfilePage() {
   return (
     <Page.Container>
       <Page.Content gap={16}>
-        <Card>
+        <Card animation="slideLeftIn">
           <Text variant="medium-title">Ảnh đại diện</Text>
           <AvatarSection />
         </Card>
-        <Card>
+        <Card animation="slideRightIn">
           <Text variant="medium-title">Chỉnh sửa thông tin cá nhân</Text>
           <UserInfoSection />
         </Card>
-        <Card>
+        <Card animation="slideLeftIn">
           <Text variant="medium-title">Chỉnh sửa thông tin đăng nhập</Text>
           <LoginInfoSection />
         </Card>
-        <Card>
+        <Card animation="slideLeftIn">
           <Text variant="medium-title">Đổi mật khẩu</Text>
           <ChangePasswordSection />
         </Card>

@@ -174,8 +174,8 @@ function InfoSection({query}: {query: UseQueryResult<any, any>}) {
   }
 
   return (
-        <Card shadowEffect>
-        <View horizontal style={{alignItems: 'center'}}>
+  <>
+    <View horizontal style={{alignItems: 'center'}}>
           <Text variant="medium-title" style={{flex: 1}}>Thông tin</Text>
           <Button
             variant="primary"
@@ -255,7 +255,7 @@ function InfoSection({query}: {query: UseQueryResult<any, any>}) {
         </View>
       </View>
     </View>
-    </Card>
+    </>
   )
 }
 
@@ -350,7 +350,8 @@ function ChaptersSection({comic_id}: {comic_id: number}) {
       border: `0 solid ${theme.colors.secondaryBackground}`,
       borderRadius: 8,
       padding: 16,
-      backgroundColor: theme.colors.secondaryBackground
+      backgroundColor: theme.colors.secondaryBackground,
+      overflow: 'hidden'
     },
     overlay: {
       backgroundColor: `${theme.colors.background}99`
@@ -444,7 +445,7 @@ function ChaptersSection({comic_id}: {comic_id: number}) {
         onRequestClose={() => setModalMode('close')}
         style={customStyles}
       >
-        <View gap={16}>
+        <View gap={16} animation="slideTopIn">
           <View gap={8}>
             <input type="file" style={{ "display": "none" }} onChange={handleImageChange} ref={fileInput} />
             <Button
@@ -520,7 +521,7 @@ function ChaptersSection({comic_id}: {comic_id: number}) {
         onRequestClose={() => setModalMode('close')}
         style={customStyles}
       >
-        <View gap={16}>
+        <View gap={16} animation="slideTopIn">
           <View gap={8}>
             <Text variant="title">Tên</Text>
             <Input
@@ -531,7 +532,7 @@ function ChaptersSection({comic_id}: {comic_id: number}) {
             />
           </View>
           <View gap={8}>
-            <Text variant="title">Tên</Text>
+            <Text variant="title">Miễn phí</Text>
             <Button
               variant="tertiary"
               onClick={() => setSelectedItem({...selectedItem, free: !selectedItem.free})}
@@ -662,12 +663,14 @@ function ComicDetailMNPage() {
         <ActionsSection query={query} />
       </Page.Content>
       <Page.Content gap={16}>
-        <Card shadowEffect>
+        <Card shadowEffect animation="slideLeftIn">
           <Text variant="medium-title">Ảnh đại diện</Text>
           <ImageSection query={query} />
         </Card>
-        <InfoSection query={query} />
-        <Card>
+        <Card shadowEffect animation="slideRightIn">
+          <InfoSection query={query} />
+        </Card>
+        <Card shadowEffect animation="slideLeftIn">
           <Text variant="medium-title">Danh sách chương</Text>
           <ChaptersSection comic_id={parseInt(comic_id || '')} />
         </Card>

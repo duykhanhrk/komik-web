@@ -11,6 +11,7 @@ import {Link} from "react-router-dom";
 import {useNotifications} from "reapop";
 import {useEffect, useState} from "react";
 import {actCUDHelper} from "@helpers/CUDHelper";
+import CommentsArea from "./CommentsArea";
 
 function ComicDetailPage() {
   const [comic, setComic] = useState<Comic>(ComicDefault);
@@ -52,7 +53,7 @@ function ComicDetailPage() {
     <Page.Container>
       <Page.Content gap={16}>
         <View horizontal gap={8}>
-          <ComicItem.Image style={{borderRadius: 8}} variant="medium" src={comic.image_url}/>
+          <ComicItem.Image style={{borderRadius: 8}} variant="medium" src={comic.image_url} animation="slideRightIn"/>
           <View flex={1} gap={8}>
             <Text variant='large-title' numberOfLines={2}>{comic.name}</Text>
             {comic.other_names !== '' && <Text variant="medium" numberOfLines={1}>{comic.other_names}</Text> }
@@ -67,6 +68,7 @@ function ComicDetailPage() {
                 variant="secondary"
                 style={{flex: 1}}
                 onClick={() => actCUDHelper(like, noti, 'update')}
+                animation="slideBottomIn"
               >
                 <Icon icon={query.data.comic.liked ? 'mingcute:heart-fill' : 'mingcute:heart-line'} style={{marginRight: 8, height: 24, width: 24, color: theme.colors.red}} />
                 <Text style={{color: query.data.comic.liked ? theme.colors.red : theme.colors.foreground, display: 'flex', flexDirection: 'row', alignItems: 'center'}}>Yêu thích</Text>
@@ -76,6 +78,7 @@ function ComicDetailPage() {
                 variant="secondary"
                 style={{flex: 1}}
                 onClick={() => actCUDHelper(follow, noti, 'update')}
+                animation="slideBottomIn"
               >
                 <Icon icon={query.data.comic.followed ? 'mingcute:book-5-fill' : 'mingcute:book-5-line'} style={{marginRight: 8, height: 24, width: 24, color: theme.colors.blue}} />
                 <Text style={{color: query.data.comic.followed ? theme.colors.blue : theme.colors.foreground, display: 'flex', flexDirection: 'row', alignItems: 'center'}}>Xem sau</Text>
@@ -85,6 +88,7 @@ function ComicDetailPage() {
                   shadowEffect
                   variant="secondary"
                   style={{flex: 1}}
+                  animation="slideBottomIn"
                   onClick={() => {
                     if (query.data.comic.reading_chapter) {
                       navigate(`/comics/${comic_id}/chapters/${query.data.comic.reading_chapter.id}`);
@@ -107,13 +111,13 @@ function ComicDetailPage() {
           </View>
         </View>
         <View gap={8}>
-          <Card shadowEffect>
+          <Card shadowEffect animation="slideLeftIn">
             <Text variant="medium-title" numberOfLines={1}>Tóm tắt</Text>
             <PreText >{comic.description}</PreText>
           </Card>
         </View>
         <View gap={8}>
-          <Card shadowEffect>
+          <Card shadowEffect animation="slideRightIn">
             <Text variant="medium-title">Danh sách chương</Text>
             <View style={{height: 640, overflow: 'auto'}} scrollable>
               {comic.chapters?.length !== 0 ?
@@ -140,6 +144,7 @@ function ComicDetailPage() {
               }
             </View>
           </Card>
+          <CommentsArea />
         </View>
       </Page.Content>
     </Page.Container>

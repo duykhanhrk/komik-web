@@ -30,7 +30,8 @@ function PlanMNPage() {
       border: `0 solid ${theme.colors.secondaryBackground}`,
       borderRadius: 8,
       padding: 16,
-      backgroundColor: theme.colors.secondaryBackground
+      backgroundColor: theme.colors.secondaryBackground,
+      overflow: 'hidden'
     },
     overlay: {
       backgroundColor: `${theme.colors.background}99`
@@ -85,7 +86,7 @@ function PlanMNPage() {
         onRequestClose={() => setModalMode('close')}
         style={customStyles}
       >
-        <View gap={16}>
+        <View gap={16} animation="slideTopIn">
           <View gap={8}>
             <Text variant="title">Tên</Text>
             <Input
@@ -120,24 +121,38 @@ function PlanMNPage() {
             <TextArea
               variant="tertiary"
               placeholder="Mô tả"
-              rows={12}
+              rows={6}
               cols={40}
               value={selectedItem?.description}
               onChange={(e) => selectedItem && setSelectedItem({...selectedItem, description: e.target.value})}
             />
           </View>
           <View horizontal gap={8}>
-            <Button variant="tertiary" style={{flex: 1}} onClick={() => setModalMode('close')}>Đóng</Button>
+            {modalMode === 'update' &&
             <Button
               variant="primary"
-              style={{flex: 1}}
+              style={{gap: 8, flex: 1}}
+              onClick={() => actCUDHelper(remove, noti, 'delete', selectedItem?.id).then(() => setModalMode('close'))}
+            >
+              <Icon icon={'mingcute:delete-2-line'} style={{height: 20, width: 20, color: theme.colors.themeForeground}} />
+              <Text variant="inhirit">Xóa</Text>
+            </Button>}
+            <Button
+              variant="primary"
+              style={{gap: 8, flex: 1}}
               onClick={() => {
                 modalMode === 'create' ?
                   actCUDHelper(create, noti, 'create').then(() => setModalMode('close'))
                 :
                   actCUDHelper(update, noti, 'update').then(() => setModalMode('close'))
               }}
-            >{modalMode === 'create' ? 'Tạo' : 'Cập nhật'}</Button>
+            >
+              <Icon icon={'mingcute:save-line'} style={{height: 20, width: 20, color: theme.colors.themeForeground}} />
+              <Text variant="inhirit">{modalMode === 'create' ? 'Tạo' : 'Cập nhật'}</Text>
+            </Button>
+            <Button variant="tertiary" style={{gap: 8, flex: 1}} onClick={() => setModalMode('close')}>
+              <Text>Đóng</Text>
+            </Button>
           </View>
         </View>
       </Modal>
@@ -178,26 +193,15 @@ function PlanMNPage() {
               <Card
                 horizontal
                 shadowEffect
+                animation="slideLeftIn"
+                style={{height: 40}}
+                onClick={() => {
+                  setSelectedItem(item);
+                  setModalMode('update');
+                }}
               >
                 <View flex={1} style={{justifyContent: 'center'}}>
                   <Text variant="title">{item.name}</Text>
-                </View>
-                <View horizontal>
-                  <Button
-                    style={{width: 40}}
-                    onClick={() => {
-                      setSelectedItem(item);
-                      setModalMode('update');
-                    }}
-                  >
-                    <Icon icon={'mingcute:edit-line'} style={{height: 20, width: 20, color: theme.colors.foreground}} />
-                  </Button>
-                  <Button
-                    style={{width: 40}}
-                    onClick={() => actCUDHelper(remove, noti, 'delete', item.id)}
-                  >
-                    <Icon icon={'mingcute:delete-2-line'} style={{height: 20, width: 20, color: theme.colors.foreground}} />
-                  </Button>
                 </View>
               </Card>
             ))}

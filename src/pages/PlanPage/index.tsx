@@ -28,11 +28,11 @@ function PaymentMethodSelectionList({onSelectedItemChanged} : {onSelectedItemCha
   }, [selectedItem]);
 
   return (
-    <View horizontal wrap gap={8}>
+    <View horizontal wrap gap={8} animation="slideRightIn">
       {paymentMethods.map((item: PaymentMethod) => (
         <Card
           shadowEffect
-          style={{width: 340, boxShadow: selectedItem?.key == item.key ? 'rgba(99, 99, 99, 0.2) 0px 2px 8px 0px' : 'rgba(99, 99, 99, 0.0) 0px 0px 0px 0px'}}
+          style={{width: 340, height: 40, justifyContent: 'center', boxShadow: selectedItem?.key == item.key ? 'rgba(99, 99, 99, 0.2) 0px 2px 8px 0px' : 'rgba(99, 99, 99, 0.0) 0px 0px 0px 0px'}}
           onClick={() => setSelectedItem(item)}
         >
           <Text variant="title">{item.name}</Text>
@@ -61,7 +61,7 @@ function PlanSelectionList({onSelectedItemChanged} : {onSelectedItemChanged?: (i
   }, [selectedItem]);
 
   if (query.isLoading) {
-    return <LoadingPage />
+    return null
   }
 
   if (query.isError) {
@@ -69,7 +69,7 @@ function PlanSelectionList({onSelectedItemChanged} : {onSelectedItemChanged?: (i
   }
 
   return (
-    <View horizontal wrap gap={8}>
+    <View horizontal wrap gap={8} animation="slideLeftIn" style={{minHeight: 300}} >
       {query.data.plans.map((item: Plan) => (
         <Card
           shadowEffect
@@ -192,7 +192,7 @@ function PlanPage() {
           </View>
           <View gap={8}>
             <Text variant="medium-title">Thanh toán</Text>
-            <Card style={{width: 340}}>
+            <Card style={{width: 340}} animation="slideTopIn">
               <Text><b>Tổng tiền: </b>{plan?.price}đ</Text>
               <Text><b>Phương thức thanh toán: </b>{paymentMethod?.name}</Text>
               <View>

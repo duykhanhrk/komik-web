@@ -47,46 +47,52 @@ function ResetPasswordPage() {
       .finally(() => setIsLoading(false));
   }
 
-  if (isLoading) {
-    return <LoadingPage />
-  }
-
   return (
-    <Card shadowEffect flex={1} style={{rowGap: 16, padding: 24, justifyContent: 'center', backgroundColor: theme.colors.secondaryBackground}}>
-      <View horizontal style={{alignItems: 'center'}}>
-        <Input
-          variant="tertiary"
-          type="text"
-          value={verificationCode}
-          placeholder="Mã xác thực"
-          onChange={(e) => setVerificatonCode(e.target.value)}
-          style={{flex: 1}}
-        />
-      </View>
+    <Card shadowEffect flex={1} style={{zIndex: 100}}>
+      <View flex={1} style={{rowGap: 16, padding: 18, justifyContent: 'center'}}>
+        {isLoading ?
+          <View flex={1} centerContent>
+            <LoadingPage />
+          </View>
+          :
+          <>
+          <View horizontal style={{alignItems: 'center'}} animation="slideBottomIn">
+            <Input
+              variant="tertiary"
+              type="text"
+              value={verificationCode}
+              placeholder="Mã xác thực"
+              onChange={(e) => setVerificatonCode(e.target.value)}
+              style={{flex: 1}}
+            />
+          </View>
 
-      <View horizontal style={{alignItems: 'center'}}>
-        <Input
-          variant="tertiary"
-          type="password"
-          value={newPassword}
-          placeholder="Mật khẩu mới"
-          onChange={(e) => setNewPassword(e.target.value)}
-          style={{flex: 1}}
-        />
-      </View>
+          <View horizontal style={{alignItems: 'center'}} animation="slideBottomIn">
+            <Input
+              variant="tertiary"
+              type="password"
+              value={newPassword}
+              placeholder="Mật khẩu mới"
+              onChange={(e) => setNewPassword(e.target.value)}
+              style={{flex: 1}}
+            />
+          </View>
 
-      <View horizontal style={{alignItems: 'center'}}>
-        <Input
-          variant="tertiary"
-          type="password"
-          value={newPasswordConfirmation}
-          placeholder="Mật khẩu mới nhập lại"
-          onChange={(e) => setNewPasswordConfirmation(e.target.value)}
-          style={{flex: 1}}
-        />
-      </View>
+          <View horizontal style={{alignItems: 'center'}} animation="slideBottomIn">
+            <Input
+              variant="tertiary"
+              type="password"
+              value={newPasswordConfirmation}
+              placeholder="Mật khẩu mới nhập lại"
+              onChange={(e) => setNewPasswordConfirmation(e.target.value)}
+              style={{flex: 1}}
+            />
+          </View>
 
-      <Button variant="primary" onClick={resetPassword}>Xác nhận</Button>
+          <Button variant="primary" animation="slideTopIn" onClick={resetPassword}>Xác nhận</Button>
+          </>
+        }
+      </View>
     </Card>
   )
 }

@@ -10,3 +10,5 @@ export const createAsync = (category: Category) => ApiService.post(`/admin/categ
 export const updateAsync = (category: Category) => ApiService.put(`/admin/categories/${category.id}`, {category});
 
 export const deleteAsync = (id: number) => ApiService.delete(`/admin/categories/${id}`);
+
+export const getStatisticsAsync = () => ApiService.get('/admin/categories/statistics');

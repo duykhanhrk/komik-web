@@ -64,7 +64,7 @@ function Notifications() {
   }
 
   return (
-    <View scrollable>
+    <View scrollable animation="slideTopIn">
       <InfiniteScroll
         loadMore={() => query.fetchNextPage()}
         hasMore={query.hasNextPage}

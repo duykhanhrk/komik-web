@@ -35,7 +35,7 @@ function ControlArea() {
   const theme = useTheme();
 
   return (
-    <Card ebonsaiSnippet>
+    <Card ebonsaiSnippet animation="slideRightIn">
       <Button ebonsai square onClick={() => {dispatch(toggleRole()); navigate('/');}}>
         <Icon icon={'mingcute:fan-2-line'} style={{color: theme.colors.foreground, height: 24, width: 24}}/>
       </Button>
@@ -84,7 +84,7 @@ function NavArea() {
   }
 
   return (
-    <Card shadowEffect flex={1}>
+    <Card shadowEffect flex={1} animation="slideRightIn">
       <NavLink to="/admin/profile" style={({isActive}) => isActive ? navItemActiveStyle : navItemStyle}>
         {({isActive}) => (
           <>
@@ -125,6 +125,14 @@ function NavArea() {
           </>
         )}
       </NavLink>
+      <NavLink to="/admin/reports" style={({isActive}) => isActive ? navItemActiveStyle : navItemStyle}>
+        {({isActive}) => (
+          <>
+            <Icon icon={isActive ? 'mingcute:chart-line-fill' : 'mingcute:chart-line-fill'} style={{color: 'inhirit', height: 20, width: 20}}/>
+            <Text variant="inhirit">Thống kê</Text>
+          </>
+        )}
+      </NavLink>
       <NavLink to="/admin/feedbacks" style={({isActive}) => isActive ? navItemActiveStyle : navItemStyle}>
         {({isActive}) => (
           <>
@@ -145,7 +153,7 @@ function AdminNavigation() {
     <View flex={1} ebonsaiShelf>
       <ControlArea />
       <NavArea />
-      <Card shadowEffect centerContent>
+      <Card shadowEffect centerContent animation="slideRightIn">
         <Text style={{fontSize: 12, textAlign: 'center', color: theme.colors.quinaryForeground}}>
           <SilverLink href="https://github.com/duykhanhrk/komik-web">Delta</SilverLink> & <SilverLink href="https://github.com/duykhanhrk/komik">Kakaa</SilverLink> Projects
         </Text>

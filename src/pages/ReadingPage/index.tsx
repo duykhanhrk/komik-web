@@ -35,7 +35,7 @@ function ControlPanel({hide, onHideChanged}: {hide: boolean, onHideChanged: (isH
 
   return (
     <View gap={8} style={{display: isHide ? 'none' : 'flex', position: 'sticky', height: 'calc(100vh - 60px)', left: 0, bottom: 0, top: 60, width: 272, padding: '0px 8px 8px 8px', flexBasis: 272, flexShrink: 0}}>
-      <Card horizontal ebonsai>
+      <Card horizontal ebonsai animation="slideRightIn">
         <View flex={1} horizontal gap={8}>
           <Button ebonsai variant="transparent" onClick={() => navigate(`/comics/${comic_id}`)} style={{gap: 8, width: 'auto'}}>
             <Icon icon={'mingcute:arrow-left-line'} style={{color: theme.colors.foreground, height: 24, width: 24}}/>
@@ -55,7 +55,7 @@ function ControlPanel({hide, onHideChanged}: {hide: boolean, onHideChanged: (isH
           <Icon icon={'mingcute:layout-left-fill'} style={{color: theme.colors.foreground, height: 24, width: 24}}/>
         </Button>
       </Card>
-      <Card flex={1}>
+      <Card flex={1} animation="slideRightIn">
         <View scrollable>
           {query.data.comic.chapters.map((item: any) => (
             <Card
@@ -105,7 +105,9 @@ function ReadingArea() {
     <>
       {query.data.chapter.image_urls.length !== 0 ?
         query.data.chapter.image_urls.map((item: string) => (
-          <img src={item} />
+          <Card style={{padding: 0, backgroundColor: 'transparent'}} animation="slideTopIn">
+            <img src={item} />
+          </Card>
         ))
       :
         <View flex={1} centerContent>
@@ -129,7 +131,7 @@ function NavigateEbonsai({hide, onHideChanged}: {hide?: boolean, onHideChanged: 
 
   return (
     <View horizontal centerContent gap={8} style={{display: isHide ? 'none' : 'flex', paddingTop: 8, position: 'sticky', bottom: 8, left: 0, right: 0}}>
-      <Card ebonsai>
+      <Card ebonsai animation="slideTopIn">
         <Button ebonsai variant="secondary" style={{width: 120}}>
           <Icon icon={'mingcute:arrow-left-line'} style={{color: theme.colors.foreground, height: 24, width: 24}}/>
         </Button>
@@ -154,7 +156,7 @@ function NavigateEbonsai({hide, onHideChanged}: {hide?: boolean, onHideChanged: 
 }
 
 function ReadingPage() {
-  const [isHideControlPanel, setIsHideControlPanel] = useState(true);
+  const [isHideControlPanel, setIsHideControlPanel] = useState(false);
 
   return (
     <View flex={1} horizontal>

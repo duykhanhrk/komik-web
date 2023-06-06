@@ -46,7 +46,8 @@ function UserMNPage() {
       border: `0 solid ${theme.colors.secondaryBackground}`,
       borderRadius: 8,
       padding: 16,
-      backgroundColor: theme.colors.secondaryBackground
+      backgroundColor: theme.colors.secondaryBackground,
+      overflow: 'hidden'
     },
     overlay: {
       backgroundColor: `${theme.colors.background}99`
@@ -94,7 +95,7 @@ function UserMNPage() {
         onRequestClose={() => setModalMode('close')}
         style={customStyles}
       >
-        <View gap={16}>
+        <View gap={16} animation="slideTopIn">
           <View horizontal>
             <img src={selectedItem?.avatar_url || theme.assets.defaultAvatar} style={{height: 100, width: 100, borderRadius: 8}}/>
             <View flex={1} gap={4} horizontal style={{justifyContent: 'flex-end'}}>
@@ -175,11 +176,14 @@ function UserMNPage() {
             </View>
           </View>
           <View horizontal gap={8}>
-            <Button variant="tertiary" style={{flex: 1}} onClick={() => setModalMode('close')}>Đóng</Button>
             <Button
               variant="primary"
-              style={{flex: 1}}
-              onClick={() => setIsVerifyModalOpen(true)}>{modalMode === 'create' ? 'Tạo' : 'Cập nhật'}</Button>
+              style={{flex: 1, gap: 8}}
+              onClick={() => setIsVerifyModalOpen(true)}>
+              <Icon icon={'mingcute:save-line'} style={{height: 20, width: 20, color: theme.colors.themeForeground}} />
+              <Text variant="inhirit">{modalMode === 'create' ? 'Tạo' : 'Cập nhật'}</Text>
+            </Button>
+            <Button variant="tertiary" style={{flex: 1}} onClick={() => setModalMode('close')}>Đóng</Button>
           </View>
         </View>
       </Modal>
@@ -188,7 +192,7 @@ function UserMNPage() {
         onRequestClose={() => setIsVerifyModalOpen(false)}
         style={customStyles}
       >
-        <View gap={16}>
+        <View gap={16} animation="slideTopIn">
           <View gap={8}>
             <Text variant="title">Nhập mật khẩu để xác nhận</Text>
             <Input
@@ -200,7 +204,6 @@ function UserMNPage() {
             />
           </View>
           <View horizontal gap={8}>
-            <Button variant="tertiary" style={{flex: 1}} onClick={() => {setIsVerifyModalOpen(false); setVerifyPassword('');}}>Hủy</Button>
             <Button
               variant="primary"
               style={{flex: 1}}
@@ -219,6 +222,7 @@ function UserMNPage() {
                   })
               }}
             >Xác nhận</Button>
+            <Button variant="tertiary" style={{flex: 1}} onClick={() => {setIsVerifyModalOpen(false); setVerifyPassword('');}}>Hủy</Button>
           </View>
         </View>
       </Modal>
@@ -268,6 +272,11 @@ function UserMNPage() {
               <Card
                 horizontal
                 shadowEffect
+                animation="slideLeftIn"
+                onClick={() => {
+                  setSelectedItem(item);
+                  setModalMode('update');
+                }}
               >
                 <View
                   horizontal
@@ -287,15 +296,6 @@ function UserMNPage() {
                 <View horizontal gap={8} style={{alignItems: 'center'}}>
                   {item.role !== 0 && <Tag variant={{ct: 'tertiary'}}>Quản trị viên</Tag>}
                   {item.locked && <Tag variant={{ct: 'tertiary'}}>Bị khóa</Tag>}
-                  <Button
-                    style={{width: 40}}
-                    onClick={() => {
-                      setSelectedItem(item);
-                      setModalMode('update');
-                    }}
-                  >
-                    <Icon icon={'mingcute:edit-line'} style={{height: 20, width: 20, color: theme.colors.foreground}} />
-                  </Button>
                 </View>
               </Card>
             ))}

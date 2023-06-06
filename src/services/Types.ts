@@ -111,3 +111,12 @@ export type Feedback = {
   content: string;
   created_at?: string;
 }
+
+export type Comment = {
+  id?: number;
+  user?: User;
+  title: string;
+  content: string;
+  created_at?: Date;
+  updated_at?: Date;
+}

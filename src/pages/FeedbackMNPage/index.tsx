@@ -29,7 +29,8 @@ function FeedbackMNPage() {
       border: `0 solid ${theme.colors.secondaryBackground}`,
       borderRadius: 8,
       padding: 16,
-      backgroundColor: theme.colors.secondaryBackground
+      backgroundColor: theme.colors.secondaryBackground,
+      overflow: 'hidden'
     },
     overlay: {
       backgroundColor: `${theme.colors.background}99`
@@ -69,7 +70,7 @@ function FeedbackMNPage() {
         onRequestClose={() => setModalMode('close')}
         style={customStyles}
       >
-        <View gap={16}>
+        <View gap={16} animation="slideTopIn">
           <View gap={8}>
             <Text variant="title">Người gửi</Text>
             <Input
@@ -143,6 +144,7 @@ function FeedbackMNPage() {
                   setSelectedItem(item);
                   setModalMode('open');
                 }}
+                animation="slideLeftIn"
               >
                 <View flex={1} horizontal gap={8} style={{alignItems: 'center'}}>
                   <Text numberOfLines={1} variant="title">{item.title}</Text>

@@ -126,13 +126,13 @@ function Header() {
   return (
     <Container>
       <NavigationContainer>
-        <Card ebonsaiSnippet>
+        <Card ebonsaiSnippet animation="slideBottomIn">
           <NavLink to="/" style={({isActive}) => isActive ? navItemActiveStyle : navItemStyle}>Trang chủ</NavLink>
           <NavLink to="/comics" style={({isActive}) => isActive ? navItemActiveStyle : navItemStyle}>Danh mục</NavLink>
         </Card>
       </NavigationContainer>
       <SearchContainer>
-        <Card style={{padding: 0, flex: 1}}>
+        <Card style={{padding: 0, flex: 1}} animation="slideBottomIn">
           <SearchInput.Comic />
         </Card>
       </SearchContainer>
@@ -150,7 +150,7 @@ function Header() {
         </Card>
       </NavigationIconContainer>
       <UserControlContainer>
-        <Card ebonsaiSnippet>
+        <Card ebonsaiSnippet animation="slideBottomIn">
           {userRole !== 0 &&
           <Button
             ebonsai

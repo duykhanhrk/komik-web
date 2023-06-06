@@ -194,6 +194,7 @@ function ComicMNPage() {
                 shadowEffect
                 key={item.id.toString()}
                 onClick={() => navigate(`/admin/comics/${item.id}`)}
+                animation="slideLeftIn"
               >
                 <View flex={1} style={{justifyContent: 'center'}}>
                   <View horizontal gap={8}>

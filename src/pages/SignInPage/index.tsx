@@ -91,38 +91,40 @@ function SignInPage() {
   }
 
   return (
-    <Card shadowEffect flex={1} style={{rowGap: 16, padding: 24, justifyContent: 'center', backgroundColor: theme.colors.secondaryBackground}}>
-      {isLoading ?
-        <View centerContent>
-          <LoadingPage />
-        </View>
-      :
-      <>
-        <View horizontal style={{alignItems: 'center'}}>
-          <Input
-            variant="tertiary"
-            type="text"
-            value={usernameOrEmail}
-            placeholder="Tên đăng nhập hoặc email"
-            onChange={(e) => setUsernameOrEmail(e.target.value)}
-            style={{flex: 1}}
-          />
-        </View>
+    <Card shadowEffect flex={1} style={{zIndex: 100}}>
+      <View flex={1} style={{rowGap: 16, padding: 18, justifyContent: 'center'}}>
+        {isLoading ?
+          <View flex={1} centerContent>
+            <LoadingPage />
+          </View>
+        :
+        <>
+          <View horizontal style={{alignItems: 'center'}} animation="slideBottomIn">
+            <Input
+              variant="tertiary"
+              type="text"
+              value={usernameOrEmail}
+              placeholder="Tên đăng nhập hoặc email"
+              onChange={(e) => setUsernameOrEmail(e.target.value)}
+              style={{flex: 1}}
+            />
+          </View>
 
-        <View horizontal style={{alignItems: 'center'}}>
-          <Input
-            variant="tertiary"
-            type="password"
-            value={password}
-            placeholder="Mật khẩu"
-            onChange={(e) => setPassword(e.target.value)}
-            style={{flex: 1}}
-          />
-        </View>
+          <View horizontal style={{alignItems: 'center'}} animation="slideBottomIn">
+            <Input
+              variant="tertiary"
+              type="password"
+              value={password}
+              placeholder="Mật khẩu"
+              onChange={(e) => setPassword(e.target.value)}
+              style={{flex: 1}}
+            />
+          </View>
 
-        <Button variant="primary" onClick={signIn}>Đăng nhập</Button>
-      </>
-      }
+          <Button variant="primary" animation="slideTopIn" onClick={signIn}>Đăng nhập</Button>
+        </>
+        }
+      </View>
     </Card>
   )
 }

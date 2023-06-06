@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import {default as Animations} from '../Animations';
 
 export interface ButtonProps {
   variant?: 'primary' | 'secondary' | 'tertiary' | 'quaternary' | 'quinary' | 'transparent';
@@ -6,6 +7,8 @@ export interface ButtonProps {
   selected?: boolean;
   ebonsai?: boolean;
   square?: boolean;
+  animation?: 'slideBottomIn' | 'slideLeftIn' | 'slideRightIn' | 'slideTopIn';
+  animationDuration?: number;
 }
 
 const Button = styled.button<ButtonProps>`
@@ -41,6 +44,20 @@ const Button = styled.button<ButtonProps>`
     padding: 6px;
     background-color: transparent;
   ` : ''}
+
+  animation: ${
+    props => props.animation === 'slideBottomIn'
+      ? Animations.slideBottomIn
+      : props.animation === 'slideLeftIn'
+      ? Animations.slideLeftIn
+      : props.animation === 'slideRightIn'
+      ? Animations.slideRightIn
+      : props.animation === 'slideTopIn'
+      ? Animations.slideTopIn
+      : ''
+  } ${
+    props => props.animationDuration ? `${props.animationDuration}s` : '0.5s'
+  } ease;
 
   ${props => props.selected ? 'box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;' : ''}
 

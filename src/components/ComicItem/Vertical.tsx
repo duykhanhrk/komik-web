@@ -3,13 +3,20 @@ import {Link} from "react-router-dom";
 import styled from "styled-components";
 import Text from "../Text";
 import Image from "./Image";
+import {default as Animations} from "../Animations";
 
 interface VerticalProps extends React.HTMLProps<HTMLDivElement> {
   _data: Comic;
   shadowEffect?: boolean;
+  animation?: 'slideBottomIn' | 'slideLeftIn' | 'slideRightIn' | 'slideTopIn';
+  animationDuration?: number;
 }
 
-const Container = styled.div<{shadowEffect?: boolean}>`
+const Container = styled.div<{
+  shadowEffect?: boolean;
+  animation?: 'slideBottomIn' | 'slideLeftIn' | 'slideRightIn' | 'slideTopIn';
+  animationDuration?: number;
+}>`
   display: flex;
   flex-direction: column;
   background-color: ${props => props.theme.colors.secondaryBackground};
@@ -19,6 +26,19 @@ const Container = styled.div<{shadowEffect?: boolean}>`
   overflow: hidden;
   width: 241px;
   ${props => props.shadowEffect ?  'transition: box-shadow 0.5s;' : ''};
+  animation: ${
+    props => props.animation === 'slideBottomIn'
+      ? Animations.slideBottomIn
+      : props.animation === 'slideLeftIn'
+      ? Animations.slideLeftIn
+      : props.animation === 'slideRightIn'
+      ? Animations.slideRightIn
+      : props.animation === 'slideTopIn'
+      ? Animations.slideTopIn
+      : ''
+  } ${
+    props => props.animationDuration ? `${props.animationDuration}s` : '0.5s'
+  } ease;
   &:hover {
     ${props => props.shadowEffect ?  'box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;' : ''}
   }
@@ -34,6 +54,8 @@ function Vertical(props: VerticalProps) {
     <Link key={_data.id.toString()} to={`/comics/${_data.id}`} style={{textDecoration: 'none'}}>
       <Container
         shadowEffect={props.shadowEffect}
+        animation={props.animation}
+        animationDuration={props.animationDuration}
         key={_data.id.toString()}
         style={style}
       >

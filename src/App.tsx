@@ -15,6 +15,7 @@ import ComicDetailMNPage from "./pages/ComicDetailMNPage";
 import PolicyAndTermsPage from "./pages/PolicyAndTermsPage";
 import ComicMNPage from "./pages/ComicMNPage";
 import CategoryMNPage from "./pages/CategoryMNPage";
+import ReportMNPage from "./pages/ReportMNPage";
 import { useLocation, matchPath } from "react-router";
 import {setRole} from "@redux/sessionSlice";
 
@@ -68,7 +69,7 @@ function App() {
         <Layout.AppHeaderContainer horizontal={(isAuthenticated && isAdmin) || (!isAuthenticated)} scalable={!isAuthenticated}>
           {isAuthenticated ? (isAdmin ? <AdminNavigation /> : <Header/>) : <SessionLayout.SilverSpace />}
         </Layout.AppHeaderContainer>
-        <Layout.AppContentContainer horizontal={(isAuthenticated && isAdmin) || (!isAuthenticated)} scalable={isAuthenticated} ebonsaiShelf={!isAuthenticated}>
+        <Layout.AppContentContainer style={{}} horizontal={(isAuthenticated && isAdmin) || (!isAuthenticated)} scalable={isAuthenticated} ebonsaiShelf={!isAuthenticated}>
           {!isAuthenticated && <SessionLayout.NavigationOrnament />}
           <Routes>
             <Route path="/admin/profile" element={isAuthenticated ? (isAdmin ? <UserProfilePage /> : <Text>403</Text>) : <Navigate to={'/sign_in'} />}/>
@@ -78,6 +79,7 @@ function App() {
             <Route path="/admin/feedbacks" element={isAuthenticated ? (isAdmin ? <FeedbackMNPage /> : <Text>403</Text>) : <Navigate to={'/sign_in'} />}/>
             <Route path="/admin/comics" element={isAuthenticated ? (isAdmin ? <ComicMNPage /> : <Text>403</Text>) : <Navigate to={'/sign_in'} />}/>
             <Route path="/admin/comics/:comic_id" element={isAuthenticated ? (isAdmin ? <ComicDetailMNPage /> : <Text>403</Text>) : <Navigate to={'/sign_in'} />}/>
+            <Route path="/admin/reports" element={isAuthenticated ? (isAdmin ? <ReportMNPage /> : <Text>403</Text>) : <Navigate to={'/sign_in'} />}/>
             <Route path="/" element={isAuthenticated ? (!isAdmin ? <HomePage/> : <Text>403</Text>) : <Navigate to={'/sign_in'}/>} />
             <Route path="/comics" element={isAuthenticated ? (!isAdmin ? <ComicPage /> : <Text>403</Text>) : <Navigate to={'/sign_in'}/>}></Route>
             <Route path="/comics/:comic_id" element={isAuthenticated ? (!isAdmin ? <ComicDetailPage/> : <Text>403</Text>) : <Navigate to={'/sign_in'}/>} />

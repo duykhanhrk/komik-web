@@ -9,6 +9,7 @@ import {Link, useNavigate, useSearchParams} from "react-router-dom";
 import styled, {useTheme} from "styled-components";
 import ErrorPage from "../ErrorPage";
 import LoadingPage from "../LoadingPage";
+import {default as Animations} from "../../components/Animations";
 
 const sortByOptions = [
   {label: 'Ngày cập nhật', value: 'last_updated_chapter_at-desc'},
@@ -31,6 +32,7 @@ const NavigationPanelContianer = styled.div`
   width: 256px;
   transition: box-shadow 0.5s;
   padding: 8px;
+  animation: ${Animations.slideRightIn} 0.5s ease;
 
   &:hover {
     box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
@@ -214,7 +216,7 @@ function ComicsList() {
             getScrollParent={() => document.getElementById('rootScrollable')}
           >
             <View gap={8} horizontal wrap style={{justifyContent: 'flex-start'}}>
-              {comics?.map((item: Comic) => <ComicItem.Vertical shadowEffect _data={item}/>)}
+              {comics?.map((item: Comic) => <ComicItem.Vertical shadowEffect _data={item} animation="slideLeftIn"/>)}
             </View>
           </InfiniteScroll>
         </>

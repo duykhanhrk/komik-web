@@ -62,7 +62,11 @@ module.exports = {
         './public/komik-icon-light.png',
         './public/komik-icon-dark.png',
         './public/default-avatar-dark.png',
-        './public/default-avatar-light.png'
+        './public/default-avatar-light.png',
+        './public/haru.jpg',
+        './public/natsu.jpg',
+        './public/aki.jpg',
+        './public/fuyu.jpg'
       ]
     })
   ],

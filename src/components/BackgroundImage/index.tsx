@@ -19,7 +19,6 @@ const Image = styled.div<{src: string, blur?: number}>`
   background-repeat: no-repeat;
   background-size: cover;
   background-position: center;
-  background-color: blue;
   ${props => props.blur ? `filter: blur(${props.blur}px);` : ''}
   left: 0;
   right: 0;

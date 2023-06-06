@@ -1,11 +1,9 @@
 import {Button, Card, Input, Text, View} from "@components";
 import {useAppDispatch} from "@hooks";
-import {Icon} from "@iconify/react";
 import {setUserTokens} from "@redux/sessionSlice";
 import {SessionService} from "@services";
 import {isAxiosError} from "axios";
 import {useState} from "react";
-import {Link} from "react-router-dom";
 import {useNotifications} from "reapop";
 import {useTheme} from "styled-components";
 import LoadingPage from "../LoadingPage";
@@ -52,40 +50,50 @@ function SignUpPage() {
   }
 
   return (
-    <Card shadowEffect flex={1} style={{rowGap: 16, padding: 24, justifyContent: 'center', backgroundColor: theme.colors.secondaryBackground}}>
-      <View horizontal style={{alignItems: 'center'}}>
-        <Input
-          variant="tertiary"
-          type="text"
-          value={username}
-          placeholder="Tên đăng nhập"
-          onChange={(e) => setUsername(e.target.value)}
-          style={{flex: 1}}
-        />
-      </View>
+    <Card shadowEffect flex={1} style={{zIndex: 100}}>
+      <View flex={1} style={{gap: 16, padding: 16, justifyContent: 'center'}}>
+        {isLoading ?
+          <View flex={1} centerContent>
+            <LoadingPage />
+          </View>
+        :
+        <>
+          <View horizontal style={{alignItems: 'center'}} animation="slideBottomIn">
+            <Input
+              variant="tertiary"
+              type="text"
+              value={username}
+              placeholder="Tên đăng nhập"
+              onChange={(e) => setUsername(e.target.value)}
+              style={{flex: 1}}
+            />
+          </View>
 
-      <View horizontal style={{alignItems: 'center'}}>
-        <Input
-          variant="tertiary"
-          type="text"
-          value={email}
-          placeholder="Email"
-          onChange={(e) => setEmail(e.target.value)}
-          style={{flex: 1}}
-        />
-      </View>
+          <View horizontal style={{alignItems: 'center'}} animation="slideBottomIn">
+            <Input
+              variant="tertiary"
+              type="text"
+              value={email}
+              placeholder="Email"
+              onChange={(e) => setEmail(e.target.value)}
+              style={{flex: 1}}
+            />
+          </View>
 
-      <View horizontal style={{alignItems: 'center'}}>
-        <Input
-          variant="tertiary"
-          type="password"
-          value={password}
-          placeholder="Mật khẩu"
-          onChange={(e) => setPassword(e.target.value)}
-          style={{flex: 1}}
-        />
+          <View horizontal style={{alignItems: 'center'}} animation="slideBottomIn">
+            <Input
+              variant="tertiary"
+              type="password"
+              value={password}
+              placeholder="Mật khẩu"
+              onChange={(e) => setPassword(e.target.value)}
+              style={{flex: 1}}
+            />
+          </View>
+          <Button variant="primary" animation="slideTopIn" onClick={signUp}>Đăng ký</Button>
+        </>
+        }
       </View>
-      <Button variant="primary" onClick={signUp}>Đăng ký</Button>
     </Card>
   )
 }

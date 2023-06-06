@@ -30,7 +30,8 @@ function CategoryMNPage() {
       border: `0 solid ${theme.colors.secondaryBackground}`,
       borderRadius: 8,
       padding: 16,
-      backgroundColor: theme.colors.secondaryBackground
+      backgroundColor: theme.colors.secondaryBackground,
+      overflow: 'hidden'
     },
     overlay: {
       backgroundColor: `${theme.colors.background}99`
@@ -85,7 +86,7 @@ function CategoryMNPage() {
         onRequestClose={() => setModalMode('close')}
         style={customStyles}
       >
-        <View gap={16}>
+        <View gap={16} animation="slideTopIn">
           <View gap={8}>
             <Text variant="title">Tên</Text>
             <Input
@@ -107,6 +108,7 @@ function CategoryMNPage() {
             />
           </View>
           <View horizontal gap={8}>
+            {modalMode === 'update' &&
             <Button
               variant="primary"
               style={{gap: 8, flex: 1}}
@@ -114,7 +116,7 @@ function CategoryMNPage() {
             >
               <Icon icon={'mingcute:delete-2-line'} style={{height: 20, width: 20, color: theme.colors.themeForeground}} />
               <Text variant="inhirit">Xóa</Text>
-            </Button>
+            </Button>}
             <Button
               variant="primary"
               style={{gap: 8, flex: 1}}
@@ -176,6 +178,7 @@ function CategoryMNPage() {
                   setModalMode('update');
                 }}
                 style={{height: 40, justifyContent: 'center'}}
+                animation="slideLeftIn"
               >
                 <View flex={1} style={{justifyContent: 'center'}}>
                   <Text variant="title">{item.name}</Text>

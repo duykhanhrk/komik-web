@@ -77,7 +77,7 @@ function Plan() {
 
 
   return (
-    <View gap={8} flex={1}>
+    <View gap={8} flex={1} animation="slideTopIn">
       { query.data.user.current_plan ?
         <>
           <Text variant="title">Gói hiện tại</Text>

@@ -1,5 +1,20 @@
-import ApiService from './ApiService';
+import axios from 'axios';
 
-export const getPolicyAndTermsAsync = () => ApiService.get(`/app/documents/policy_and_terms`);
+const axiosInstance = axios.create({
+  baseURL: process.env.API_BASE_URL,
+  headers: {
+    'Content-type': 'application/json'
+  }
+});
 
-export const getIntroductionAsync = () => ApiService.get(`/app/documents/introduction`);
+export async function getPolicyAndTermsAsync() {
+  const response = await axiosInstance.get(`/app/documents/policy_and_terms`);
+
+  return response.data.data;
+}
+
+export async function getIntroductionAsync() {
+  const response = await axiosInstance.get(`/app/documents/introduction`);
+
+  return response.data.data;
+}
