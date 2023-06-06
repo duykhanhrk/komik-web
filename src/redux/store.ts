@@ -1,11 +1,13 @@
 import { configureStore } from '@reduxjs/toolkit'
 import sessionSlice from './sessionSlice';
 import themeSlice from './themeSlice';
+import keywordsSlice from './keywordsSlice';
 
 const store = configureStore({
   reducer: {
     theme: themeSlice,
-    session: sessionSlice
+    session: sessionSlice,
+    keywords: keywordsSlice,
   }
 })
 

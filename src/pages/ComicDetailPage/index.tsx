@@ -81,7 +81,7 @@ function ComicDetailPage() {
                 animation="slideBottomIn"
               >
                 <Icon icon={query.data.comic.followed ? 'mingcute:book-5-fill' : 'mingcute:book-5-line'} style={{marginRight: 8, height: 24, width: 24, color: theme.colors.blue}} />
-                <Text style={{color: query.data.comic.followed ? theme.colors.blue : theme.colors.foreground, display: 'flex', flexDirection: 'row', alignItems: 'center'}}>Xem sau</Text>
+                <Text style={{color: query.data.comic.followed ? theme.colors.blue : theme.colors.foreground, display: 'flex', flexDirection: 'row', alignItems: 'center'}}>Theo dõi</Text>
               </Button>
               {comic.chapters?.length !== 0 &&
                 <Button

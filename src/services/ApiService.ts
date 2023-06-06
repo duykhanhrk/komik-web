@@ -45,6 +45,8 @@ class ApiService {
         console.log(`[API] ${error.config?.method} ${error.config?.url} [${error.response?.status}]`);
 
         if (error.response && error.response.status === 401 && !store.getState().session.isRefreshing) {
+          console.log('refreshing tokens...');
+
           let access_token = Cookies.get('AccessToken');
           let refresh_token = Cookies.get('RefreshToken');
 
@@ -55,6 +57,7 @@ class ApiService {
             try {
               store.dispatch(setIsRefreshing(true));
               let tokens = await SessionService.refreshTokensAsync({access_token, refresh_token});
+              console.log('refreshing tokens [error]', tokens);
               store.dispatch(setUserTokens(tokens));
             } catch(error) {
               if (isAxiosError(error) && error.response?.status == 422) {

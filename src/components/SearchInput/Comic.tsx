@@ -1,5 +1,6 @@
-import {useCategoriesQuery} from "@hooks";
+import {useAppDispatch, useAppSelector, useCategoriesQuery} from "@hooks";
 import {Icon} from "@iconify/react";
+import {addKeyword, removeKeyword} from "@redux/keywordsSlice";
 import {Category, SearchingService, Suggestion} from "@services";
 import {useEffect, useRef, useState} from "react";
 import {useNavigate} from "react-router-dom";
@@ -18,8 +19,10 @@ type Filter = {
 function Comic() {
   const [searchDropdownOpen, setSearchDropdownOpen] = useState('');
   const [suggestions, setSuggestions] = useState<Array<Suggestion>>([]);
-  const [recentlyKeywords, setRecentlyKeywords] = useState<Array<Suggestion>>([]);
   const [suggestion, setSuggestion] = useState<Suggestion<Filter>>({keyword: '', type: 'Keyword'});
+
+  const { keywords } = useAppSelector((state) => state.keywords);
+  const dispatch = useAppDispatch();
 
   const searchDropDownRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
@@ -27,11 +30,6 @@ function Comic() {
   const navigate = useNavigate();
   const theme = useTheme();
   const categoriesQuery = useCategoriesQuery();
-
-  useEffect(() => {
-    const keywords = JSON.parse(localStorage.getItem('RecentlyKeywords') || '[]');
-    setRecentlyKeywords(keywords);
-  }, []);
 
   useEffect(() => {
     const handleOutsideClick = (event: MouseEvent) => {
@@ -63,10 +61,7 @@ function Comic() {
 
   function submitSearch() {
     // Add to recently keywords
-    if (!recentlyKeywords.find((item) => JSON.stringify(item) === JSON.stringify(suggestion))) {
-      setRecentlyKeywords([suggestion, ...recentlyKeywords]);
-      localStorage.setItem('RecentlyKeywords', JSON.stringify([suggestion, ...recentlyKeywords]));
-    }
+    dispatch(addKeyword(suggestion))
 
     // Navigate to search page
     navigate(`/comics?category_id=${suggestion.data ? suggestion.data.categoryIds.join(',') : ''}&query=${suggestion.keyword}`);
@@ -105,7 +100,7 @@ function Comic() {
             width: 'auto',
             minHeight: 'auto',
             gap: 8,
-            display: searchDropdownOpen === 'search' && (suggestion.keyword !== '' || recentlyKeywords.length !== 0) ? 'flex' : 'none',
+            display: searchDropdownOpen === 'search' && (suggestion.keyword !== '' || keywords.length !== 0) ? 'flex' : 'none',
         }}>
           <View gap={8} animation="slideTopIn">
             <View horizontal style={{alignItems: 'center'}}>
@@ -155,7 +150,7 @@ function Comic() {
             <View
               gap={8}
               scrollable
-              style={{display: suggestions.length !== 0 || recentlyKeywords.length !== 0 ? 'flex' : 'none'}}
+              style={{display: suggestions.length !== 0 || keywords.length !== 0 ? 'flex' : 'none'}}
             >
               {suggestions.length !== 0 && suggestions.map((item: Suggestion) => (
                 <Card
@@ -168,7 +163,7 @@ function Comic() {
                   <Text>{item.keyword}</Text>
                 </Card>
               ))}
-              {recentlyKeywords.map((item, index) => (
+              {keywords.map((item, index) => (
                 <Card
                   variant="tertiary"
                   horizontal
@@ -207,14 +202,7 @@ function Comic() {
                   >
                     <Icon icon={'mingcute:edit-2-line'} style={{height: 16, width: 16, color: theme.colors.foreground}} />
                   </Tag>
-                  <Tag
-                    style={{gap: 8}}
-                    onClick={() => {
-                      const keywords = recentlyKeywords.filter((_keyword, _index) => index !== _index);
-                      setRecentlyKeywords(keywords);
-                      localStorage.setItem('RecentlyKeywords', JSON.stringify(keywords));
-                    }}
-                  >
+                  <Tag style={{gap: 8}} onClick={() => {dispatch(removeKeyword(item))}}>
                     <Icon icon={'mingcute:delete-2-line'} style={{height: 16, width: 16, color: theme.colors.foreground}} />
                   </Tag>
                 </Card>

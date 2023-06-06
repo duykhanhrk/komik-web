@@ -45,10 +45,6 @@ function SignUpPage() {
     });
   }
 
-  if (isLoading) {
-    return <LoadingPage />
-  }
-
   return (
     <Card shadowEffect flex={1} style={{zIndex: 100}}>
       <View flex={1} style={{gap: 16, padding: 16, justifyContent: 'center'}}>

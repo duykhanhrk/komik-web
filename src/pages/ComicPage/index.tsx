@@ -1,15 +1,16 @@
 import {Card, ComicItem, Dropdown, Tag, Text, View} from "@components";
-import {useCategoriesQuery} from "@hooks";
+import {useAppDispatch, useAppSelector, useCategoriesQuery} from "@hooks";
 import {Icon} from "@iconify/react";
-import {Category, CategoryService, Comic, ComicService, Suggestion} from "@services";
+import {Category, Comic, ComicService} from "@services";
 import {useEffect, useMemo, useState} from "react";
 import InfiniteScroll from "react-infinite-scroller";
-import {useInfiniteQuery, useQuery} from "react-query";
+import {useInfiniteQuery} from "react-query";
 import {Link, useNavigate, useSearchParams} from "react-router-dom";
 import styled, {useTheme} from "styled-components";
 import ErrorPage from "../ErrorPage";
 import LoadingPage from "../LoadingPage";
 import {default as Animations} from "../../components/Animations";
+import {addKeyword} from "@redux/keywordsSlice";
 
 const sortByOptions = [
   {label: 'Ngày cập nhật', value: 'last_updated_chapter_at-desc'},
@@ -43,7 +44,9 @@ function NavigationPanel() {
   const [searchParams] = useSearchParams();
   const [categoryIds, setCategoryIds] = useState<Array<number> | undefined>();
   const [queryText, setQueryText ] = useState<string | undefined>();
-  const [recentlyKeywords, setRecentlyKeywords] = useState<Array<Suggestion>>([]);
+
+  const { keywords } = useAppSelector((state) => state.keywords);
+  const dispatch = useAppDispatch();
 
   const  navigate = useNavigate();
 
@@ -64,22 +67,15 @@ function NavigationPanel() {
     setCategoryIds(_categoryIds);
     setQueryText(_queryText);
 
-    if (_queryText) {
-      let suggestion = {
-        keyword: _queryText,
-        type: 'Keyword',
-        data: categoryIds ? {categoryIds} : undefined
-      }
+    //if (_queryText) {
+    //  let suggestion = {
+    //    keyword: _queryText,
+    //    type: 'Keyword',
+    //    data: _categoryIds ? {_categoryIds} : undefined
+    //  }
 
-      let keywords = JSON.parse(localStorage.getItem('RecentlyKeywords') || '[]');
-
-      if (!keywords.find((item: Suggestion) => JSON.stringify(item) === JSON.stringify(suggestion))) {
-        setRecentlyKeywords([suggestion, ...keywords]);
-        localStorage.setItem('RecentlyKeywords', JSON.stringify([suggestion, ...keywords]));
-      } else {
-        setRecentlyKeywords(keywords);
-      }
-    }
+    //  dispatch(addKeyword(suggestion));
+    //}
   }, [searchParams])
 
   const categoryQuery = useCategoriesQuery();
@@ -88,7 +84,7 @@ function NavigationPanel() {
     <NavigationPanelContianer>
       {queryText ?
       <>
-        {recentlyKeywords.map((item, index) => (
+        {keywords.map((item, index) => (
           <Card
             variant={JSON.stringify(item) === JSON.stringify(buildSuggestion()) ? 'tertiary' : 'secondary'}
             horizontal

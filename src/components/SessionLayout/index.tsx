@@ -157,7 +157,7 @@ function SilverSpace() {
         <View horizontal style={{width: '64vw', height: '36vw', borderRadius: 8}}>
           {(suki === 'komik') &&
             <Card flex={1} style={{padding: 0, width: '64vw', height: '36vw', backgroundColor: 'transparent'}}>
-              <View flex={1} style={{padding: 0, width: '64vw', height: '36vw'}} animation="slideLeftIn" animationDuration={1}>
+              <Card flex={1} style={{padding: 0, width: '64vw', height: '36vw', backgroundColor: 'transparent'}} animation="SilverSlideLeftIn" animationDuration={1}>
                 <Carousel
                   showThumbs={false}
                   showStatus={false}
@@ -199,7 +199,7 @@ function SilverSpace() {
                     </Text>
                   </View>
                 </Carousel>
-              </View>
+              </Card>
             </Card>
           }
           {(suki === 'comics' || suki === 'games' || suki === 'discuss') &&

@@ -333,6 +333,8 @@ function LoginInfoSection() {
                 notification.dismissible = true;
                 notification.dismissAfter = 3000;
                 notify(notification);
+
+                setPassword('');
               })
               .catch((error) => {
                 if (isAxiosError(error) && error.response) {
@@ -428,6 +430,10 @@ function ChangePasswordSection() {
                 notification.dismissible = true;
                 notification.dismissAfter = 3000;
                 notify(notification);
+
+                setPassword('');
+                setNewPassword('');
+                setPasswordConfirmation('');
               })
               .catch((error) => {
                 if (isAxiosError(error) && error.response) {

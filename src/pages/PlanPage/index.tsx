@@ -77,9 +77,9 @@ function PlanSelectionList({onSelectedItemChanged} : {onSelectedItemChanged?: (i
           onClick={() => setSelectedItem(item)}
         >
           <Text variant="medium-title">{item.name}</Text>
-          <Text>{item.value}</Text>
-          <Text>{item.price}</Text>
-          <Text>{item.description}</Text>
+          <Text><b>Thời lượng: </b>{item.value / 24} ngày</Text>
+          <Text><b>Giá: </b>{item.price}đ</Text>
+          <Text><b>Mô tả: </b>{item.description}</Text>
         </Card>
       ))}
     </View>
