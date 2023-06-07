@@ -32,6 +32,8 @@ export type Chapter = {
   name: string;
   image_urls?: Array<string>;
   free: boolean;
+  next_chapter?: null | Chapter;
+  previous_chapter?: null | Chapter;
 }
 
 export type Comic = {

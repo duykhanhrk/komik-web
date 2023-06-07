@@ -74,10 +74,11 @@ function ControlPanel({hide, onHideChanged}: {hide: boolean, onHideChanged: (isH
   );
 }
 
-function ReadingArea() {
+function ReadingArea({hide, onHideChanged}: {hide?: boolean, onHideChanged: (isHide: boolean) => void}) {
   const theme = useTheme();
   const navigate = useNavigate();
   const { comic_id, chapter_id } = useParams();
+  const [isHide, setIsHide] = useState(hide);
 
   const query = useQuery({
     queryKey: ['comics', comic_id, 'chapters', chapter_id],
@@ -85,73 +86,60 @@ function ReadingArea() {
     retry: 0
   });
 
-
-  if (query.isLoading) {
-    return <LoadingPage />
-  }
-
-  if (query.isError) {
-    return (
-      <ErrorPage
-        error={query.error}
-        messages={['Bạn cần đăng ký gói để sử dụng nội dung này']}
-        buttonText={'Mua gói ngay'}
-        onButtonClick={() => navigate('/plans')}
-      />
-    )
-  }
-
-  return (
-    <>
-      {query.data.chapter.image_urls.length !== 0 ?
-        query.data.chapter.image_urls.map((item: string) => (
-          <Card style={{padding: 0, backgroundColor: 'transparent'}} animation="slideTopIn">
-            <img src={item} />
-          </Card>
-        ))
-      :
-        <View flex={1} centerContent>
-          <Text variant="large-title" style={{color: theme.colors.quinaryForeground}}>
-            Đang được cập nhật
-          </Text>
-        </View>
-      }
-    </>
-  )
-}
-
-function NavigateEbonsai({hide, onHideChanged}: {hide?: boolean, onHideChanged: (isHide: boolean) => void}) {
-  const [isHide, setIsHide] = useState(hide);
-
-  const theme = useTheme();
-
   useEffect(() => {
     setIsHide(hide);
   }, [hide]);
 
   return (
-    <View horizontal centerContent gap={8} style={{display: isHide ? 'none' : 'flex', paddingTop: 8, position: 'sticky', bottom: 8, left: 0, right: 0}}>
-      <Card ebonsai animation="slideTopIn">
-        <Button ebonsai variant="secondary" style={{width: 120}}>
-          <Icon icon={'mingcute:arrow-left-line'} style={{color: theme.colors.foreground, height: 24, width: 24}}/>
-        </Button>
-        <Button
-          ebonsai
-          variant="secondary"
-          style={{width: 120}}
-          onClick={() => {
-            let _isHide = !isHide;
-            setIsHide(_isHide);
-            onHideChanged(_isHide);
-          }}
-        >
-          <Icon icon={'mingcute:layout-left-line'} style={{color: theme.colors.foreground, height: 24, width: 24}}/>
-        </Button>
-        <Button ebonsai variant="secondary" style={{width: 120}}>
-          <Icon icon={'mingcute:arrow-right-line'} style={{color: theme.colors.foreground, height: 24, width: 24}}/>
-        </Button>
-      </Card>
-    </View>
+    <>
+      {query.isLoading
+        ? <LoadingPage />
+        : query.isError
+        ? <ErrorPage
+            error={query.error}
+            messages={['Bạn cần đăng ký gói để sử dụng nội dung này']}
+            buttonText={'Mua gói ngay'}
+            onButtonClick={() => navigate('/plans')}
+          />
+        : 
+          <>
+            {query.data.chapter.image_urls.length !== 0
+            ? query.data.chapter.image_urls.map((item: string) => (
+                <Card style={{padding: 0, backgroundColor: 'transparent'}} animation="slideTopIn">
+                  <img src={item} />
+                </Card>
+              ))
+            : <View flex={1} centerContent>
+                <Text variant="large-title" style={{color: theme.colors.quinaryForeground}}>
+                  Đang được cập nhật
+                </Text>
+              </View>
+            }
+          </>
+      }
+      <View horizontal centerContent gap={8} style={{display: isHide ? 'none' : 'flex', paddingTop: 8, position: 'sticky', bottom: 8, left: 0, right: 0}}>
+        <Card ebonsai animation="slideTopIn">
+          <Button disabled={!query.isSuccess || (query.isSuccess && query.data.chapter.previous_chapter === null)} ebonsai variant="secondary" style={{width: 120}} onClick={() => navigate(`/comics/${comic_id}/chapters/${query.data.chapter.previous_chapter.id}`)}>
+            <Icon icon={'mingcute:arrow-left-line'} style={{color: theme.colors.foreground, height: 24, width: 24}}/>
+          </Button>
+          <Button
+            ebonsai
+            variant="secondary"
+            style={{width: 120}}
+            onClick={() => {
+              let _isHide = !isHide;
+              setIsHide(_isHide);
+              onHideChanged(_isHide);
+            }}
+          >
+            <Icon icon={'mingcute:layout-left-line'} style={{color: theme.colors.foreground, height: 24, width: 24}}/>
+          </Button>
+          <Button disabled={!query.isSuccess || (query.isSuccess && query.data.chapter.next_chapter === null)} ebonsai variant="secondary" style={{width: 120}} onClick={() => navigate(`/comics/${comic_id}/chapters/${query.data.chapter.next_chapter.id}`)}>
+            <Icon icon={'mingcute:arrow-right-line'} style={{color: theme.colors.foreground, height: 24, width: 24}}/>
+          </Button>
+        </Card>
+      </View>
+    </>
   )
 }
 
@@ -163,8 +151,7 @@ function ReadingPage() {
       <ControlPanel hide={isHideControlPanel} onHideChanged={(isHide) => setIsHideControlPanel(isHide)}/>
       <Page.Container>
         <Page.Content style={{gap: 0}}>
-          <ReadingArea />
-          <NavigateEbonsai hide={!isHideControlPanel} onHideChanged={() => setIsHideControlPanel(!isHideControlPanel)} />
+          <ReadingArea  hide={!isHideControlPanel} onHideChanged={() => setIsHideControlPanel(!isHideControlPanel)}/>
         </Page.Content>
       </Page.Container>
     </View>
