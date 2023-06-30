@@ -11,6 +11,7 @@ import {Icon} from '@iconify/react';
 import './index.scss';
 import {Link} from 'react-router-dom';
 import {useTheme} from 'styled-components';
+import LazyLoad from 'react-lazyload';
 
 function HomePage() {
   const navigate = useNavigate();
@@ -149,56 +150,62 @@ function RightArrow() {
         </View>
         }
 
-        <View gap={8}>
-          <View horizontal style={{marginLeft: 8, marginRight: 8, alignItems: 'center'}}>
-            <Text variant='large-title' style={{flex: 1}}>Mới cập nhật</Text>
-            <Link style={{textDecoration: 'none', color: theme.colors.themeColor, fontWeight: 'bold'}} to={'/comics?sort_by=last_updated_chapter_at-desc'}>Xem thêm</Link>
+        <LazyLoad>
+          <View gap={8}>
+            <View horizontal style={{marginLeft: 8, marginRight: 8, alignItems: 'center'}}>
+              <Text variant='large-title' style={{flex: 1}}>Mới cập nhật</Text>
+              <Link style={{textDecoration: 'none', color: theme.colors.themeColor, fontWeight: 'bold'}} to={'/comics?sort_by=last_updated_chapter_at-desc'}>Xem thêm</Link>
+            </View>
+            <Card style={{paddingLeft: 0, paddingRight: 0}} animation="slideLeftIn">
+              <ScrollMenu
+                LeftArrow={LeftArrow}
+                RightArrow={RightArrow}
+                scrollContainerClassName={'scroll-menu-container'}
+                itemClassName={'scroll-menu-item'}
+              >
+                {newestQuery.data.comics.map((item : Comic) => <ComicItem.Vertical shadowEffect _data={item}/>)}
+              </ScrollMenu>
+            </Card>
           </View>
-          <Card style={{paddingLeft: 0, paddingRight: 0}} animation="slideLeftIn">
-            <ScrollMenu
-              LeftArrow={LeftArrow}
-              RightArrow={RightArrow}
-              scrollContainerClassName={'scroll-menu-container'}
-              itemClassName={'scroll-menu-item'}
-            >
-              {newestQuery.data.comics.map((item : Comic) => <ComicItem.Vertical shadowEffect _data={item}/>)}
-            </ScrollMenu>
-          </Card>
-        </View>
+        </LazyLoad>
 
-        <View gap={8}>
-          <View horizontal style={{marginLeft: 8, marginRight: 8, alignItems: 'center'}}>
-            <Text variant='large-title' style={{flex: 1}}>Được yêu thích nhất</Text>
-            <Link style={{textDecoration: 'none', color: theme.colors.themeColor, fontWeight: 'bold'}} to={'/comics?sort_by=likes-desc'}>Xem thêm</Link>
+        <LazyLoad>
+          <View gap={8}>
+            <View horizontal style={{marginLeft: 8, marginRight: 8, alignItems: 'center'}}>
+              <Text variant='large-title' style={{flex: 1}}>Được yêu thích nhất</Text>
+              <Link style={{textDecoration: 'none', color: theme.colors.themeColor, fontWeight: 'bold'}} to={'/comics?sort_by=likes-desc'}>Xem thêm</Link>
+            </View>
+            <Card style={{paddingLeft: 0, paddingRight: 0}}>
+              <ScrollMenu
+                LeftArrow={LeftArrow}
+                RightArrow={RightArrow}
+                scrollContainerClassName={'scroll-menu-container'}
+                itemClassName={'scroll-menu-item'}
+              >
+                {mostFavoriteQuery.data.comics.map((item : Comic) => <ComicItem.Horizontal shadowEffect _data={item} style={{width: 440}}/>)}
+              </ScrollMenu>
+            </Card>
           </View>
-          <Card style={{paddingLeft: 0, paddingRight: 0}}>
-            <ScrollMenu
-              LeftArrow={LeftArrow}
-              RightArrow={RightArrow}
-              scrollContainerClassName={'scroll-menu-container'}
-              itemClassName={'scroll-menu-item'}
-            >
-              {mostFavoriteQuery.data.comics.map((item : Comic) => <ComicItem.Horizontal shadowEffect _data={item} style={{width: 440}}/>)}
-            </ScrollMenu>
-          </Card>
-        </View>
+        </LazyLoad>
 
-        <View gap={8}>
-          <View horizontal style={{marginLeft: 8, marginRight: 8, alignItems: 'center'}}>
-            <Text variant='large-title' style={{flex: 1}}>Được xem nhiều nhất</Text>
-            <Link style={{textDecoration: 'none', color: theme.colors.themeColor, fontWeight: 'bold'}} to={'/comics?sort_by=views-desc'}>Xem thêm</Link>
+        <LazyLoad>
+          <View gap={8}>
+            <View horizontal style={{marginLeft: 8, marginRight: 8, alignItems: 'center'}}>
+              <Text variant='large-title' style={{flex: 1}}>Được xem nhiều nhất</Text>
+              <Link style={{textDecoration: 'none', color: theme.colors.themeColor, fontWeight: 'bold'}} to={'/comics?sort_by=views-desc'}>Xem thêm</Link>
+            </View>
+            <Card style={{paddingLeft: 0, paddingRight: 0}}>
+              <ScrollMenu
+                LeftArrow={LeftArrow}
+                RightArrow={RightArrow}
+                scrollContainerClassName={'scroll-menu-container'}
+                itemClassName={'scroll-menu-item'}
+              >
+                {mostViewedQuery.data.comics.map((item : Comic) => <ComicItem.Slide shadowEffect style={{width: 1024}} _data={item}/>)}
+              </ScrollMenu>
+            </Card>
           </View>
-          <Card style={{paddingLeft: 0, paddingRight: 0}}>
-            <ScrollMenu
-              LeftArrow={LeftArrow}
-              RightArrow={RightArrow}
-              scrollContainerClassName={'scroll-menu-container'}
-              itemClassName={'scroll-menu-item'}
-            >
-              {mostViewedQuery.data.comics.map((item : Comic) => <ComicItem.Slide shadowEffect style={{width: 1024}} _data={item}/>)}
-            </ScrollMenu>
-          </Card>
-        </View>
+        </LazyLoad>
       </Page.Content>
     </Page.Container>
   )
