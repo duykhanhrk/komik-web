@@ -8,6 +8,7 @@ export {default as Page } from './Page';
 export {default as Card } from './Card';
 export {default as BackgroundImage } from './BackgroundImage';
 export {default as View } from './View';
+export {default as Grid } from './Grid';
 export {default as Tag } from './Tag';
 export {default as ThemeProvider } from './ThemeProvider';
 export {default as AppNotificationsSystem } from './AppNotificationsSystem';

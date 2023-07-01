@@ -18,7 +18,6 @@ const Content = styled.div<ContentProps>`
   flex: 1;
   display: flex;
   flex-direction: column;
-  width: 1366px;
   max-width: auto;
   flex-grow: 1;
   gap: ${props => props.gap || 8}px;

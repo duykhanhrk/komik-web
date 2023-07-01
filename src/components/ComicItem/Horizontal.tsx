@@ -5,15 +5,23 @@ import styled from "styled-components";
 import Text from "../Text";
 import View from "../View";
 import Image from "./Image";
+import {default as Animations} from '../Animations';
 
 interface HorizontalProps extends React.HTMLProps<HTMLDivElement> {
   _data: Comic;
   variant?: 'primary' | 'secondary' | 'tertiary' | 'quaternary' | 'quinary';
   _size?: 'small' | 'normal' | 'medium' | 'large';
   shadowEffect?: boolean;
+  animation?: 'slideBottomIn' | 'slideLeftIn' | 'slideRightIn' | 'slideTopIn';
+  animationDuration?: number;
 }
 
-const Container = styled.div<{variant?: 'primary' | 'secondary' | 'tertiary' | 'quaternary' | 'quinary', shadowEffect?: boolean}>`
+const Container = styled.div<{
+  variant?: 'primary' | 'secondary' | 'tertiary' | 'quaternary' | 'quinary',
+  shadowEffect?: boolean;
+  animation?: 'slideBottomIn' | 'slideLeftIn' | 'slideRightIn' | 'slideTopIn';
+  animationDuration?: number;
+}>`
   display: flex;
   flex-direction: row;
   padding: 8px;
@@ -39,6 +47,19 @@ const Container = styled.div<{variant?: 'primary' | 'secondary' | 'tertiary' | '
   &:hover {
     ${props => props.shadowEffect ?  'box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;' : ''}
   }
+  animation: ${
+    props => props.animation === 'slideBottomIn'
+      ? Animations.slideBottomIn
+      : props.animation === 'slideLeftIn'
+      ? Animations.slideLeftIn
+      : props.animation === 'slideRightIn'
+      ? Animations.slideRightIn
+      : props.animation === 'slideTopIn'
+      ? Animations.slideTopIn
+      : ''
+  } ${
+    props => props.animationDuration ? `${props.animationDuration}s` : '0.5s'
+  } ease;
 `;
 
 const TextContainer = styled.div<{_size?: 'small' | 'normal' | 'medium' | 'large'}>`
@@ -60,6 +81,8 @@ function Horizontal(props: HorizontalProps) {
         onClick={() => navigate(`/comics/${_data.id}`)}
         variant={props.variant}
         shadowEffect={props.shadowEffect}
+        animation={props.animation}
+        animationDuration={props.animationDuration}
       >
         <View centerContent>
           <Image variant={props._size} style={{borderRadius: 8}} src={_data.image_url}/>

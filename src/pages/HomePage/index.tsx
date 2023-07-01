@@ -1,8 +1,8 @@
 import {Category, CategoryService, Comic, ComicService} from '@services';
-import { Carousel } from 'react-responsive-carousel';
-import { useQuery } from 'react-query';
-import { Button, Card, ComicItem, Page, Text, View } from '@components';
-import { ScrollMenu, VisibilityContext } from 'react-horizontal-scrolling-menu';
+import {Carousel} from 'react-responsive-carousel';
+import {useQuery} from 'react-query';
+import {Button, Card, ComicItem, Grid, Page, Text, View} from '@components';
+import {ScrollMenu, VisibilityContext } from 'react-horizontal-scrolling-menu';
 import {useNavigate} from 'react-router';
 import LoadingPage from '../LoadingPage';
 import ErrorPage from '../ErrorPage';
@@ -13,28 +13,33 @@ import {Link} from 'react-router-dom';
 import {useTheme} from 'styled-components';
 import LazyLoad from 'react-lazyload';
 
+const chunk = (arr: Array<any>, size: number) =>
+  Array.from({ length: Math.ceil(arr.length / size) }, (v, i) =>
+    arr.slice(i * size, i * size + size)
+  );
+
 function HomePage() {
   const navigate = useNavigate();
   const theme = useTheme();
 
   const categoryQuery = useQuery({
     queryKey: ['app', 'categories'],
-    queryFn: CategoryService.getAllAsync
+    queryFn: () => CategoryService.getAllAsync()
   });
 
   const readQuery = useQuery({
     queryKey: ['app', 'comics', 'read'],
-    queryFn: () => ComicService.getReadAsync({per_page: 10})
+    queryFn: () => ComicService.getReadAsync({per_page: 20})
   });
 
   const newestQuery = useQuery({
     queryKey: ['app', 'comics', 'newest'],
-    queryFn: () => ComicService.getAllAsync({sort_by: 'last_updated_chapter_at-desc', per_page: 10})
+    queryFn: () => ComicService.getAllAsync({sort_by: 'last_updated_chapter_at-desc', per_page: 8})
   });
 
   const mostFavoriteQuery = useQuery({
     queryKey: ['app', 'comics', 'most_favorite'],
-    queryFn: () => ComicService.getAllAsync({sort_by: 'likes-desc', per_page: 10})
+    queryFn: () => ComicService.getAllAsync({sort_by: 'likes-desc', per_page: 6})
   });
 
   const mostViewedQuery = useQuery({
@@ -91,6 +96,8 @@ function RightArrow() {
             showThumbs={false}
             showStatus={false}
             showArrows={false}
+            autoPlay={true}
+            infiniteLoop={true}
           >
             {newestQuery.data.comics.map((item: Comic) => <ComicItem.Slide shadowEffect _data={item} style={{margin: 8}} />)}
           </Carousel>
@@ -101,16 +108,29 @@ function RightArrow() {
           RightArrow={RightArrow}
           scrollContainerClassName={'scroll-menu-container'}
         >
-          {categoryQuery.data.categories.map((item : Category) => (
-            <Card
-              key={item.id.toString()}
-              shadowEffect
-              style={{marginLeft: 4, marginRight: 4, marginTop: 8, marginBottom: 8, height: 56, width: 180, justifyContent: 'center', alignItems: 'center'}}
-              onClick={() => navigate(`/comics?category_id=${item.id}`)}
-              animation="slideLeftIn"
-            >
-              <Text>{item.name}</Text>
-            </Card>
+          {chunk(categoryQuery.data.categories, 2).map((item : any) => (
+            <View>
+              <Card
+                key={item[0].id.toString()}
+                shadowEffect
+                style={{marginLeft: 4, marginRight: 4, marginTop: 8, marginBottom: 4, height: 56, width: 180, justifyContent: 'center', alignItems: 'center'}}
+                onClick={() => navigate(`/comics?category_id=${item[0].id}`)}
+                animation="slideLeftIn"
+              >
+                <Text>{item[0].name}</Text>
+              </Card>
+              {item[1] &&
+              <Card
+                key={item[1].id.toString()}
+                shadowEffect
+                style={{marginLeft: 4, marginRight: 4, marginTop: 4, marginBottom: 8, height: 56, width: 180, justifyContent: 'center', alignItems: 'center'}}
+                onClick={() => navigate(`/comics?category_id=${item[1].id}`)}
+                animation="slideLeftIn"
+              >
+                <Text>{item[1].name}</Text>
+              </Card>
+              }
+            </View>
            ))}
         </ScrollMenu>
 
@@ -156,16 +176,13 @@ function RightArrow() {
               <Text variant='large-title' style={{flex: 1}}>Mới cập nhật</Text>
               <Link style={{textDecoration: 'none', color: theme.colors.themeColor, fontWeight: 'bold'}} to={'/comics?sort_by=last_updated_chapter_at-desc'}>Xem thêm</Link>
             </View>
-            <Card style={{paddingLeft: 0, paddingRight: 0}} animation="slideLeftIn">
-              <ScrollMenu
-                LeftArrow={LeftArrow}
-                RightArrow={RightArrow}
-                scrollContainerClassName={'scroll-menu-container'}
-                itemClassName={'scroll-menu-item'}
-              >
-                {newestQuery.data.comics.map((item : Comic) => <ComicItem.Vertical shadowEffect _data={item}/>)}
-              </ScrollMenu>
-            </Card>
+            <Grid templateColumns="auto auto" templateRows="auto auto auto auto" style={{paddingLeft: 0, paddingRight: 0, gap: 8}} animation="slideLeftIn">
+              {newestQuery.data.comics.map((item : Comic) => (
+                <LazyLoad>
+                  <ComicItem.Horizontal shadowEffect _data={item}/>
+                </LazyLoad>
+              ))}
+            </Grid>
           </View>
         </LazyLoad>
 
@@ -175,16 +192,11 @@ function RightArrow() {
               <Text variant='large-title' style={{flex: 1}}>Được yêu thích nhất</Text>
               <Link style={{textDecoration: 'none', color: theme.colors.themeColor, fontWeight: 'bold'}} to={'/comics?sort_by=likes-desc'}>Xem thêm</Link>
             </View>
-            <Card style={{paddingLeft: 0, paddingRight: 0}}>
-              <ScrollMenu
-                LeftArrow={LeftArrow}
-                RightArrow={RightArrow}
-                scrollContainerClassName={'scroll-menu-container'}
-                itemClassName={'scroll-menu-item'}
-              >
-                {mostFavoriteQuery.data.comics.map((item : Comic) => <ComicItem.Horizontal shadowEffect _data={item} style={{width: 440}}/>)}
-              </ScrollMenu>
-            </Card>
+            <View style={{paddingLeft: 0, paddingRight: 0, gap: 8}}>
+              {mostFavoriteQuery.data.comics.map((item : Comic) => (
+                <ComicItem.Horizontal shadowEffect _data={item} style={{width: '100%'}}/>
+              ))}
+            </View>
           </View>
         </LazyLoad>
 
