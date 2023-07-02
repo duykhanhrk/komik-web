@@ -44,7 +44,7 @@ function HomePage() {
 
   const mostViewedQuery = useQuery({
     queryKey: ['app', 'comics', 'most_viewed'],
-    queryFn: () => ComicService.getAllAsync({sort_by: 'views-desc', per_page: 10})
+    queryFn: () => ComicService.getAllAsync({sort_by: 'views-desc', per_page: 8})
   });
 
   const upComingQuery = useQuery({
@@ -178,9 +178,7 @@ function RightArrow() {
             </View>
             <Grid templateColumns="auto auto" templateRows="auto auto auto auto" style={{paddingLeft: 0, paddingRight: 0, gap: 8}} animation="slideLeftIn">
               {newestQuery.data.comics.map((item : Comic) => (
-                <LazyLoad>
-                  <ComicItem.Horizontal shadowEffect _data={item}/>
-                </LazyLoad>
+                <ComicItem.Horizontal shadowEffect _data={item}/>
               ))}
             </Grid>
           </View>
@@ -206,16 +204,9 @@ function RightArrow() {
               <Text variant='large-title' style={{flex: 1}}>Được xem nhiều nhất</Text>
               <Link style={{textDecoration: 'none', color: theme.colors.themeColor, fontWeight: 'bold'}} to={'/comics?sort_by=views-desc'}>Xem thêm</Link>
             </View>
-            <Card style={{paddingLeft: 0, paddingRight: 0}}>
-              <ScrollMenu
-                LeftArrow={LeftArrow}
-                RightArrow={RightArrow}
-                scrollContainerClassName={'scroll-menu-container'}
-                itemClassName={'scroll-menu-item'}
-              >
-                {mostViewedQuery.data.comics.map((item : Comic) => <ComicItem.Slide shadowEffect style={{width: 1024}} _data={item}/>)}
-              </ScrollMenu>
-            </Card>
+            <Grid templateColumns="auto auto" templateRows="auto auto auto auto" style={{paddingLeft: 0, paddingRight: 0, gap: 8}} animation="slideLeftIn">
+                {mostViewedQuery.data.comics.map((item : Comic) => <ComicItem.Horizontal shadowEffect _data={item}/>)}
+            </Grid>
           </View>
         </LazyLoad>
       </Page.Content>

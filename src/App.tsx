@@ -3,7 +3,7 @@ import { Navigate, Routes, Route } from "react-router-dom";
 import { ComicDetailPage, ComicPage, ErrorPage, HomePage, IntroductionPage, LoadingPage, PlanPage, ResetPasswordPage, SendVerificationCodePage, SignInPage, SignUpPage, UserProfilePage } from '@pages';
 import styled from 'styled-components';
 import { useAppDispatch, useAppSelector } from "@hooks";
-import { Header, Footer, Text, AdminNavigation, SessionLayout, Layout } from "@components";
+import { Header, Footer, Text, AdminNavigation, SessionLayout, Layout, Card, View } from "@components";
 import useTryLogin from "./hooks/useTryLogin";
 import {useEffect} from "react";
 import ReadingPage from "./pages/ReadingPage";
@@ -62,6 +62,7 @@ function App() {
       dispatch(setRole(0))
     }
   }
+  View
 
   return (
     <Layout.AppContainer id="rootScrollable">

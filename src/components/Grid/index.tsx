@@ -12,6 +12,8 @@ interface GridProps {
   animationDuration?: number;
   templateColumns?: string;
   templateRows?: string;
+  autoColumns?: string;
+  autoRows?: string;
 }
 
 const Grid = styled.div<GridProps>`
@@ -19,6 +21,8 @@ const Grid = styled.div<GridProps>`
   grid-auto-flow: ${props => props.flow ? props.flow : 'row'};
   grid-template-columns: ${props => props.templateColumns ? props.templateColumns : 'none'};
   grid-template-rows: ${props => props.templateRows ? props.templateRows : 'none'};
+  grid-auto-columns: ${props => props.autoColumns ? props.autoColumns : 'none'};
+  grid-auto-rows: ${props => props.autoRows ? props.autoRows : 'none'};
   color: ${
     props => props.variant && props.variant === 'primary'?
       props.theme.colors.themeForeground

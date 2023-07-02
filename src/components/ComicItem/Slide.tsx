@@ -33,6 +33,10 @@ const TextContainer = styled.div`
   display: flex;
   flex-direction: column;
   gap: 8px;
+
+  @media (max-width: 720px) {
+    display: none;
+  }
 `;
 
 function Slide(props: SlideProps) {
