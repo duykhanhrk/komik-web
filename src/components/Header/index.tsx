@@ -8,7 +8,8 @@ import Button from "../Button";
 import {default as Dropdown} from '../Dropdown';
 import Card from "../Card";
 import {SearchInput, UserControl} from "@components";
-import {toggleRole} from "@redux/sessionSlice";
+import {eraseUserTokens, toggleRole} from "@redux/sessionSlice";
+import {useQueryClient} from "react-query";
 
 const Container = styled.div`
   display: flex;
@@ -68,6 +69,7 @@ function Header() {
   const query = useUserProfileQuery();
   const theme = useTheme();
   const navigate = useNavigate();
+  const queryClient = useQueryClient();
 
   const {userRole} = useAppSelector(state => state.session);
 
@@ -183,14 +185,25 @@ function Header() {
                 name: 'plan',
                 content: <UserControl.Plan />,
                 buttonContent: ({isActive}) => <Icon icon={isActive ? 'mingcute:vip-4-fill' : 'mingcute:vip-4-line'} style={{color: theme.colors.foreground, height: 24, width: 24}} />,
-              }, {
-                name: 'main-panel',
-                content: <UserControl.MainPanel />,
-                buttonContent: () =>  <Avatar src={query.isSuccess && query.data.user.avatar_url ? query.data.user.avatar_url : theme.assets.defaultAvatar}/>
               }
             ]}
             buttonStyle={{height: 36, width: 36, padding: 6, backgroundColor: 'transparent'}}
           />
+          <Button ebonsai square
+            onClick={() => {
+              dispatch(eraseUserTokens());
+              queryClient.clear();
+            }}
+          >
+            <Icon icon={'mingcute:exit-line'} style={{color: theme.colors.foreground, height: 24, width: 24}}/>
+          </Button>
+          <Button ebonsai square
+            onClick={() => {
+              navigate('/profile');
+            }}
+          >
+            <Avatar src={query.isSuccess && query.data.user.avatar_url ? query.data.user.avatar_url : theme.assets.defaultAvatar}/>
+          </Button>
         </Card>
       </UserControlContainer>
     </Container>

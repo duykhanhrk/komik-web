@@ -1,9 +1,8 @@
 
 import { Navigate, Routes, Route } from "react-router-dom";
 import { ComicDetailPage, ComicPage, ErrorPage, HomePage, IntroductionPage, LoadingPage, PlanPage, ResetPasswordPage, SendVerificationCodePage, SignInPage, SignUpPage, UserProfilePage } from '@pages';
-import styled from 'styled-components';
 import { useAppDispatch, useAppSelector } from "@hooks";
-import { Header, Footer, Text, AdminNavigation, SessionLayout, Layout, Card, View } from "@components";
+import { Header, Text, AdminNavigation, SessionLayout, Layout, View } from "@components";
 import useTryLogin from "./hooks/useTryLogin";
 import {useEffect} from "react";
 import ReadingPage from "./pages/ReadingPage";
@@ -18,6 +17,41 @@ import CategoryMNPage from "./pages/CategoryMNPage";
 import ReportMNPage from "./pages/ReportMNPage";
 import { useLocation, matchPath } from "react-router";
 import {setRole} from "@redux/sessionSlice";
+
+function Content() {
+  const { userTokens, currentRole } = useAppSelector(state => state.session);
+
+  const isAuthenticated = userTokens.refresh_token && userTokens.access_token ? true : false;
+  const isAdmin = currentRole !== 0;
+
+  return (
+    <Routes>
+      <Route path="/admin/profile" element={isAuthenticated ? (isAdmin ? <UserProfilePage /> : <Text>403</Text>) : <Navigate to={'/sign_in'} />}/>
+      <Route path="/admin/categories" element={isAuthenticated ? (isAdmin ? <CategoryMNPage /> : <Text>403</Text>) : <Navigate to={'/sign_in'} />}/>
+      <Route path="/admin/plans" element={isAuthenticated ? (isAdmin ? <PlanMNPage /> : <Text>403</Text>) : <Navigate to={'/sign_in'} />}/>
+      <Route path="/admin/users" element={isAuthenticated ? (isAdmin ? <UserMNPage /> : <Text>403</Text>) : <Navigate to={'/sign_in'} />}/>
+      <Route path="/admin/feedbacks" element={isAuthenticated ? (isAdmin ? <FeedbackMNPage /> : <Text>403</Text>) : <Navigate to={'/sign_in'} />}/>
+      <Route path="/admin/comics" element={isAuthenticated ? (isAdmin ? <ComicMNPage /> : <Text>403</Text>) : <Navigate to={'/sign_in'} />}/>
+      <Route path="/admin/comics/:comic_id" element={isAuthenticated ? (isAdmin ? <ComicDetailMNPage /> : <Text>403</Text>) : <Navigate to={'/sign_in'} />}/>
+      <Route path="/admin/reports" element={isAuthenticated ? (isAdmin ? <ReportMNPage /> : <Text>403</Text>) : <Navigate to={'/sign_in'} />}/>
+      <Route path="/" element={isAuthenticated ? (!isAdmin ? <HomePage/> : <Text>403</Text>) : <Navigate to={'/sign_in'}/>} />
+      <Route path="/comics" element={isAuthenticated ? (!isAdmin ? <ComicPage /> : <Text>403</Text>) : <Navigate to={'/sign_in'}/>}></Route>
+      <Route path="/comics/:comic_id" element={isAuthenticated ? (!isAdmin ? <ComicDetailPage/> : <Text>403</Text>) : <Navigate to={'/sign_in'}/>} />
+      <Route path="/comics/:comic_id/chapters/:chapter_id" element={isAuthenticated ? (!isAdmin ? <ReadingPage/> : <Text>403</Text>) : <Navigate to={'/sign_in'}/>} />
+      <Route path="/plans" element={isAuthenticated ? (!isAdmin ? <PlanPage /> : <Text>403</Text>) : <Navigate to={'/sign_in'}/>}></Route>
+      <Route path="/profile" element={isAuthenticated ? (!isAdmin ? <UserProfilePage /> : <Text>403</Text>) : <Navigate to={'/sign_in'}/>}></Route>
+      <Route path="/introduction" element={isAuthenticated ? (!isAdmin ? <IntroductionPage /> : <Text>403</Text>) : <Navigate to={'/sign_in'}/>}></Route>
+      <Route path="/policy_and_terms" element={isAuthenticated ? (!isAdmin ? <PolicyAndTermsPage /> : <Text>403</Text>) : <Navigate to={'/sign_in'}/>}></Route>
+      <Route path="/feedbacks" element={isAuthenticated ? (!isAdmin ? <FeedbackPage /> : <Text>403</Text>) : <Navigate to={'/sign_in'}/>}></Route>
+      <Route path="/sign_in" element={isAuthenticated ? (isAdmin ? <Navigate to={'/admin/profile'} /> : <Navigate to={'/'} />) : <SignInPage/>} />
+      <Route path="/sign_up" element={isAuthenticated ? (isAdmin ? <Navigate to={'/admin/profile'} /> : <Navigate to={'/'} />) : <SignUpPage/>} />
+      <Route path="/reset_password" element={isAuthenticated ? (isAdmin ? <Navigate to={'/admin/profile'} /> : <Navigate to={'/'} />) : <SendVerificationCodePage/>} />
+      <Route path="/reset_password/:email" element={isAuthenticated ? (isAdmin ? <Navigate to={'/admin/profile'} /> : <Navigate to={'/'} />) : <ResetPasswordPage/>} />
+      <Route path="/sign_in" element={isAuthenticated ? (isAdmin ? <Navigate to={'/admin/profile'} /> : <Navigate to={'/'} />) : <SignInPage/>} />
+      <Route path="*" element={<p>404</p>} />
+    </Routes>
+  )
+}
 
 function App() {
   const { userTokens, userRole, currentRole } = useAppSelector(state => state.session);
@@ -62,44 +96,39 @@ function App() {
       dispatch(setRole(0))
     }
   }
-  View
 
   return (
     <Layout.AppContainer id="rootScrollable">
-      <Layout.AppScalableContainer horizontal={(isAuthenticated && isAdmin) || (!isAuthenticated)}>
-        <Layout.AppHeaderContainer horizontal={(isAuthenticated && isAdmin) || (!isAuthenticated)} scalable={!isAuthenticated}>
-          {isAuthenticated ? (isAdmin ? <AdminNavigation /> : <Header/>) : <SessionLayout.SilverSpace />}
-        </Layout.AppHeaderContainer>
-        <Layout.AppContentContainer style={{}} horizontal={(isAuthenticated && isAdmin) || (!isAuthenticated)} scalable={isAuthenticated} ebonsaiShelf={!isAuthenticated}>
-          {!isAuthenticated && <SessionLayout.NavigationOrnament />}
-          <Routes>
-            <Route path="/admin/profile" element={isAuthenticated ? (isAdmin ? <UserProfilePage /> : <Text>403</Text>) : <Navigate to={'/sign_in'} />}/>
-            <Route path="/admin/categories" element={isAuthenticated ? (isAdmin ? <CategoryMNPage /> : <Text>403</Text>) : <Navigate to={'/sign_in'} />}/>
-            <Route path="/admin/plans" element={isAuthenticated ? (isAdmin ? <PlanMNPage /> : <Text>403</Text>) : <Navigate to={'/sign_in'} />}/>
-            <Route path="/admin/users" element={isAuthenticated ? (isAdmin ? <UserMNPage /> : <Text>403</Text>) : <Navigate to={'/sign_in'} />}/>
-            <Route path="/admin/feedbacks" element={isAuthenticated ? (isAdmin ? <FeedbackMNPage /> : <Text>403</Text>) : <Navigate to={'/sign_in'} />}/>
-            <Route path="/admin/comics" element={isAuthenticated ? (isAdmin ? <ComicMNPage /> : <Text>403</Text>) : <Navigate to={'/sign_in'} />}/>
-            <Route path="/admin/comics/:comic_id" element={isAuthenticated ? (isAdmin ? <ComicDetailMNPage /> : <Text>403</Text>) : <Navigate to={'/sign_in'} />}/>
-            <Route path="/admin/reports" element={isAuthenticated ? (isAdmin ? <ReportMNPage /> : <Text>403</Text>) : <Navigate to={'/sign_in'} />}/>
-            <Route path="/" element={isAuthenticated ? (!isAdmin ? <HomePage/> : <Text>403</Text>) : <Navigate to={'/sign_in'}/>} />
-            <Route path="/comics" element={isAuthenticated ? (!isAdmin ? <ComicPage /> : <Text>403</Text>) : <Navigate to={'/sign_in'}/>}></Route>
-            <Route path="/comics/:comic_id" element={isAuthenticated ? (!isAdmin ? <ComicDetailPage/> : <Text>403</Text>) : <Navigate to={'/sign_in'}/>} />
-            <Route path="/comics/:comic_id/chapters/:chapter_id" element={isAuthenticated ? (!isAdmin ? <ReadingPage/> : <Text>403</Text>) : <Navigate to={'/sign_in'}/>} />
-            <Route path="/plans" element={isAuthenticated ? (!isAdmin ? <PlanPage /> : <Text>403</Text>) : <Navigate to={'/sign_in'}/>}></Route>
-            <Route path="/profile" element={isAuthenticated ? (!isAdmin ? <UserProfilePage /> : <Text>403</Text>) : <Navigate to={'/sign_in'}/>}></Route>
-            <Route path="/introduction" element={isAuthenticated ? (!isAdmin ? <IntroductionPage /> : <Text>403</Text>) : <Navigate to={'/sign_in'}/>}></Route>
-            <Route path="/policy_and_terms" element={isAuthenticated ? (!isAdmin ? <PolicyAndTermsPage /> : <Text>403</Text>) : <Navigate to={'/sign_in'}/>}></Route>
-            <Route path="/feedbacks" element={isAuthenticated ? (!isAdmin ? <FeedbackPage /> : <Text>403</Text>) : <Navigate to={'/sign_in'}/>}></Route>
-            <Route path="/sign_in" element={isAuthenticated ? (isAdmin ? <Navigate to={'/admin/profile'} /> : <Navigate to={'/'} />) : <SignInPage/>} />
-            <Route path="/sign_up" element={isAuthenticated ? (isAdmin ? <Navigate to={'/admin/profile'} /> : <Navigate to={'/'} />) : <SignUpPage/>} />
-            <Route path="/reset_password" element={isAuthenticated ? (isAdmin ? <Navigate to={'/admin/profile'} /> : <Navigate to={'/'} />) : <SendVerificationCodePage/>} />
-            <Route path="/reset_password/:email" element={isAuthenticated ? (isAdmin ? <Navigate to={'/admin/profile'} /> : <Navigate to={'/'} />) : <ResetPasswordPage/>} />
-            <Route path="/sign_in" element={isAuthenticated ? (isAdmin ? <Navigate to={'/admin/profile'} /> : <Navigate to={'/'} />) : <SignInPage/>} />
-            <Route path="*" element={<p>404</p>} />
-          </Routes>
-          {!isAuthenticated && <SessionLayout.ControlOrnament />}
-        </Layout.AppContentContainer>
-      </Layout.AppScalableContainer>
+      {!isAuthenticated ?
+        <Layout.AppScalableContainer horizontal>
+          <Layout.AppHeaderContainer horizontal scalable>
+            <SessionLayout.SilverSpace />
+          </Layout.AppHeaderContainer>
+          <Layout.AppContentContainer horizontal ebonsaiShelf>
+            <SessionLayout.NavigationOrnament />
+            <Content />
+            <SessionLayout.ControlOrnament />
+          </Layout.AppContentContainer>
+        </Layout.AppScalableContainer>
+      : !isAdmin ?
+        <Layout.AppScalableContainer>
+          <Layout.AppHeaderContainer>
+            <Header/>
+          </Layout.AppHeaderContainer>
+          <Layout.AppContentContainer scalable>
+            <Content />
+          </Layout.AppContentContainer>
+        </Layout.AppScalableContainer>
+      :
+        <Layout.AppScalableContainer horizontal>
+          <Layout.AppHeaderContainer horizontal>
+            <AdminNavigation />
+          </Layout.AppHeaderContainer>
+          <Layout.AppContentContainer horizontal scalable>
+            <Content />
+          </Layout.AppContentContainer>
+        </Layout.AppScalableContainer>
+      }
     </Layout.AppContainer>
   );
 }

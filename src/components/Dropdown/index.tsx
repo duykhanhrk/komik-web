@@ -153,6 +153,10 @@ function SelectionList<T>(props: SelectionListDrops<T>) {
   const dropdownRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
+    setSelectedItem(props.selectedItem);
+  }, [props.selectedItem]);
+
+  useEffect(() => {
     const handleOutsideClick = (event: MouseEvent) => {
       if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
         setIsOpen(false);
@@ -165,8 +169,6 @@ function SelectionList<T>(props: SelectionListDrops<T>) {
       document.removeEventListener('click', handleOutsideClick);
     };
   }, [dropdownRef]);
-
-  console.log('render dropdown')
 
   return (
     <Container ref={dropdownRef} style={props.style}>
