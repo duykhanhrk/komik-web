@@ -1,29 +1,40 @@
 import {Button, Card, ComicItem, Page, Text, View} from "@components";
 import {Icon} from "@iconify/react";
-import {ChapterService, ComicService} from "@services";
-import {useEffect, useState} from "react";
-import {useQuery} from "react-query";
+import {ComicService} from "@services";
+import {useEffect, useMemo, useState} from "react";
+import {useInfiniteQuery, useQuery} from "react-query";
 import {useNavigate, useParams} from "react-router";
 import {useTheme} from "styled-components";
 import ErrorPage from "../ErrorPage";
 import LoadingPage from "../LoadingPage";
+import InfiniteScroll from "react-infinite-scroller";
 
 function ControlPanel({hide, onHideChanged}: {hide: boolean, onHideChanged: (isHide: boolean) => void}) {
   const [isHide, setIsHide] = useState(hide);
 
   const theme = useTheme();
   const navigate = useNavigate();
-  const { comic_id, chapter_id } = useParams();
+  const params = useParams();
+  const comic_id = parseInt(params.comic_id!);
+  const chapter_id = parseInt(params.chapter_id!);
 
   useEffect(() => {
     setIsHide(hide);
   }, [hide])
 
-  const query = useQuery({
-    queryKey: ['app', 'comics', comic_id],
-    queryFn: () => ComicService.getDetailAsync(parseInt(comic_id || '')),
-    retry: 0
+  const query = useInfiniteQuery({
+    queryKey: ['app', 'comic', comic_id, 'chapters'],
+    queryFn: ({pageParam = 1}) => ComicService.getChaptersAsync(comic_id, {page: pageParam}),
+    getNextPageParam: (lastPage) => {
+      if (lastPage.paginate.page >= lastPage.paginate.total_pages) {
+        return null;
+      }
+
+      return lastPage.paginate.page + 1;
+    }
   });
+
+  const chapters = useMemo(() => query.data?.pages.flatMap(page => page.chapters), [query.data]);
 
   if (query.isLoading) {
     return <LoadingPage />
@@ -57,7 +68,12 @@ function ControlPanel({hide, onHideChanged}: {hide: boolean, onHideChanged: (isH
       </Card>
       <Card flex={1} animation="slideRightIn">
         <View scrollable>
-          {query.data.comic.chapters.map((item: any) => (
+          <InfiniteScroll
+                    loadMore={() => {}}
+                    hasMore={false}
+                    loader={<Text>Loading...</Text>}
+          >
+          {chapters!.map((item: any) => (
             <Card
               variant={item.id.toString() === chapter_id ? 'tertiary' : undefined}
               horizontal
@@ -68,6 +84,7 @@ function ControlPanel({hide, onHideChanged}: {hide: boolean, onHideChanged: (isH
               {!item.free && <Icon icon="mingcute:vip-1-line" style={{height: 20, width: 20, color: theme.colors.themeColor}}/>}
             </Card>
           ))}
+          </InfiniteScroll>
         </View>
       </Card>
     </View>
@@ -75,14 +92,17 @@ function ControlPanel({hide, onHideChanged}: {hide: boolean, onHideChanged: (isH
 }
 
 function ReadingArea({hide, onHideChanged}: {hide?: boolean, onHideChanged: (isHide: boolean) => void}) {
-  const theme = useTheme();
-  const navigate = useNavigate();
-  const { comic_id, chapter_id } = useParams();
   const [isHide, setIsHide] = useState(hide);
 
+  const theme = useTheme();
+  const navigate = useNavigate();
+  const params = useParams();
+  const comic_id = parseInt(params.comic_id!);
+  const chapter_id = parseInt(params.chapter_id!);
+
   const query = useQuery({
-    queryKey: ['comics', comic_id, 'chapters', chapter_id],
-    queryFn: () => ChapterService.getDetailAsync(parseInt(chapter_id || '0')),
+    queryKey: ['app', 'comics', comic_id, 'chapters', chapter_id],
+    queryFn: () => ComicService.getChapterDetailAsync(comic_id, chapter_id),
     retry: 0
   });
 

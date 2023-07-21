@@ -51,12 +51,12 @@ function Vertical(props: VerticalProps) {
   const { _data, style } = props;
 
   return (
-    <Link key={_data.id.toString()} to={`/comics/${_data.id}`} style={{textDecoration: 'none'}}>
+    <Link key={_data.id!.toString()} to={`/comics/${_data.id!}`} style={{textDecoration: 'none'}}>
       <Container
         shadowEffect={props.shadowEffect}
         animation={props.animation}
         animationDuration={props.animationDuration}
-        key={_data.id.toString()}
+        key={_data.id?.toString()}
         style={style}
       >
         <Image style={{borderRadius: 8}} variant="medium" src={_data.image_url}/>

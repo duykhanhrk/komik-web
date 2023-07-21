@@ -58,7 +58,6 @@ function ComicMNPage() {
       name: `[Tên truyện ${new Date().getTime()}]`,
       description: '[Mô tả]',
       other_names: '[Tên khác]',
-      author: '[Tên tác giả]',
       status: 'unfinished'
     }),
     onSettled: query.refetch
@@ -115,15 +114,6 @@ function ComicMNPage() {
             />
           </View>
           <View gap={8}>
-            <Text variant="title">Tác giả</Text>
-            <Input
-              variant="tertiary"
-              placeholder="Tác giả"
-              value={selectedItem?.author}
-              onChange={(e) => selectedItem && setSelectedItem({...selectedItem, author: e.target.value})}
-            />
-          </View>
-          <View gap={8}>
             <Text variant="title">Mô tả</Text>
             <TextArea
               variant="tertiary"
@@ -160,8 +150,7 @@ function ComicMNPage() {
                   id: 0,
                   name: '',
                   description: '',
-                  other_names: '',
-                  author: ''
+                  other_names: ''
                 });
                 actCUDHelper(create, noti, 'create');
               }}
@@ -192,7 +181,7 @@ function ComicMNPage() {
               <Card
                 horizontal
                 shadowEffect
-                key={item.id.toString()}
+                key={item.id!.toString()}
                 onClick={() => navigate(`/admin/comics/${item.id}`)}
                 animation="slideLeftIn"
               >
@@ -219,15 +208,12 @@ function ComicMNPage() {
                         <Tag numberOfLines={1}>{item.other_names}</Tag>
                       </View>
                       <View horizontal>
-                        <Tag>{item.author}</Tag>
-                      </View>
-                      <View horizontal>
                         <Tag>{item.status === 'finished' ? 'Hoàn thành' : 'Đang tiến hành'}</Tag>
                       </View>
                       <View horizontal gap={4}>
                         <Tag style={{gap: 8}}>
                           <Icon icon={'mingcute:heart-line'} style={{height: 16, width: 16, color: theme.colors.foreground}} />
-                          {item.likes}
+                          {item.favorites}
                         </Tag>
                         <Tag style={{gap: 8}}>
                           <Icon icon={'mingcute:eye-2-line'} style={{height: 16, width: 16, color: theme.colors.foreground}} />

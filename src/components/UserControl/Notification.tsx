@@ -25,7 +25,7 @@ const ItemContainer = styled.div`
 
 function NotificationItem({_data}: {_data: Notification}) {
   return (
-    <Card variant="tertiary" key={_data.id.toString()} style={{gap: 4}}>
+    <Card variant="tertiary" key={_data.id!.toString()} style={{gap: 4}}>
       <Text variant="title" numberOfLines={1}>{_data.message.title}</Text>
       <Text>{_data.message.body}</Text>
     </Card>

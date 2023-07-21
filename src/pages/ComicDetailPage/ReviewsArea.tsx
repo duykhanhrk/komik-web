@@ -4,7 +4,7 @@ import {useMemo, useState} from "react";
 import InfiniteScroll from "react-infinite-scroller";
 import {useInfiniteQuery, useMutation} from "react-query";
 import {useParams} from "react-router";
-import { Comment } from "@services";
+import {Review} from "@services";
 import {useTheme} from "styled-components";
 import moment from "moment";
 import {Icon} from "@iconify/react";
@@ -14,16 +14,18 @@ import {useNotifications} from "reapop";
 import { actCUDHelper } from "@helpers/CUDHelper";
 import LoadingPage from "../LoadingPage";
 
-function CommentsArea() {
-  const theme = useTheme();
-  const { comic_id } = useParams();
+function ReviewsArea() {
   const [modalMode, setModalMode] = useState<'create' | 'update' | 'loading' | 'close'>('close');
-  const [comment, setComment] = useState<Comment>({title: '', content: ''});
+  const [review, setReview] = useState<Review>({title: '', content: ''});
+
+  const theme = useTheme();
   const noti = useNotifications();
+  const params = useParams();
+  const comic_id = parseInt(params.comic_id!);
 
   const query = useInfiniteQuery({
-    queryKey: ['app', 'comic', comic_id, 'comments'],
-    queryFn: ({ pageParam = 1 }) => ComicService.getCommentsAsync(parseInt(comic_id || ''), {page: pageParam}),
+    queryKey: ['app', 'comic', comic_id, 'reviews'],
+    queryFn: ({ pageParam = 1 }) => ComicService.getReviewsAsync(comic_id, {page: pageParam}),
     getNextPageParam: (lastPage) => {
       if (lastPage.paginate.page >= lastPage.paginate.total_pages) {
         return null;
@@ -33,15 +35,15 @@ function CommentsArea() {
     }
   });
 
-  const fetchUserComment = () => {
+  const fetchUserReview = () => {
     setModalMode('loading');
-    ComicService.getUserCommentAsync(parseInt(comic_id || ''))
+    ComicService.getUserReviewAsync(comic_id)
       .then((data) => {
         if (data) {
-          setComment(data.comment);
+          setReview(data.review);
           setModalMode('update');
         } else {
-          setComment({title: '', content: ''});
+          setReview({title: '', content: ''});
           setModalMode('create');
         }
       })
@@ -52,21 +54,21 @@ function CommentsArea() {
   }
 
   const create: UseMutationResult = useMutation({
-    mutationFn: () => ComicService.createCommentAsync(parseInt(comic_id || ''), comment),
+    mutationFn: () => ComicService.createReviewAsync(comic_id, review),
     onSettled: query.refetch
   });
 
   const update: UseMutationResult = useMutation({
-    mutationFn: () => ComicService.updateCommentAsync(parseInt(comic_id || ''), comment),
+    mutationFn: () => ComicService.updateReviewAsync(comic_id, review),
     onSettled: query.refetch
   });
 
   const remove: UseMutationResult = useMutation({
-    mutationFn: () => ComicService.deleteCommentAsync(parseInt(comic_id || ''), comment.id!),
+    mutationFn: () => ComicService.deleteReviewAsync(comic_id, review.id!),
     onSettled: query.refetch
   });
 
-  const comments = useMemo(() => query.data?.pages.flatMap(page => page.comments), [query.data]);
+  const reviews = useMemo(() => query.data?.pages.flatMap(page => page.reviews), [query.data]);
 
   const customStyles = {
     content: {
@@ -102,8 +104,8 @@ function CommentsArea() {
             <Input
               variant="tertiary"
               placeholder="Tiêu đề"
-              value={comment.title}
-              onChange={(e) => setComment({...comment, title: e.target.value})}
+              value={review.title}
+              onChange={(e) => setReview({...review, title: e.target.value})}
             />
           </View>
           <View gap={8}>
@@ -112,8 +114,8 @@ function CommentsArea() {
               placeholder="Nội dung"
               rows={12}
               cols={40}
-              value={comment.content}
-              onChange={(e) => setComment({...comment, content: e.target.value})}
+              value={review.content}
+              onChange={(e) => setReview({...review, content: e.target.value})}
             />
           </View>
           <View horizontal gap={8}>
@@ -153,21 +155,21 @@ function CommentsArea() {
           variant="secondary"
           square
           onClick={() => {
-            fetchUserComment();
+            fetchUserReview();
           }}
         >
           <Icon icon="mingcute:pencil-2-line" height={24} width={24} style={{color: 'inhirit'}} />
         </Button>
       </View>
       <View gap={8} style={{height: 640, overflow: 'auto'}} scrollable>
-        {comments?.length !== 0 ?
+        {reviews?.length !== 0 ?
         <InfiniteScroll
           loadMore={() => {}}
           hasMore={false}
           loader={<Text>Loading...</Text>}
         >
           <View gap={8}>
-            {comments?.map((item: Comment) => (
+            {reviews?.map((item: Review) => (
               <View horizontal gap={8} style={{alignItems: 'center'}}>
                 <img src={item?.user?.avatar_url} style={{height: 40, width: 40, borderRadius: 20}} />
                 <Card flex={1} variant="tertiary">
@@ -195,4 +197,4 @@ function CommentsArea() {
   )
 }
 
-export default CommentsArea;
+export default ReviewsArea;

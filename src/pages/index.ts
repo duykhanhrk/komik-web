@@ -11,3 +11,5 @@ export {default as SendVerificationCodePage} from './SendVerificationCodePage';
 export {default as ResetPasswordPage} from './ResetPasswordPage';
 export {default as IntroductionPage} from './IntroductionPage';
 export {default as ReportMNPage} from './ReportMNPage';
+export {default as AuthorMNPage} from './AuthorMNPage';
+export {default as AuthorDetailMNPage} from './AuthorDetailMNPage';

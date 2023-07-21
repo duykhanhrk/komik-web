@@ -39,7 +39,7 @@ function HomePage() {
 
   const mostFavoriteQuery = useQuery({
     queryKey: ['app', 'comics', 'most_favorite'],
-    queryFn: () => ComicService.getAllAsync({sort_by: 'likes-desc', per_page: 6})
+    queryFn: () => ComicService.getAllAsync({sort_by: 'favorites-desc', per_page: 6})
   });
 
   const mostViewedQuery = useQuery({
@@ -113,7 +113,7 @@ function RightArrow() {
               <Card
                 key={item[0].id.toString()}
                 shadowEffect
-                style={{marginLeft: 4, marginRight: 4, marginTop: 8, marginBottom: 4, height: 56, width: 180, justifyContent: 'center', alignItems: 'center'}}
+                style={{marginLeft: 4, marginRight: 4, marginTop: 8, marginBottom: 4, height: 40, width: 180, justifyContent: 'center', alignItems: 'center'}}
                 onClick={() => navigate(`/comics?category_id=${item[0].id}`)}
                 animation="slideLeftIn"
               >
@@ -123,7 +123,7 @@ function RightArrow() {
               <Card
                 key={item[1].id.toString()}
                 shadowEffect
-                style={{marginLeft: 4, marginRight: 4, marginTop: 4, marginBottom: 8, height: 56, width: 180, justifyContent: 'center', alignItems: 'center'}}
+                style={{marginLeft: 4, marginRight: 4, marginTop: 4, marginBottom: 8, height: 40, width: 180, justifyContent: 'center', alignItems: 'center'}}
                 onClick={() => navigate(`/comics?category_id=${item[1].id}`)}
                 animation="slideLeftIn"
               >

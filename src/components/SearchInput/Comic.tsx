@@ -134,13 +134,13 @@ function Comic() {
             >
               {categoriesQuery.isSuccess && categoriesQuery.data.categories.map((item: Category, index: number) => (
                 <Tag
-                  variant={{ct: suggestion.data && suggestion.data.categoryIds.includes(item.id) ? 'quinary' : 'tertiary'}}
+                  variant={{ct: suggestion.data && suggestion.data.categoryIds.includes(item.id!) ? 'quinary' : 'tertiary'}}
                   onClick={() => {
                     if (suggestion.data) {
-                      if (suggestion.data.categoryIds.includes(item.id)) {
+                      if (suggestion.data.categoryIds.includes(item.id!)) {
                         setSuggestion({...suggestion, data: {categoryIds: suggestion.data.categoryIds.filter((id)  => id !== item.id)}});
                       } else {
-                        setSuggestion({...suggestion, data: {categoryIds: [...suggestion.data.categoryIds, item.id].sort((a, b) => a - b)}});
+                        setSuggestion({...suggestion, data: {categoryIds: [...suggestion.data.categoryIds, item.id!].sort((a, b) => a - b)}});
                       }
                     }
                   }}

@@ -11,8 +11,8 @@ import View from "../View";
 function LikedComics() {
   const theme = useTheme();
   const query = useInfiniteQuery({
-    queryKey: ['user', 'comis', 'liked'],
-    queryFn: ({ pageParam = 1 }) => ComicService.getLikedAsync({page: pageParam}),
+    queryKey: ['user', 'comis', 'favorited'],
+    queryFn: ({ pageParam = 1 }) => ComicService.getFavoritedAsync({page: pageParam}),
     getNextPageParam: (lastPage) => {
       if (lastPage.paginate.page >= lastPage.paginate.total_pages) {
         return null;

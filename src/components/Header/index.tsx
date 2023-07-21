@@ -55,6 +55,7 @@ const UserControlContainer = styled.div`
   display: flex;
   flex-direction: row;
   justify-content: flex-end;
+  gap: 4px;
 `;
 
 const Avatar = styled.img`
@@ -169,6 +170,7 @@ function Header() {
             <Icon icon={theme.mode === 'dark' ? 'mingcute:sun-line' : 'mingcute:moon-line'} style={{color: theme.colors.foreground, height: 24, width: 24}}/>
           </Button>
           <Dropdown.Group
+            contentStyle={{right: -4}}
             dropdowns={[{
                 name: 'followed-comics',
                 content: <UserControl.FollowedComics />,
@@ -185,25 +187,16 @@ function Header() {
                 name: 'plan',
                 content: <UserControl.Plan />,
                 buttonContent: ({isActive}) => <Icon icon={isActive ? 'mingcute:vip-4-fill' : 'mingcute:vip-4-line'} style={{color: theme.colors.foreground, height: 24, width: 24}} />,
+              }, {
+                name: 'main-panel',
+                content: <UserControl.MainPanel />,
+                contentStyle: {width: 200},
+                buttonContent: () => <Avatar src={query.isSuccess && query.data.user.avatar_url ? query.data.user.avatar_url : theme.assets.defaultAvatar}/>,
               }
+
             ]}
             buttonStyle={{height: 36, width: 36, padding: 6, backgroundColor: 'transparent'}}
           />
-          <Button ebonsai square
-            onClick={() => {
-              dispatch(eraseUserTokens());
-              queryClient.clear();
-            }}
-          >
-            <Icon icon={'mingcute:exit-line'} style={{color: theme.colors.foreground, height: 24, width: 24}}/>
-          </Button>
-          <Button ebonsai square
-            onClick={() => {
-              navigate('/profile');
-            }}
-          >
-            <Avatar src={query.isSuccess && query.data.user.avatar_url ? query.data.user.avatar_url : theme.assets.defaultAvatar}/>
-          </Button>
         </Card>
       </UserControlContainer>
     </Container>

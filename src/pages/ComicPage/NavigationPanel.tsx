@@ -103,7 +103,7 @@ function NavigationPanel() {
         </Link>
         {categoryQuery.data?.categories.map((item: Category) => (
           <Link to={`/comics?category_id=${item.id}`} style={{textDecoration: 'none', display: 'flex'}}>
-            <Card variant={categoryIds?.includes(item.id) ? 'tertiary' : undefined} style={{flex: 1}}>
+            <Card variant={categoryIds?.includes(item.id!) ? 'tertiary' : undefined} style={{flex: 1}}>
               <Text variant="inhirit">{item.name}</Text>
             </Card>
           </Link>

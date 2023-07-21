@@ -1,6 +1,5 @@
 import * as SessionService from './SessionService';
 import * as CategoryService from './CategoryService';
-import * as ChapterService from './ChapterService';
 import * as ComicService from './ComicService';
 import * as DocumentService from './DocumentService';
 import * as NotificationService from './NotificationService';
@@ -15,11 +14,11 @@ import * as PlanMNService from './PlanMNService';
 import * as UserMNService from './UserMNService';
 import * as FeedbackMNService from './FeedbackMNService';
 import * as ComicMNService from './ComicMNService';
+import * as AuthorMNService from './AuthorMNService';
 
 export {
   SessionService,
   CategoryService,
-  ChapterService,
   ComicService,
   PlanService,
   UserService,
@@ -33,7 +32,8 @@ export {
   PlanMNService,
   UserMNService,
   FeedbackMNService,
-  ComicMNService
+  ComicMNService,
+  AuthorMNService
 };
 
 export * from './Types';

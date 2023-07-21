@@ -55,7 +55,7 @@ function History() {
             <Card variant="tertiary">
               <Text variant="title">{item.plan.name}</Text>
               <Text><b>Ngày có hiệu lực: </b>{Moment(item.effective_date).format('DD/MM/YY HH:mm:ss')}</Text>
-              <Text><b>Ngày có hết hạn: </b>{Moment(item.expiry_date).format('DD/MM/YY HH:mm:ss')}</Text>
+              <Text><b>Ngày có hết hạn: </b>{Moment(item.expires_date).format('DD/MM/YY HH:mm:ss')}</Text>
               <Text><b>{'Tổng tiền: '}</b>{item.price.toString() + 'đ'}</Text>
               <Text><b>{'Phương thức TT: '}</b>{item.payment_method == 'card' ? 'Thẻ Master/Visa' : 'Không rõ'}</Text>
             </Card>

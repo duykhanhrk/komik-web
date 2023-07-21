@@ -54,7 +54,7 @@ function SignUpPage() {
           </View>
         :
         <>
-          <View horizontal style={{alignItems: 'center'}} animation="slideBottomIn">
+          <View horizontal style={{alignItems: 'center'}} animation="slideTopIn">
             <Input
               variant="tertiary"
               type="text"
@@ -65,7 +65,7 @@ function SignUpPage() {
             />
           </View>
 
-          <View horizontal style={{alignItems: 'center'}} animation="slideBottomIn">
+          <View horizontal style={{alignItems: 'center'}} animation="slideTopIn">
             <Input
               variant="tertiary"
               type="text"
@@ -76,7 +76,7 @@ function SignUpPage() {
             />
           </View>
 
-          <View horizontal style={{alignItems: 'center'}} animation="slideBottomIn">
+          <View horizontal style={{alignItems: 'center'}} animation="slideTopIn">
             <Input
               variant="tertiary"
               type="password"

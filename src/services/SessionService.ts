@@ -9,7 +9,7 @@ const axiosInstance = axios.create({
 });
 
 export async function signUpAsync(signUpForm: SignUpForm, exponentToken?: string) {
-  const response = await axiosInstance.post('/auth/sign_up', signUpForm, {
+  const response = await axiosInstance.post('/sessions/sign_up', signUpForm, {
     headers: {
       'Exponent-Token': exponentToken
     }
@@ -19,7 +19,7 @@ export async function signUpAsync(signUpForm: SignUpForm, exponentToken?: string
 }
 
 export async function signInAsync(signInFrom: SignInForm, exponentToken?: string) {
-  const response = await axiosInstance.post('/auth/sign_in', signInFrom, {
+  const response = await axiosInstance.post('/sessions/sign_in', signInFrom, {
     headers: {
       'Exponent-Token': exponentToken
     }
@@ -29,7 +29,7 @@ export async function signInAsync(signInFrom: SignInForm, exponentToken?: string
 }
 
 export async function signOutAsync(userTokens: UserTokens) {
-  await axiosInstance.post('/auth/sign_out', {}, {
+  await axiosInstance.post('/sessions/sign_out', {}, {
     headers: {
       'Authorization': `Bearer ${userTokens.access_token}`,
       'Refresh-Token': userTokens.refresh_token
@@ -40,13 +40,13 @@ export async function signOutAsync(userTokens: UserTokens) {
 }
 
 export async function sendVerificationCode(email: string) {
-  const response = await axiosInstance.post('/auth/send_verification_code', {email});
+  const response = await axiosInstance.post('/sessions/send_verification_code', {email});
 
   return response.data.data;
 }
 
 export async function resetPassword(email: string, verification_code: string, password: string) {
-  const response = await axiosInstance.post('/auth/reset_password', {email, verification_code, password});
+  const response = await axiosInstance.post('/sessions/reset_password', {email, verification_code, password});
 
   return response.data.data;
 }
@@ -54,7 +54,7 @@ export async function resetPassword(email: string, verification_code: string, pa
 export async function refreshTokensAsync(userTokens: UserTokens) {
   console.log('Refreshing...');
 
-  const response = await axiosInstance.post('/auth/refresh', {}, {
+  const response = await axiosInstance.post('/sessions/refresh', {}, {
     headers: {
       'Authorization': `Bearer ${userTokens.access_token}`,
       'Refresh-Token': userTokens.refresh_token

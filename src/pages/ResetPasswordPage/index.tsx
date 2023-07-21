@@ -56,7 +56,7 @@ function ResetPasswordPage() {
           </View>
           :
           <>
-          <View horizontal style={{alignItems: 'center'}} animation="slideBottomIn">
+          <View horizontal style={{alignItems: 'center'}} animation="slideTopIn">
             <Input
               variant="tertiary"
               type="text"
@@ -67,7 +67,7 @@ function ResetPasswordPage() {
             />
           </View>
 
-          <View horizontal style={{alignItems: 'center'}} animation="slideBottomIn">
+          <View horizontal style={{alignItems: 'center'}} animation="slideTopIn">
             <Input
               variant="tertiary"
               type="password"
@@ -78,7 +78,7 @@ function ResetPasswordPage() {
             />
           </View>
 
-          <View horizontal style={{alignItems: 'center'}} animation="slideBottomIn">
+          <View horizontal style={{alignItems: 'center'}} animation="slideTopIn">
             <Input
               variant="tertiary"
               type="password"

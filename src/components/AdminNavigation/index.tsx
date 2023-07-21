@@ -101,6 +101,14 @@ function NavArea() {
           </>
         )}
       </NavLink>
+      <NavLink to="/admin/authors" style={({isActive}) => isActive ? navItemActiveStyle : navItemStyle}>
+        {({isActive}) => (
+          <>
+            <Icon icon={isActive ? 'mingcute:group-fill' : 'mingcute:group-line'} style={{color: 'inhirit', height: 20, width: 20}}/>
+            <Text variant="inhirit">Tác giả</Text>
+          </>
+        )}
+      </NavLink>
       <NavLink to="/admin/comics" style={({isActive}) => isActive ? navItemActiveStyle : navItemStyle}>
         {({isActive}) => (
           <>

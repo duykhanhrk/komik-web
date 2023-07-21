@@ -1,6 +1,6 @@
 
 import { Navigate, Routes, Route } from "react-router-dom";
-import { ComicDetailPage, ComicPage, ErrorPage, HomePage, IntroductionPage, LoadingPage, PlanPage, ResetPasswordPage, SendVerificationCodePage, SignInPage, SignUpPage, UserProfilePage } from '@pages';
+import { AuthorDetailMNPage, AuthorMNPage, ComicDetailPage, ComicPage, ErrorPage, HomePage, IntroductionPage, LoadingPage, PlanPage, ResetPasswordPage, SendVerificationCodePage, SignInPage, SignUpPage, UserProfilePage } from '@pages';
 import { useAppDispatch, useAppSelector } from "@hooks";
 import { Header, Text, AdminNavigation, SessionLayout, Layout, View } from "@components";
 import useTryLogin from "./hooks/useTryLogin";
@@ -28,6 +28,8 @@ function Content() {
     <Routes>
       <Route path="/admin/profile" element={isAuthenticated ? (isAdmin ? <UserProfilePage /> : <Text>403</Text>) : <Navigate to={'/sign_in'} />}/>
       <Route path="/admin/categories" element={isAuthenticated ? (isAdmin ? <CategoryMNPage /> : <Text>403</Text>) : <Navigate to={'/sign_in'} />}/>
+      <Route path="/admin/authors" element={isAuthenticated ? (isAdmin ? <AuthorMNPage /> : <Text>403</Text>) : <Navigate to={'/sign_in'} />}/>
+      <Route path="/admin/authors/:id" element={isAuthenticated ? (isAdmin ? <AuthorDetailMNPage /> : <Text>403</Text>) : <Navigate to={'/sign_in'} />}/>
       <Route path="/admin/plans" element={isAuthenticated ? (isAdmin ? <PlanMNPage /> : <Text>403</Text>) : <Navigate to={'/sign_in'} />}/>
       <Route path="/admin/users" element={isAuthenticated ? (isAdmin ? <UserMNPage /> : <Text>403</Text>) : <Navigate to={'/sign_in'} />}/>
       <Route path="/admin/feedbacks" element={isAuthenticated ? (isAdmin ? <FeedbackMNPage /> : <Text>403</Text>) : <Navigate to={'/sign_in'} />}/>

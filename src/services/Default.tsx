@@ -4,6 +4,5 @@ export const ComicDefault: Comic = {
   id: 0,
   name: '',
   other_names: '',
-  author: '',
   description: ''
 }

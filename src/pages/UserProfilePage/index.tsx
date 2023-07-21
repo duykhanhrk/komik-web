@@ -204,7 +204,7 @@ function UserInfoSection() {
             shadowEffect
             type="date"
             value={moment(birthday).format('YYYY-MM-DD')}
-            placeholder="Tên"
+            placeholder="Sinh nhật"
             onChange={(e) => {
               console.log(new Date(e.target.value).toString());
             setBirthday(new Date(e.target.value))}}

@@ -211,17 +211,6 @@ function InfoSection({query}: {query: UseQueryResult<any, any>}) {
           />
         </View>
         <View horizontal style={{alignItems: 'center'}}>
-          <Text style={{width: 180}}>Tên tác giả</Text>
-          <Input
-            flex={1}
-            variant="tertiary"
-            type="text"
-            value={comic?.author}
-            placeholder="Tên"
-            onChange={(e) => comic && setComic({...comic, author: e.target.value})}
-          />
-        </View>
-        <View horizontal style={{alignItems: 'center'}}>
           <Text style={{width: 180}}>Trạng thái</Text>
           <Button
             variant="tertiary"
@@ -234,10 +223,10 @@ function InfoSection({query}: {query: UseQueryResult<any, any>}) {
           <View flex={1} horizontal gap={4} wrap>
             {categoryQuery.data.categories.map((item: Category) => (
               <Tag
-                variant={{ct: comic?.category_ids?.includes(item.id) ? 'quinary' : 'tertiary'}}
+                variant={{ct: comic?.category_ids?.includes(item.id!) ? 'quinary' : 'tertiary'}}
                 key={item.id}
                 style={{width: 120}}
-                onClick={() => comic && setComic({...comic, category_ids: !comic?.category_ids?.includes(item.id) ? comic?.category_ids?.concat([item.id]) : comic?.category_ids?.filter((id) => id !== item.id)})}
+                onClick={() => comic && setComic({...comic, category_ids: !comic?.category_ids?.includes(item.id!) ? comic?.category_ids?.concat([item.id!]) : comic?.category_ids?.filter((id) => id !== item.id)})}
               >{item.name}</Tag>
             ))}
           </View>

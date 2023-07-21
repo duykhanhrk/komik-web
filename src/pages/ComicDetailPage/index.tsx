@@ -11,7 +11,8 @@ import {Link} from "react-router-dom";
 import {useNotifications} from "reapop";
 import {useEffect, useState} from "react";
 import {actCUDHelper} from "@helpers/CUDHelper";
-import CommentsArea from "./CommentsArea";
+import ChaptersArea from "./ChaptersArea";
+import ReviewsArea from "./ReviewsArea";
 
 function ComicDetailPage() {
   const [comic, setComic] = useState<Comic>(ComicDefault);
@@ -19,21 +20,22 @@ function ComicDetailPage() {
   const theme = useTheme();
   const navigate = useNavigate();
   const noti = useNotifications();
-  const { comic_id } = useParams();
+  const params = useParams();
+  const comic_id = parseInt(params.comic_id!);
 
   const query = useQuery({
     queryKey: ['app', 'comics', comic_id],
-    queryFn: () => ComicService.getDetailAsync(parseInt(comic_id || '')),
+    queryFn: () => ComicService.getDetailAsync(comic_id),
     retry: 0
   });
 
   const like = useMutation({
-    mutationFn: () => ComicService.likeAsync(parseInt(comic_id || '0'), !comic.liked),
+    mutationFn: () => ComicService.favoriteAsync(comic_id, !comic.favorited),
     onSettled: query.refetch
   });
 
   const follow = useMutation({
-    mutationFn: () => ComicService.followAsync(parseInt(comic_id || '0'), !comic.followed),
+    mutationFn: () => ComicService.followAsync(comic_id, !comic.followed),
     onSettled: query.refetch
   });
 
@@ -57,10 +59,10 @@ function ComicDetailPage() {
           <View flex={1} gap={8}>
             <Text variant='large-title' numberOfLines={2}>{comic.name}</Text>
             {comic.other_names !== '' && <Text variant="medium" numberOfLines={1}>{comic.other_names}</Text> }
-            {comic.author !== '' && <Text numberOfLines={1}><b>Tác giả: </b>{comic.author}</Text> }
+            {comic.authors?.length !== 0 && <Text numberOfLines={1}><b>Tác giả: </b>{comic.authors?.map(author => author.firstname + ' ' + author.lastname).join(', ')}</Text> }
             {comic.status !== '' && <Text numberOfLines={1}><b>Trạng thái: </b>{comic.status === 'finished' ? 'hoàn thành' : 'đang tiến hành'}</Text> }
             <View horizontal wrap flex={1} gap={4} style={{alignContent: 'flex-start'}}>
-              {comic.categories?.map((item: Category) => <Tag variant={{ct: 'secondary'}} key={item.id.toString()}>{item.name}</Tag>)}
+              {comic.categories?.map((item: Category) => <Tag variant={{ct: 'secondary'}} key={item.id!.toString()}>{item.name}</Tag>)}
             </View>
             <View horizontal gap={8}>
               <Button
@@ -70,8 +72,8 @@ function ComicDetailPage() {
                 onClick={() => actCUDHelper(like, noti, 'update')}
                 animation="slideBottomIn"
               >
-                <Icon icon={query.data.comic.liked ? 'mingcute:heart-fill' : 'mingcute:heart-line'} style={{marginRight: 8, height: 24, width: 24, color: theme.colors.red}} />
-                <Text style={{color: query.data.comic.liked ? theme.colors.red : theme.colors.foreground, display: 'flex', flexDirection: 'row', alignItems: 'center'}}>Yêu thích</Text>
+                <Icon icon={comic.favorited ? 'mingcute:heart-fill' : 'mingcute:heart-line'} style={{marginRight: 8, height: 24, width: 24, color: theme.colors.red}} />
+                <Text style={{color: comic.favorited ? theme.colors.red : theme.colors.foreground, display: 'flex', flexDirection: 'row', alignItems: 'center'}}>Yêu thích</Text>
               </Button>
               <Button
                 shadowEffect
@@ -80,17 +82,17 @@ function ComicDetailPage() {
                 onClick={() => actCUDHelper(follow, noti, 'update')}
                 animation="slideBottomIn"
               >
-                <Icon icon={query.data.comic.followed ? 'mingcute:book-5-fill' : 'mingcute:book-5-line'} style={{marginRight: 8, height: 24, width: 24, color: theme.colors.blue}} />
-                <Text style={{color: query.data.comic.followed ? theme.colors.blue : theme.colors.foreground, display: 'flex', flexDirection: 'row', alignItems: 'center'}}>Theo dõi</Text>
+                <Icon icon={comic.followed ? 'mingcute:book-5-fill' : 'mingcute:book-5-line'} style={{marginRight: 8, height: 24, width: 24, color: theme.colors.blue}} />
+                <Text style={{color: comic.followed ? theme.colors.blue : theme.colors.foreground, display: 'flex', flexDirection: 'row', alignItems: 'center'}}>Theo dõi</Text>
               </Button>
-              {comic.chapters?.length !== 0 &&
+              {comic.reading_chapter &&
                 <Button
                   shadowEffect
                   variant="secondary"
                   style={{flex: 1}}
                   animation="slideBottomIn"
                   onClick={() => {
-                    if (query.data.comic.reading_chapter) {
+                    if (comic.reading_chapter) {
                       navigate(`/comics/${comic_id}/chapters/${query.data.comic.reading_chapter.id}`);
                     } else {
                       if (query.data.comic.chapters.length !== 0) {
@@ -117,34 +119,8 @@ function ComicDetailPage() {
           </Card>
         </View>
         <View gap={8}>
-          <Card shadowEffect animation="slideRightIn">
-            <Text variant="medium-title">Danh sách chương</Text>
-            <View style={{height: 640, overflow: 'auto'}} scrollable>
-              {comic.chapters?.length !== 0 ?
-              <InfiniteScroll
-                loadMore={() => {}}
-                hasMore={false}
-                loader={<Text>Loading...</Text>}
-              >
-                <View gap={4}>
-                  {query.data.comic.chapters.map((item: Chapter) => (
-                    <Link to={`/comics/${comic_id}/chapters/${item.id}`} style={{textDecoration: 'none'}}>
-                      <Card horizontal style={{height: 40, alignItems: 'center'}}>
-                        <Text variant="title" style={{flex: 1}}>{item.name}</Text>
-                        {!item.free && <Icon icon="mingcute:vip-1-line" style={{height: 20, width: 20, color: theme.colors.themeColor}}/>}
-                      </Card>
-                    </Link>
-                  ))}
-                </View>
-              </InfiniteScroll>
-              :
-              <View flex={1} centerContent>
-                <Text variant="medium-title" style={{color: theme.colors.quinaryForeground}}>Không tìm thấy chương nào</Text>
-              </View>
-              }
-            </View>
-          </Card>
-          <CommentsArea />
+          <ChaptersArea />
+          <ReviewsArea />
         </View>
       </Page.Content>
     </Page.Container>

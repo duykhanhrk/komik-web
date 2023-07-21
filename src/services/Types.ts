@@ -22,7 +22,7 @@ export type UserTokens = {
 }
 
 export type Category = {
-  id: number;
+  id?: number;
   name: string;
   description: string;
 }
@@ -34,24 +34,28 @@ export type Chapter = {
   free: boolean;
   next_chapter?: null | Chapter;
   previous_chapter?: null | Chapter;
+  created_at?: Date;
+  updated_at?: Date;
 }
 
 export type Comic = {
-  id: number;
+  id?: number;
   name: string;
   other_names: string;
-  author: string;
   description: string;
   views?: number;
-  likes?: number;
+  favorites?: number;
+  follows?: number;
   image_url?: string;
   status?: string;
-  liked?: boolean;
+  favorited?: boolean;
   followed?: boolean;
   active?: boolean;
+  reading_chapter?: Chapter;
+  authors?: Array<Author>;
+  author_ids?: Array<number>;
   categories?: Array<Category>;
   category_ids?: Array<number>;
-  chapters?: Array<Chapter>;
   up_coming?: boolean;
 }
 
@@ -69,7 +73,7 @@ export type User = {
 }
 
 export type Plan = {
-  id: number;
+  id?: number;
   name: string;
   description: string;
   price: number;
@@ -82,16 +86,16 @@ export type PaymentMethod = {
 }
 
 export type Purchase = {
-  id: number;
+  id?: number;
   plan: Plan;
   price: number;
   effective_date: Date;
-  expiry_date: Date;
+  expires_date: Date;
   payment_method: string;
 }
 
 export type Notification = {
-  id: number;
+  id?: number;
   message: {
     title: string;
     body: string;
@@ -108,17 +112,27 @@ export type Suggestion<T = any> = {
 }
 
 export type Feedback = {
+  id?: number;
   user?: User;
   title: string;
   content: string;
   created_at?: string;
 }
 
-export type Comment = {
+export type Review = {
   id?: number;
   user?: User;
   title: string;
   content: string;
   created_at?: Date;
   updated_at?: Date;
+}
+
+export type Author = {
+  id?: number;
+  firstname: string;
+  lastname: string;
+  birthday: Date;
+  introduction: string;
+  image_url?: string;
 }

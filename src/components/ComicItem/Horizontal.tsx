@@ -76,7 +76,7 @@ function Horizontal(props: HorizontalProps) {
   return (
     <Link to={`/comics/${_data.id}`} style={{textDecoration: 'none'}}>
       <Container
-        key={_data.id.toString()}
+        key={_data.id?.toString()}
         style={style}
         onClick={() => navigate(`/comics/${_data.id}`)}
         variant={props.variant}
@@ -91,7 +91,7 @@ function Horizontal(props: HorizontalProps) {
           <Text variant="title" numberOfLines={2}>{_data.name}</Text>
           {props._size === 'small' && <Text variant="small" numberOfLines={1}><b>Tên khác: </b>{_data.other_names}</Text>}
           {props._size === 'small' && <Text variant="small" numberOfLines={1}><b>Trạng thái: </b>{_data.status === 'unfinished' ? 'Đang tiến hành' : 'Đã hoàn thành'}</Text>}
-          {props._size === 'small' && <Text variant="small" numberOfLines={1}><b>Tác giả: </b>{_data.author}</Text>}
+          {props._size === 'small' && <Text variant="small" numberOfLines={1}><b>Tác giả: </b>{_data.authors?.map(author => author.firstname + ' ' + author.lastname).join(", ")}</Text>}
           {props._size !== 'small' && <Text numberOfLines={6}>{_data.description}</Text>}
         </TextContainer>
       </Container>

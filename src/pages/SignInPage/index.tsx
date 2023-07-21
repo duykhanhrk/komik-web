@@ -1,60 +1,19 @@
-import {Button, Card, Input, Text, View} from "@components";
-import {useAppDispatch, useAppSelector} from "@hooks";
-import {Icon} from "@iconify/react";
+import {Button, Card, Input, View} from "@components";
+import {useAppDispatch} from "@hooks";
 import {setUserTokens} from "@redux/sessionSlice";
-import {toggleTheme} from "@redux/themeSlice";
 import {SessionService} from "@services";
 import {isAxiosError} from "axios";
 import {useState} from "react";
-import {Link, NavLink} from "react-router-dom";
 import {useNotifications} from "reapop";
-import styled, {useTheme} from "styled-components";
 import LoadingPage from "../LoadingPage";
-
-const Image = styled.img`
-`
-
-const NavigationContainer = styled.div`
-  flex: 1;
-  display: flex;
-  flex-direction: row;
-`;
 
 function SignInPage() {
   const [usernameOrEmail, setUsernameOrEmail] = useState('');
   const [password, setPassword] = useState('');
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const {notify} = useNotifications();
-  const {themeMode} = useAppSelector(state => state.theme);
 
   const dispatch = useAppDispatch();
-  const theme = useTheme();
-
-  const navItemStyle = {
-    display: 'flex',
-    height: 36,
-    width: 120,
-    alignItems: 'center',
-    justifyContent: 'center',
-    fontSize: '1.0em',
-    textDecoration: 'none',
-    borderRadius: 8,
-    color: theme.colors.foreground,
-    backgroundColor: theme.colors.secondaryBackground
-  }
-
-  const navItemActiveStyle = {
-    display: 'flex',
-    height: 36,
-    width: 120,
-    alignItems: 'center',
-    justifyContent: 'center',
-    fontSize: '1.0em',
-    textDecoration: 'none',
-    borderRadius: 8,
-    color: theme.colors.themeForeground,
-    backgroundColor: theme.colors.themeBackground
-  }
 
   const signIn = () => {
     setIsLoading(true);
@@ -99,7 +58,7 @@ function SignInPage() {
           </View>
         :
         <>
-          <View horizontal style={{alignItems: 'center'}} animation="slideBottomIn">
+          <View horizontal style={{alignItems: 'center'}} animation="slideTopIn">
             <Input
               variant="tertiary"
               type="text"
@@ -110,7 +69,7 @@ function SignInPage() {
             />
           </View>
 
-          <View horizontal style={{alignItems: 'center'}} animation="slideBottomIn">
+          <View horizontal style={{alignItems: 'center'}} animation="slideTopIn">
             <Input
               variant="tertiary"
               type="password"
