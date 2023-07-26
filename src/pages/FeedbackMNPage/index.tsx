@@ -136,7 +136,7 @@ function FeedbackMNPage() {
           getScrollParent={() => document.getElementById('rootScrollable')}
         >
           <View gap={8} wrap style={{justifyContent: 'center'}}>
-            {feedbacks?.map((item: Feedback) => (
+            {feedbacks?.map((item: Feedback, index: number) => (
               <Card
                 horizontal
                 shadowEffect
@@ -144,7 +144,7 @@ function FeedbackMNPage() {
                   setSelectedItem(item);
                   setModalMode('open');
                 }}
-                animation="slideLeftIn"
+                animation={index % 2 == 0 ? "slideLeftIn" : "slideRightIn"}
               >
                 <View flex={1} horizontal gap={8} style={{alignItems: 'center'}}>
                   <Text numberOfLines={1} variant="title">{item.title}</Text>

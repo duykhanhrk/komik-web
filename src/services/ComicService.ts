@@ -1,7 +1,7 @@
 import ApiService from './ApiService';
 import { Review } from './Types';
 
-export const getAllAsync = (params: {page?: number, per_page?: number, category_ids?: string, sort_by?:string, query?: string}) => {
+export const getAllAsync = (params: {page?: number, per_page?: number, category_ids?: string, release_dates?: string, sort_by?:string, query?: string}) => {
   return ApiService.get('/app/comics', {params: {per_page: 20, sort_by: 'last_updated_chapter_at-desc', ...params}});
 }
 
@@ -50,3 +50,5 @@ export const createReviewAsync = (comic_id: number, review: Review) => ApiServic
 export const updateReviewAsync = (comic_id: number, review: Review) => ApiService.put(`/app/comics/${comic_id}/reviews/${review.id}`, {review});
 
 export const deleteReviewAsync = (comic_id: number, review_id: number) => ApiService.delete(`/app/comics/${comic_id}/reviews/${review_id}`);
+
+export const evaluateReviewAsync = (comic_id: number, review_id: number, point_of_view: number) => ApiService.post(`/app/comics/${comic_id}/reviews/${review_id}/evaluate`, {evaluate: {point_of_view}});

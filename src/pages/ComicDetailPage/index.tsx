@@ -13,6 +13,7 @@ import {useEffect, useState} from "react";
 import {actCUDHelper} from "@helpers/CUDHelper";
 import ChaptersArea from "./ChaptersArea";
 import ReviewsArea from "./ReviewsArea";
+import moment from "moment";
 
 function ComicDetailPage() {
   const [comic, setComic] = useState<Comic>(ComicDefault);
@@ -60,6 +61,8 @@ function ComicDetailPage() {
             <Text variant='large-title' numberOfLines={2}>{comic.name}</Text>
             {comic.other_names !== '' && <Text variant="medium" numberOfLines={1}>{comic.other_names}</Text> }
             {comic.authors?.length !== 0 && <Text numberOfLines={1}><b>Tác giả: </b>{comic.authors?.map(author => author.firstname + ' ' + author.lastname).join(', ')}</Text> }
+            {comic.release_date && <Text numberOfLines={1}><b>Năm phát hành: </b>{moment(comic.release_date).format('YYYY')}</Text> }
+            {comic.rating && <Text numberOfLines={1}><b>Giới độ tuổi: </b>{comic.rating}</Text> }
             {comic.status !== '' && <Text numberOfLines={1}><b>Trạng thái: </b>{comic.status === 'finished' ? 'hoàn thành' : 'đang tiến hành'}</Text> }
             <View horizontal wrap flex={1} gap={4} style={{alignContent: 'flex-start'}}>
               {comic.categories?.map((item: Category) => <Tag variant={{ct: 'secondary'}} key={item.id!.toString()}>{item.name}</Tag>)}
@@ -70,7 +73,7 @@ function ComicDetailPage() {
                 variant="secondary"
                 style={{flex: 1}}
                 onClick={() => actCUDHelper(like, noti, 'update')}
-                animation="slideBottomIn"
+                animation="slideLeftIn"
               >
                 <Icon icon={comic.favorited ? 'mingcute:heart-fill' : 'mingcute:heart-line'} style={{marginRight: 8, height: 24, width: 24, color: theme.colors.red}} />
                 <Text style={{color: comic.favorited ? theme.colors.red : theme.colors.foreground, display: 'flex', flexDirection: 'row', alignItems: 'center'}}>Yêu thích</Text>
@@ -80,7 +83,7 @@ function ComicDetailPage() {
                 variant="secondary"
                 style={{flex: 1}}
                 onClick={() => actCUDHelper(follow, noti, 'update')}
-                animation="slideBottomIn"
+                animation="slideLeftIn"
               >
                 <Icon icon={comic.followed ? 'mingcute:book-5-fill' : 'mingcute:book-5-line'} style={{marginRight: 8, height: 24, width: 24, color: theme.colors.blue}} />
                 <Text style={{color: comic.followed ? theme.colors.blue : theme.colors.foreground, display: 'flex', flexDirection: 'row', alignItems: 'center'}}>Theo dõi</Text>
@@ -90,7 +93,7 @@ function ComicDetailPage() {
                   shadowEffect
                   variant="secondary"
                   style={{flex: 1}}
-                  animation="slideBottomIn"
+                  animation="slideLeftIn"
                   onClick={() => {
                     if (comic.reading_chapter) {
                       navigate(`/comics/${comic_id}/chapters/${query.data.comic.reading_chapter.id}`);
@@ -103,8 +106,8 @@ function ComicDetailPage() {
                     }
                   }}
                 >
-                  <Icon icon={query.data.comic.reading_chapter ? 'mingcute:arrow-right-fill' : 'mingcute:arrow-right-line'} style={{marginRight: 8, height: 24, width: 24, color: theme.colors.yellow}} />
-                  <Text style={{color: query.data.comic.reading_chapter ? theme.colors.yellow : theme.colors.foreground, display: 'flex', flexDirection: 'row', alignItems: 'center'}}>
+                  <Icon icon={query.data.comic.reading_chapter ? 'mingcute:arrow-right-fill' : 'mingcute:arrow-right-line'} style={{marginRight: 8, height: 24, width: 24, color: theme.colors.green}} />
+                  <Text style={{color: query.data.comic.reading_chapter ? theme.colors.green : theme.colors.foreground, display: 'flex', flexDirection: 'row', alignItems: 'center'}}>
                     {query.data.comic.reading_chapter ? 'Đọc tiếp' : 'Đọc ngay'}
                   </Text>
                 </Button>
@@ -118,7 +121,7 @@ function ComicDetailPage() {
             <PreText >{comic.description}</PreText>
           </Card>
         </View>
-        <View gap={8}>
+        <View gap={32}>
           <ChaptersArea />
           <ReviewsArea />
         </View>

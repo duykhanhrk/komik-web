@@ -1,4 +1,4 @@
-import {Button, Card, ComicItem, Page, Text, View} from "@components";
+import {Button, Card, ComicItem, Page, Tag, Text, View} from "@components";
 import {Icon} from "@iconify/react";
 import {ComicService} from "@services";
 import {useEffect, useMemo, useState} from "react";
@@ -75,13 +75,13 @@ function ControlPanel({hide, onHideChanged}: {hide: boolean, onHideChanged: (isH
           >
           {chapters!.map((item: any) => (
             <Card
-              variant={item.id.toString() === chapter_id ? 'tertiary' : undefined}
+              variant={item.id === chapter_id ? 'tertiary' : undefined}
               horizontal
               style={{height: 40, alignItems: 'center'}}
               onClick={() => navigate(`/comics/${comic_id}/chapters/${item.id}`)}
             >
-              <Text variant="title" style={{flex: 1}}>{item.name}</Text>
-              {!item.free && <Icon icon="mingcute:vip-1-line" style={{height: 20, width: 20, color: theme.colors.themeColor}}/>}
+              <Text variant="title" style={{flex: 1, color: item.id === chapter_id ? (item.free ? theme.colors.blue : theme.colors.idigo ) : theme.colors.foreground}}>{item.name}</Text>
+              {!item.free && <Icon icon="mingcute:vip-1-line" style={{height: 20, width: 20, color: theme.colors.idigo}}/>}
             </Card>
           ))}
           </InfiniteScroll>

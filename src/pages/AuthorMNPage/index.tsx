@@ -219,11 +219,11 @@ function AuthorPage() {
           getScrollParent={() => document.getElementById('rootScrollable')}
         >
           <View gap={8} wrap style={{justifyContent: 'center'}}>
-            {authors?.map((item: Author) => (
+            {authors?.map((item: Author, index: number) => (
               <Card
                 horizontal
                 shadowEffect
-                animation="slideLeftIn"
+                animation={index % 2 == 0 ? "slideLeftIn" : "slideRightIn"}
                 onClick={() => {navigate(`/admin/authors/${item.id}`)}}
               >
                 <View

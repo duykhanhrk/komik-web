@@ -268,11 +268,11 @@ function UserMNPage() {
           getScrollParent={() => document.getElementById('rootScrollable')}
         >
           <View gap={8} wrap style={{justifyContent: 'center'}}>
-            {users?.map((item: User) => (
+            {users?.map((item: User, index: number) => (
               <Card
                 horizontal
                 shadowEffect
-                animation="slideLeftIn"
+                animation={index % 2 == 0 ? "slideLeftIn" : "slideRightIn"}
                 onClick={() => {
                   setSelectedItem(item);
                   setModalMode('update');

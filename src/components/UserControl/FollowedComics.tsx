@@ -1,4 +1,5 @@
 import {ComicItem} from "@components";
+import {Icon} from "@iconify/react";
 import {LoadingPage} from "@pages";
 import {Comic, ComicService} from "@services";
 import {useMemo} from "react";
@@ -32,16 +33,23 @@ function FollowedComics() {
     return <LoadingPage />;
   }
 
-  if (comics?.length === 0) {
-    return (
-      <View centerContent flex={1}>
-        <Text style={{color: theme.colors.quinaryForeground}}>Không có nội dung</Text>
-      </View>
-    )
-  }
-
   return (
-    <View scrollable animation="slideTopIn">
+    <View scrollable animation="slideTopIn" gap={8}>
+      <View horizontal gap={8} style={{alignItems: 'center'}}>
+        <View style={{height: 100, width: 100}}>
+          <Icon icon={'mingcute:book-5-fill'} style={{height: 100, width: 100, color: theme.colors.blue}} />
+        </View>
+        <View gap={4}>
+          <Text variant="large-title">Theo dõi</Text>
+          <Text variant="small" style={{color: theme.colors.tertiaryForeground}}>
+            Bạn có muốn không bỏ lỡ bất kỳ chương mới nào của truyện yêu thích không?
+          </Text>
+        </View>
+      </View>
+      {comics?.length === 0
+      ?
+        null
+      :
       <InfiniteScroll
         loadMore={() => query.fetchNextPage()}
         hasMore={query.hasNextPage}
@@ -51,6 +59,7 @@ function FollowedComics() {
           {comics?.map((item: Comic) => <ComicItem.Horizontal _data={item} variant={'tertiary'} _size="small" style={{flex: 1, margin: 0}}/>)}
         </View>
       </InfiniteScroll>
+      }
     </View>
   )
 }

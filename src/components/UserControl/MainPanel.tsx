@@ -58,7 +58,7 @@ function MainPanel(props: MainPanelProps) {
           variant="tertiary"
           onClick={() => {
             props.onItemClick && props.onItemClick();
-            navigate('/profile');
+            navigate('/feedbacks');
           }}
           style={{columnGap: 8, flex: 1, justifyContent: 'flex-start'}}
         >
@@ -69,7 +69,7 @@ function MainPanel(props: MainPanelProps) {
           variant="tertiary"
           onClick={() => {
             props.onItemClick && props.onItemClick();
-            navigate('/profile');
+            navigate('/introduction');
           }}
           style={{columnGap: 8, flex: 1, justifyContent: 'flex-start'}}
         >
@@ -80,7 +80,7 @@ function MainPanel(props: MainPanelProps) {
           variant="tertiary"
           onClick={() => {
             props.onItemClick && props.onItemClick();
-            navigate('/profile');
+            navigate('/policy_and_terms');
           }}
           style={{columnGap: 8, flex: 1, justifyContent: 'flex-start'}}
         >

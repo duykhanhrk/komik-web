@@ -189,11 +189,11 @@ function PlanMNPage() {
           getScrollParent={() => document.getElementById('rootScrollable')}
         >
           <View gap={8} wrap style={{justifyContent: 'center'}}>
-            {plans?.map((item: Plan) => (
+            {plans?.map((item: Plan, index: number) => (
               <Card
                 horizontal
                 shadowEffect
-                animation="slideLeftIn"
+                animation={index % 2 == 0 ? "slideLeftIn" : "slideRightIn"}
                 style={{height: 40}}
                 onClick={() => {
                   setSelectedItem(item);

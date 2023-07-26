@@ -1,11 +1,13 @@
-import {Button, Card, Input, View} from "@components";
+import {Button, Card, Input, Text, View} from "@components";
 import {useAppDispatch} from "@hooks";
+import {Icon} from "@iconify/react";
 import {setUserTokens} from "@redux/sessionSlice";
 import {SessionService} from "@services";
 import {isAxiosError} from "axios";
 import {useState} from "react";
 import {useNotifications} from "reapop";
 import LoadingPage from "../LoadingPage";
+import {useTheme} from "styled-components";
 
 function SignInPage() {
   const [usernameOrEmail, setUsernameOrEmail] = useState('');
@@ -14,6 +16,7 @@ function SignInPage() {
   const {notify} = useNotifications();
 
   const dispatch = useAppDispatch();
+  const theme = useTheme();
 
   const signIn = () => {
     setIsLoading(true);
@@ -58,6 +61,15 @@ function SignInPage() {
           </View>
         :
         <>
+          <View gap={8} style={{alignItems: 'center'}} animation="slideTopIn">
+            <View gap={4}>
+              <Text variant="large-title">Đăng nhập</Text>
+              <Text variant="small" style={{color: theme.colors.tertiaryForeground}}>
+                Hãy tiếp tục khám phá thế giới truyện tuyệt vời với hàng ngàn tác phẩm phong phú và thú vị!
+              </Text>
+            </View>
+          </View>
+
           <View horizontal style={{alignItems: 'center'}} animation="slideTopIn">
             <Input
               variant="tertiary"

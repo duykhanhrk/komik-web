@@ -131,7 +131,7 @@ function Header() {
       <NavigationContainer>
         <Card ebonsaiSnippet animation="slideBottomIn">
           <NavLink to="/" style={({isActive}) => isActive ? navItemActiveStyle : navItemStyle}>Trang chủ</NavLink>
-          <NavLink to="/comics" style={({isActive}) => isActive ? navItemActiveStyle : navItemStyle}>Danh mục</NavLink>
+          <NavLink to="/comics" style={({isActive}) => isActive ? navItemActiveStyle : navItemStyle}>Thư viện</NavLink>
         </Card>
       </NavigationContainer>
       <SearchContainer>
@@ -144,7 +144,7 @@ function Header() {
           <NavLink to="/" style={({isActive}) => isActive ? navIconItemActiveStyle : navIconItemStyle}>
             <Icon icon={'mingcute:home-2-line'} style={{color: 'inherit', height: 24, width: 24}}/>
           </NavLink>
-          <NavLink to="/comics" style={({isActive}) => isActive ? navIconItemActiveStyle : navIconItemStyle}>
+          <NavLink to="/categories" style={({isActive}) => isActive ? navIconItemActiveStyle : navIconItemStyle}>
             <Icon icon={'mingcute:grid-line'} style={{color: 'inherit', height: 24, width: 24}}/>
           </NavLink>
           <NavLink to="/search" style={({isActive}) => isActive ? navIconItemActiveStyle : navIconItemStyle}>

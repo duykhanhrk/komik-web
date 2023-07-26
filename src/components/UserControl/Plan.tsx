@@ -1,4 +1,5 @@
 import {useUserProfileQuery} from "@hooks"
+import {Icon} from "@iconify/react";
 import {LoadingPage} from "@pages";
 import {Purchase, PurchaseService} from "@services";
 import Moment from 'moment';
@@ -36,11 +37,7 @@ function History() {
   }
 
   if (purchases?.length === 0) {
-    return (
-      <View centerContent flex={1}>
-        <Text style={{color: theme.colors.quinaryForeground}}>Không có nội dung</Text>
-      </View>
-    )
+    return null;
   }
 
   return (
@@ -75,17 +72,25 @@ function Plan() {
     return <LoadingPage />;
   }
 
-
   return (
     <View gap={8} flex={1} animation="slideTopIn">
-      { query.data.user.current_plan ?
-        <>
-          <Text variant="title">Gói hiện tại</Text>
-          <Card variant="tertiary">
-            <Text><b>Ngày đăng ký: </b>{Moment(query.data.user.current_plan.effective_date).format('DD/MM/YYYY HH:mm:ss')}</Text>
-            <Text><b>Ngày hết hạn: </b>{Moment(query.data.user.current_plan.expiry_date).format('DD/MM/YYYY HH:mm:ss')}</Text>
-          </Card>
-        </>
+      <View horizontal gap={8} style={{alignItems: 'center'}}>
+        <View style={{height: 100, width: 100}}>
+          <Icon icon={'mingcute:vip-1-fill'} style={{height: 100, width: 100, color: theme.colors.idigo}} />
+        </View>
+        <View gap={4}>
+          <Text variant="large-title">Gói</Text>
+          <Text variant="small" style={{color: theme.colors.tertiaryForeground}}>
+          {query.data.user.current_plan
+            ? 'Cảm ơn bạn đã sử dụng dịch vụ của chúng tôi. Gói hiện tại của bạn có giá trị sử dụng đến ' + Moment(query.data.user.current_plan.expires_at).format('DD/MM/YY HH:mm:ss')
+            : 'Bạn đã sẵn sàng bước chân vào cuộc hành trình mới đầy phấn khích với gói đăng ký độc đáo của chúng tôi?'
+          }
+          </Text>
+
+        </View>
+      </View>
+      { query.data.user.current_plan
+      ?  null
       :
         <Button
           variant="primary"
@@ -95,7 +100,6 @@ function Plan() {
           <Text style={{color: theme.colors.themeForeground}}>Đăng ký gói ngay</Text>
         </Button>
       }
-      <Text variant="title">Lịch sử đăng ký gói</Text>
       <History />
     </View>
   )

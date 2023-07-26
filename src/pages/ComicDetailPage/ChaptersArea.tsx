@@ -6,14 +6,9 @@ import {useInfiniteQuery, useMutation} from "react-query";
 import {useParams} from "react-router";
 import {Chapter} from "@services";
 import {useTheme} from "styled-components";
-import moment from "moment";
 import {Icon} from "@iconify/react";
-import Modal from 'react-modal';
-import { UseMutationResult } from "react-query";
-import {useNotifications} from "reapop";
-import { actCUDHelper } from "@helpers/CUDHelper";
-import LoadingPage from "../LoadingPage";
 import { Link } from "react-router-dom";
+import moment from "moment";
 
 function ChaptersArea() {
   const theme = useTheme();
@@ -35,28 +30,38 @@ function ChaptersArea() {
   const chapters = useMemo(() => query.data?.pages.flatMap(page => page.chapters), [query.data]);
 
   return (
-    <Card shadowEffect animation="slideRightIn">
+    <View gap={8}>
       <View horizontal>
-        <Text variant="medium-title" style={{flex: 1}}>Danh sách chương</Text>
+        <Text variant="large-title" style={{flex: 1}}>Danh sách chương</Text>
       </View>
-      <View gap={8} style={{height: 640, overflow: 'auto'}} scrollable>
+      <View gap={8} style={{maxHeight: 640, overflow: 'auto'}} scrollable>
         {chapters?.length !== 0 ?
         <InfiniteScroll
-          loadMore={() => {}}
-          hasMore={false}
+          loadMore={() => query.fetchNextPage()}
+          hasMore={query.hasNextPage}
           loader={<Text>Loading...</Text>}
         >
-          <View gap={8}>
+          <View gap={4}>
             {chapters?.map((item: Chapter) => (
-              <View gap={4}>
-                {chapters.map((item: Chapter) => (
-                  <Link to={`/comics/${comic_id}/chapters/${item.id}`} style={{textDecoration: 'none'}}>
-                    <Card horizontal style={{height: 40, alignItems: 'center'}}>
-                      <Text variant="title" style={{flex: 1}}>{item.name}</Text>
-                      {!item.free && <Icon icon="mingcute:vip-1-line" style={{height: 20, width: 20, color: theme.colors.themeColor}}/>}
-                    </Card>
-                  </Link>
-                ))}
+              <View gap={4} animation="slideRightIn">
+                <Link to={`/comics/${comic_id}/chapters/${item.id}`} style={{textDecoration: 'none'}}>
+                  <Card horizontal style={{alignItems: 'center'}} shadowEffect>
+                    <Text variant="title" style={{flex: 1}}>{item.name}</Text>
+                    {item.read &&
+                    <Tag variant={{ct: "tertiary"}} style={{gap: 8, color: theme.colors.green}}>
+                      <Icon icon={'mingcute:eye-2-line'} style={{height: 16, width: 16, color: theme.colors.green}} />
+                      Đã đọc
+                    </Tag>
+                    }
+                    {!item.free &&
+                    <Tag variant={{ct: "tertiary"}} style={{gap: 8, color: theme.colors.idigo}}>
+                      <Icon icon="mingcute:vip-1-line" style={{height: 16, width: 16, color: theme.colors.idigo}}/>
+                      Gói
+                    </Tag>
+                    }
+                    <Tag variant={{ct: "secondary"}}>{moment(item?.created_at).format('DD-MM-YYYY HH:MM:ss')}</Tag>
+                  </Card>
+                </Link>
               </View>
             ))}
           </View>
@@ -67,7 +72,7 @@ function ChaptersArea() {
         </View>
         }
       </View>
-    </Card>
+    </View>
   )
 }
 

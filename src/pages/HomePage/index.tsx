@@ -146,7 +146,7 @@ function RightArrow() {
                 scrollContainerClassName={'scroll-menu-container'}
                 itemClassName={'scroll-menu-item'}
               >
-                {readQuery.data.comics.map((item : Comic) => <ComicItem.Horizontal shadowEffect _data={item} style={{width: 440}}/>)}
+                {readQuery.data.comics.map((item : Comic) => <ComicItem.Horizontal showNewChaptersTag shadowEffect _data={item} style={{width: 440}}/>)}
               </ScrollMenu>
             </Card>
         </View>
@@ -178,7 +178,7 @@ function RightArrow() {
             </View>
             <Grid templateColumns="auto auto" templateRows="auto auto auto auto" style={{paddingLeft: 0, paddingRight: 0, gap: 8}} animation="slideLeftIn">
               {newestQuery.data.comics.map((item : Comic) => (
-                <ComicItem.Horizontal shadowEffect _data={item}/>
+                <ComicItem.Horizontal showFavorites showViews showLastUpdatedTag shadowEffect _data={item}/>
               ))}
             </Grid>
           </View>
@@ -192,7 +192,7 @@ function RightArrow() {
             </View>
             <View style={{paddingLeft: 0, paddingRight: 0, gap: 8}}>
               {mostFavoriteQuery.data.comics.map((item : Comic) => (
-                <ComicItem.Horizontal shadowEffect _data={item} style={{width: '100%'}}/>
+                <ComicItem.Horizontal showFavoritesTag shadowEffect _data={item} style={{width: '100%'}}/>
               ))}
             </View>
           </View>
@@ -205,7 +205,7 @@ function RightArrow() {
               <Link style={{textDecoration: 'none', color: theme.colors.themeColor, fontWeight: 'bold'}} to={'/comics?sort_by=views-desc'}>Xem thêm</Link>
             </View>
             <Grid templateColumns="auto auto" templateRows="auto auto auto auto" style={{paddingLeft: 0, paddingRight: 0, gap: 8}} animation="slideLeftIn">
-                {mostViewedQuery.data.comics.map((item : Comic) => <ComicItem.Horizontal shadowEffect _data={item}/>)}
+                {mostViewedQuery.data.comics.map((item : Comic) => <ComicItem.Horizontal showViewsTag shadowEffect _data={item}/>)}
             </Grid>
           </View>
         </LazyLoad>

@@ -7,6 +7,7 @@ import Text from "../Text"
 import View from "../View"
 import {LoadingPage} from "@pages";
 import Card from "../Card";
+import {Icon} from "@iconify/react";
 
 const Container = styled.div`
   display: flex;
@@ -27,7 +28,7 @@ function NotificationItem({_data}: {_data: Notification}) {
   return (
     <Card variant="tertiary" key={_data.id!.toString()} style={{gap: 4}}>
       <Text variant="title" numberOfLines={1}>{_data.message.title}</Text>
-      <Text>{_data.message.body}</Text>
+      <Text variant="small">{_data.message.body}</Text>
     </Card>
   )
 }
@@ -55,16 +56,22 @@ function Notifications() {
     return <LoadingPage />;
   }
 
-  if (notifications?.length === 0) {
-    return (
-      <View centerContent flex={1}>
-        <Text style={{color: theme.colors.quinaryForeground}}>Không có nội dung</Text>
-      </View>
-    )
-  }
-
   return (
-    <View scrollable animation="slideTopIn">
+    <View scrollable animation="slideTopIn" gap={8}>
+      <View horizontal gap={8} style={{alignItems: 'center'}}>
+        <View style={{height: 100, width: 100}}>
+          <Icon icon={'mingcute:notification-fill'} style={{height: 100, width: 100, color: theme.colors.green}} />
+        </View>
+        <View gap={4}>
+          <Text variant="large-title">Thông báo</Text>
+          <Text variant="small" style={{color: theme.colors.tertiaryForeground}}>
+            Bạn muốn luôn cập nhật tin tức mới nhất, thông báo quan trọng và nhận thông báo ngay lập tức mỗi khi có sự kiện quan trọng? 
+          </Text>
+        </View>
+      </View>
+      {notifications?.length === 0 ?
+        null
+      :
       <InfiniteScroll
         loadMore={() => query.fetchNextPage()}
         hasMore={query.hasNextPage}
@@ -74,6 +81,7 @@ function Notifications() {
           {notifications?.map((item: Notification) => <NotificationItem _data={item} />)}
         </View>
       </InfiniteScroll>
+      }
     </View>
   )
 }

@@ -64,7 +64,11 @@ function Comic() {
     dispatch(addKeyword(suggestion))
 
     // Navigate to search page
-    navigate(`/comics?category_id=${suggestion.data ? suggestion.data.categoryIds.join(',') : ''}&query=${suggestion.keyword}`);
+    if (suggestion.data && suggestion.data.categoryIds.length > 0) {
+      navigate(`/comics/searching?category_ids=${suggestion.data.categoryIds.join(',')}&query=${suggestion.keyword}`);
+    } else {
+      navigate(`/comics/searching?query=${suggestion.keyword}`);
+    }
 
     // Reset search input
     resetSearchInput();
@@ -107,22 +111,22 @@ function Comic() {
               <View horizontal gap={4} flex={1} style={{alignItems: 'center'}}>
                 <Tag
                   onClick={submitSearch}
-                  style={{gap: 8, display: suggestion.keyword !== '' ? 'flex' : 'none'}}
+                  style={{gap: 8, display: suggestion.keyword !== '' ? 'flex' : 'none', color: theme.colors.blue}}
                 >
-                  <Icon icon={'mingcute:search-line'} style={{height: 20, width: 20, color: theme.colors.foreground}} />
+                  <Icon icon={'mingcute:search-line'} style={{height: 20, width: 20, color: theme.colors.blue}} />
                   {suggestion.keyword}
                 </Tag>
               </View>
               <View horizontal gap={4} style={{alignItems: 'center', justifyContent: 'flex-end'}}>
                 <Tag
-                  variant={{ct: suggestion.data ? 'quinary' : 'tertiary'}}
-                  style={{gap: 8}}
+                  variant={{ct: 'tertiary'}}
+                  style={{gap: 8, color: suggestion.data ? theme.colors.orange : theme.colors.foreground}}
                   onClick={() => {
                     setSuggestion({...suggestion, data: suggestion.data ? undefined : {categoryIds: []}});
                   }}
                 >
-                  <Icon icon={suggestion.data ? 'mingcute:filter-fill' : 'mingcute:filter-line'} style={{height: 20, width: 20, color: theme.colors.foreground}} />
-                  <Text>Tùy chọn lọc</Text>
+                  <Icon icon={suggestion.data ? 'mingcute:filter-fill' : 'mingcute:filter-line'} style={{height: 20, width: 20, color: theme.colors.orange}} />
+                  Lọc
                 </Tag>
               </View>
             </View>
@@ -134,7 +138,8 @@ function Comic() {
             >
               {categoriesQuery.isSuccess && categoriesQuery.data.categories.map((item: Category, index: number) => (
                 <Tag
-                  variant={{ct: suggestion.data && suggestion.data.categoryIds.includes(item.id!) ? 'quinary' : 'tertiary'}}
+                  variant={{ct: 'tertiary'}}
+                  style={{color: suggestion.data && suggestion.data.categoryIds.includes(item.id!) ? theme.colors.orange : theme.colors.foreground}}
                   onClick={() => {
                     if (suggestion.data) {
                       if (suggestion.data.categoryIds.includes(item.id!)) {
@@ -157,7 +162,7 @@ function Comic() {
                   variant="tertiary"
                   onClick={() => {
                     setSearchDropdownOpen('');
-                    navigate(`/comics?query=${item.keyword}`);
+                    navigate(`/comics/searching?query=${item.keyword}`);
                   }}
                 >
                   <Text>{item.keyword}</Text>
@@ -177,20 +182,17 @@ function Comic() {
                     style={{alignItems: 'center'}}
                     onClick={() => {
                       setSearchDropdownOpen('');
-                      if (item.data && item.data.filter && item.data.filter.category_ids) {
-                        navigate(`/comics?category_id=${item.data.filter.category_ids.join(',')}&query=${item.keyword}`);
+                      if (item.data && item.data.categoryIds) {
+                        navigate(`/comics/searching?category_ids=${item.data.categoryIds.join(',')}&query=${item.keyword}`);
                       } else {
-                        navigate(`/comics?query=${item.keyword}`);
+                        navigate(`/comics/searching?query=${item.keyword}`);
                       }
                     }}
                   >
                     <Text style={{flex: 1}}>{item.keyword}</Text>
-                    <Tag variant={{ct: 'quaternary'}} style={{gap: 8, display: item.data ? 'flex' : 'none'}}>
-                      <Icon icon={'mingcute:filter-line'} style={{height: 16, width: 16, color: theme.colors.foreground}} />
+                    <Tag variant={{ct: 'quaternary'}} style={{gap: 8, display: item.data ? 'flex' : 'none', color: theme.colors.orange}}>
+                      <Icon icon={'mingcute:filter-line'} style={{height: 16, width: 16, color: theme.colors.orange}} />
                       {item.data ? item.data.categoryIds.length : null}
-                    </Tag>
-                    <Tag variant={{ct: 'quaternary'}} style={{gap: 8}}>
-                      <Icon icon={'mingcute:history-line'} style={{height: 16, width: 16, color: theme.colors.foreground}} />
                     </Tag>
                   </View>
                   <Tag

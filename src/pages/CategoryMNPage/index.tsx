@@ -169,7 +169,7 @@ function CategoryMNPage() {
           getScrollParent={() => document.getElementById('rootScrollable')}
         >
           <View gap={8} wrap style={{justifyContent: 'center'}}>
-            {categories?.map((item: Category) => (
+            {categories?.map((item: Category, index: number) => (
               <Card
                 horizontal
                 shadowEffect
@@ -178,7 +178,7 @@ function CategoryMNPage() {
                   setModalMode('update');
                 }}
                 style={{height: 40, justifyContent: 'center'}}
-                animation="slideLeftIn"
+                animation={index % 2 == 0 ? "slideLeftIn" : "slideRightIn"}
               >
                 <View flex={1} style={{justifyContent: 'center'}}>
                   <Text variant="title">{item.name}</Text>

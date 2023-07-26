@@ -13,3 +13,5 @@ export {default as IntroductionPage} from './IntroductionPage';
 export {default as ReportMNPage} from './ReportMNPage';
 export {default as AuthorMNPage} from './AuthorMNPage';
 export {default as AuthorDetailMNPage} from './AuthorDetailMNPage';
+
+export {default as NotFoundPage} from './NotFoundPage';

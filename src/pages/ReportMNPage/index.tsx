@@ -20,8 +20,8 @@ function ReportMNPage() {
               selected={selectedButton === 'plan'}
               onClick={() => setSelectedButton('plan')}
             >
-              <Icon icon={selectedButton === 'plan' ? 'mingcute:pig-money-fill' : 'mingcute:pig-money-line'} style={{height: 20, width: 20, color: theme.colors.foreground}} />
-              <Text style={{marginLeft: 8, color: theme.colors.foreground}}>Các gói</Text>
+              <Icon icon={selectedButton === 'plan' ? 'mingcute:pig-money-fill' : 'mingcute:pig-money-line'} style={{height: 20, width: 20, color: theme.colors.green}} />
+              <Text style={{marginLeft: 8, color: selectedButton === 'plan' ? theme.colors.green : theme.colors.foreground}}>Các gói</Text>
             </Button>
             <Button
               shadowEffect
@@ -29,8 +29,8 @@ function ReportMNPage() {
               selected={selectedButton === 'category'}
               onClick={() => setSelectedButton('category')}
             >
-              <Icon icon={selectedButton === 'category' ? 'mingcute:bling-fill' : 'mingcute:bling-line'} style={{height: 20, width: 20, color: theme.colors.foreground}} />
-              <Text style={{marginLeft: 8, color: theme.colors.foreground}}>Truyện tranh</Text>
+              <Icon icon={selectedButton === 'category' ? 'mingcute:bling-fill' : 'mingcute:bling-line'} style={{height: 20, width: 20, color: theme.colors.blue}} />
+              <Text style={{marginLeft: 8, color: selectedButton === 'category' ? theme.colors.blue : theme.colors.foreground}}>Truyện tranh</Text>
             </Button>
           </View>
         </View>

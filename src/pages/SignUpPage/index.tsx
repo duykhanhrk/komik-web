@@ -54,6 +54,15 @@ function SignUpPage() {
           </View>
         :
         <>
+          <View gap={8} style={{alignItems: 'center'}} animation="slideTopIn">
+            <View gap={4}>
+              <Text variant="large-title">Đăng ký</Text>
+              <Text variant="small" style={{color: theme.colors.tertiaryForeground}}>
+                Bạn đã sẵn sàng gia nhập cộng đồng đọc giả đầy sôi động và khám phá trải nghiệm đặc biệt cùng chúng tôi? 
+              </Text>
+            </View>
+          </View>
+
           <View horizontal style={{alignItems: 'center'}} animation="slideTopIn">
             <Input
               variant="tertiary"

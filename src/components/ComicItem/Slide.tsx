@@ -43,7 +43,7 @@ function Slide(props: SlideProps) {
   const { _data, style } = props;
 
   return (
-    <Link to={`/comics/${_data.id}`} style={{textDecoration: 'none'}}>
+    <Link to={`/comics/detail/${_data.id}`} style={{textDecoration: 'none'}}>
       <SlideContainer shadowEffect={props.shadowEffect} style={style}>
         <BackgroundImage
           style={{flex: 1, alignItems: 'center', borderRadius: 8, overflow: 'hidden'}}

@@ -177,13 +177,13 @@ function ComicMNPage() {
           getScrollParent={() => document.getElementById('rootScrollable')}
         >
           <View gap={8} wrap style={{justifyContent: 'center'}}>
-            {comics?.map((item: Comic) => (
+            {comics?.map((item: Comic, index: number) => (
               <Card
                 horizontal
                 shadowEffect
                 key={item.id!.toString()}
                 onClick={() => navigate(`/admin/comics/${item.id}`)}
-                animation="slideLeftIn"
+                animation={index % 2 == 0 ? "slideLeftIn" : "slideRightIn"}
               >
                 <View flex={1} style={{justifyContent: 'center'}}>
                   <View horizontal gap={8}>
@@ -212,11 +212,11 @@ function ComicMNPage() {
                       </View>
                       <View horizontal gap={4}>
                         <Tag style={{gap: 8}}>
-                          <Icon icon={'mingcute:heart-line'} style={{height: 16, width: 16, color: theme.colors.foreground}} />
+                          <Icon icon={'mingcute:heart-line'} style={{height: 16, width: 16, color: theme.colors.red}} />
                           {item.favorites}
                         </Tag>
                         <Tag style={{gap: 8}}>
-                          <Icon icon={'mingcute:eye-2-line'} style={{height: 16, width: 16, color: theme.colors.foreground}} />
+                          <Icon icon={'mingcute:eye-2-line'} style={{height: 16, width: 16, color: theme.colors.green}} />
                           {item.views}
                         </Tag>
                       </View>

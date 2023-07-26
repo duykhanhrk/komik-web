@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import {default as Animations} from '../Animations';
 
 export interface TagProps {
   variant?: {
@@ -6,6 +7,9 @@ export interface TagProps {
     tt?: 'normal' | 'small' | 'medium' | 'large'
   };
   numberOfLines?: number;
+  shadowEffect?: boolean;
+  animation?: 'slideBottomIn' | 'slideLeftIn' | 'slideRightIn' | 'slideTopIn';
+  animationDuration?: number;
 }
 
 const Tag = styled.p<TagProps>`
@@ -52,6 +56,30 @@ const Tag = styled.p<TagProps>`
      -webkit-box-orient: vertical;`
     :
     ''
+  }
+
+  ${props => props.shadowEffect ?  'transition: box-shadow 0.5s;' : ''};
+
+  animation: ${
+    props => props.animation === 'slideBottomIn'
+      ? Animations.slideBottomIn
+      : props.animation === 'slideLeftIn'
+      ? Animations.slideLeftIn
+      : props.animation === 'slideRightIn'
+      ? Animations.slideRightIn
+      : props.animation === 'slideTopIn'
+      ? Animations.slideTopIn
+      : ''
+  } ${
+    props => props.animationDuration ? `${props.animationDuration}s` : '0.5s'
+  } ease;
+
+  :hover {
+    ${props => props.shadowEffect ?  'box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;' : 'opacity: 0.9;'}
+  }
+
+  :active {
+    ${props => props.shadowEffect ?  'box-shadow: rgba(99, 99, 99, 0) 0px 0px 0px 0px;' : 'opacity: 1;'}
   }
 `;
 

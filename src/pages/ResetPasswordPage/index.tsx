@@ -1,4 +1,4 @@
-import {Button, Card, Input, Page, View} from "@components";
+import {Button, Card, Input, Page, Text, View} from "@components";
 import {SessionService, UserService} from "@services";
 import {isAxiosError} from "axios";
 import {useState} from "react";
@@ -56,6 +56,14 @@ function ResetPasswordPage() {
           </View>
           :
           <>
+          <View gap={8} style={{alignItems: 'center'}} animation="slideTopIn">
+            <View gap={4}>
+              <Text variant="large-title">Quên mật khẩu</Text>
+              <Text variant="small" style={{color: theme.colors.tertiaryForeground}}>
+                Bạn đã quên mật khẩu và không thể truy cập vào tài khoản của mình? Đừng lo lắng!
+              </Text>
+            </View>
+          </View>
           <View horizontal style={{alignItems: 'center'}} animation="slideTopIn">
             <Input
               variant="tertiary"

@@ -51,7 +51,7 @@ function Vertical(props: VerticalProps) {
   const { _data, style } = props;
 
   return (
-    <Link key={_data.id!.toString()} to={`/comics/${_data.id!}`} style={{textDecoration: 'none'}}>
+    <Link key={_data.id!.toString()} to={`/comics/detail/${_data.id!}`} style={{textDecoration: 'none'}}>
       <Container
         shadowEffect={props.shadowEffect}
         animation={props.animation}

@@ -119,21 +119,24 @@ function PlanReportChart() {
         <View flex={1}></View>
         <Button
           selected={chart.mode === 'day'}
-          variant="tertiary"
+          variant="secondary"
           style={{width: 120}}
           onClick={() => setChart({...chart, mode: 'day' })}
+          shadowEffect
         >Theo ngày</Button>
         <Button
           selected={chart.mode === 'month'}
-          variant="tertiary"
+          variant="secondary"
           style={{width: 120}}
           onClick={() => setChart({...chart, mode: 'month' })}
+          shadowEffect
         >Theo tháng</Button>
         <Button
           selected={chart.mode === 'year'}
-          variant="tertiary"
+          variant="secondary"
           style={{width: 120}}
           onClick={() => setChart({...chart, mode: 'year' })}
+          shadowEffect
         >Theo năm</Button>
       </View>
       {chart.status === 'loading' ?

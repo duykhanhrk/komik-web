@@ -32,6 +32,7 @@ export type Chapter = {
   name: string;
   image_urls?: Array<string>;
   free: boolean;
+  read?: boolean;
   next_chapter?: null | Chapter;
   previous_chapter?: null | Chapter;
   created_at?: Date;
@@ -52,11 +53,16 @@ export type Comic = {
   followed?: boolean;
   active?: boolean;
   reading_chapter?: Chapter;
+  release_date?: Date;
+  rating?: number;
   authors?: Array<Author>;
   author_ids?: Array<number>;
   categories?: Array<Category>;
   category_ids?: Array<number>;
   up_coming?: boolean;
+  last_updated_chapter_at?: Date;
+  last_read_at?: Date;
+  new_chapters?: number;
 }
 
 export type User = {
@@ -124,6 +130,10 @@ export type Review = {
   user?: User;
   title: string;
   content: string;
+  agreement_count?: number;
+  disagreement_count?: number;
+  transgression_count?: number;
+  point_of_view?: number;
   created_at?: Date;
   updated_at?: Date;
 }
