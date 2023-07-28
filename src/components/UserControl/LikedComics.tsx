@@ -33,7 +33,7 @@ function LikedComics() {
   }
 
   return (
-    <View scrollable animation="slideTopIn" gap={8}>
+    <View gap={8} style={{overflow: 'hidden'}} animation="slideTopIn">
       <View horizontal gap={8} style={{alignItems: 'center'}}>
         <View style={{height: 100, width: 100}}>
           <Icon icon={'mingcute:heart-fill'} style={{height: 100, width: 100, color: theme.colors.red}} />
@@ -45,19 +45,21 @@ function LikedComics() {
           </Text>
         </View>
       </View>
-      {comics?.length === 0 ?
-        null
-      :
-      <InfiniteScroll
-        loadMore={() => query.fetchNextPage()}
-        hasMore={query.hasNextPage}
-        loader={<Text>Loading...</Text>}
-      >
-        <View gap={4} style={{alignContent: 'flex-start'}}>
-          {comics?.map((item: Comic) => <ComicItem.Horizontal _data={item} variant="tertiary" _size="small" style={{flex: 1, margin: 0}}/>)}
-        </View>
-      </InfiniteScroll>
-      }
+      <View scrollable gap={8} style={{padding: 2}}>
+        {comics?.length === 0 ?
+          null
+        :
+        <InfiniteScroll
+          loadMore={() => query.fetchNextPage()}
+          hasMore={query.hasNextPage}
+          loader={<Text>Loading...</Text>}
+        >
+          <View gap={4} style={{alignContent: 'flex-start'}}>
+            {comics?.map((item: Comic) => <ComicItem.Horizontal _data={item} variant="tertiary" _size="small" style={{flex: 1, margin: 0}}/>)}
+          </View>
+        </InfiniteScroll>
+        }
+      </View>
     </View>
   )
 }

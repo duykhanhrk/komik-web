@@ -110,7 +110,7 @@ function Horizontal(props: HorizontalProps) {
         <TextContainer _size={props._size}>
           <Text variant="title" numberOfLines={2}>{_data.name}</Text>
           {<Text variant="small" numberOfLines={1}>{_data.other_names}</Text>}
-          {<Text variant="small" numberOfLines={1}>{_data.authors?.map(author => author.firstname + ' ' + author.lastname).join(", ")}</Text>}
+          {<Text variant="small" numberOfLines={1}>{_data.authors?.map(author => author.lastname + ' ' + author.firstname).join(", ")}</Text>}
           {props._size !== 'small' && <Text variant="small" numberOfLines={4}>{_data.description}</Text>}
           <View horizontal gap={4} flex={1} style={{alignItems: 'flex-end'}}>
             {showNewChaptersTag && !!_data.new_chapters && _data.new_chapters > 0 &&

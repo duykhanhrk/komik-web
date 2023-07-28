@@ -1,0 +1,41 @@
+.quill {
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.ql-toolbar.ql-snow {
+  background-color: #FFFFFF;
+  border-radius: 8px;
+  border: none;
+  box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+  display: flex;
+  margin: 8px;
+}
+
+.ql-container.ql-snow {
+  display: flex;
+  flex: 1;
+  border: none;
+  border-radius: 8px;
+  background-color: transparent;
+  margin-top: 8px;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  font-size: 1.0em;
+  overflow: auto;
+  margin: 0;
+}
+
+.ql-editor {
+  flex: 1;
+  border: none;
+  padding: 8px;
+}
+
+.ql-formats {
+  color: inhirit;
+}

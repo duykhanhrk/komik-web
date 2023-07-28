@@ -1,4 +1,4 @@
-import {Button, Card, Input, Page, Text, View} from "@components";
+import {Button, Card, DateInput, Input, Page, Text, View} from "@components";
 import {useUserProfileQuery} from "@hooks";
 import {UserService} from "@services";
 import {useEffect, useRef, useState} from "react";
@@ -200,15 +200,16 @@ function UserInfoSection() {
 
         <View horizontal style={{alignItems: 'center'}}>
           <Text style={{width: 180}}>Ngày sinh</Text>
-          <Input
+          <DateInput
+            variant="secondary"
             shadowEffect
-            type="date"
-            value={moment(birthday).format('YYYY-MM-DD')}
-            placeholder="Sinh nhật"
-            onChange={(e) => {
-              console.log(new Date(e.target.value).toString());
-            setBirthday(new Date(e.target.value))}}
-            style={{flex: 1}}
+            flex={1}
+            value={birthday}
+            onValueChange={(value) =>
+              {
+                console.log(value)
+                setBirthday(new Date(value))
+                }}
           />
         </View>
 

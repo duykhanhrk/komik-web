@@ -1,13 +1,11 @@
 import {useMutation, useQuery} from "react-query";
 import {useTheme} from "styled-components";
 import { useNavigate, useParams } from "react-router";
-import {Category, Chapter, Comic, ComicDefault, ComicService} from "@services";
+import {Category, Comic, ComicDefault, ComicService} from "@services";
 import {Button, Card, ComicItem, Page, PreText, Tag, Text, View} from "@components";
 import {Icon} from "@iconify/react";
 import LoadingPage from "../LoadingPage";
 import ErrorPage from "../ErrorPage";
-import InfiniteScroll from "react-infinite-scroller";
-import {Link} from "react-router-dom";
 import {useNotifications} from "reapop";
 import {useEffect, useState} from "react";
 import {actCUDHelper} from "@helpers/CUDHelper";
@@ -60,7 +58,7 @@ function ComicDetailPage() {
           <View flex={1} gap={8}>
             <Text variant='large-title' numberOfLines={2}>{comic.name}</Text>
             {comic.other_names !== '' && <Text variant="medium" numberOfLines={1}>{comic.other_names}</Text> }
-            {comic.authors?.length !== 0 && <Text numberOfLines={1}><b>Tác giả: </b>{comic.authors?.map(author => author.firstname + ' ' + author.lastname).join(', ')}</Text> }
+            {comic.authors?.length !== 0 && <Text numberOfLines={1}><b>Tác giả: </b>{comic.authors?.map(author => author.lastname + ' ' + author.firstname).join(', ')}</Text> }
             {comic.release_date && <Text numberOfLines={1}><b>Năm phát hành: </b>{moment(comic.release_date).format('YYYY')}</Text> }
             {comic.rating && <Text numberOfLines={1}><b>Giới độ tuổi: </b>{comic.rating}</Text> }
             {comic.status !== '' && <Text numberOfLines={1}><b>Trạng thái: </b>{comic.status === 'finished' ? 'hoàn thành' : 'đang tiến hành'}</Text> }
@@ -96,10 +94,10 @@ function ComicDetailPage() {
                   animation="slideLeftIn"
                   onClick={() => {
                     if (comic.reading_chapter) {
-                      navigate(`/comics/${comic_id}/chapters/${query.data.comic.reading_chapter.id}`);
+                      navigate(`/comics/detail/${comic_id}/chapters/${query.data.comic.reading_chapter.id}`);
                     } else {
                       if (query.data.comic.chapters.length !== 0) {
-                        navigate(`/comics/${comic_id}/chapters/${query.data.comic.chapters[0].id}`);
+                        navigate(`/comics/detail/${comic_id}/chapters/${query.data.comic.chapters[0].id}`);
                       } else {
                         alert('Hiện tại không có chương nào');
                       }

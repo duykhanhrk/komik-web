@@ -48,7 +48,7 @@ function ControlPanel({hide, onHideChanged}: {hide: boolean, onHideChanged: (isH
     <View gap={8} style={{display: isHide ? 'none' : 'flex', position: 'sticky', height: 'calc(100vh - 60px)', left: 0, bottom: 0, top: 60, width: 272, padding: '0px 8px 8px 8px', flexBasis: 272, flexShrink: 0}}>
       <Card horizontal ebonsai animation="slideRightIn">
         <View flex={1} horizontal gap={8}>
-          <Button ebonsai variant="transparent" onClick={() => navigate(`/comics/${comic_id}`)} style={{gap: 8, width: 'auto'}}>
+          <Button ebonsai variant="transparent" onClick={() => navigate(`/comics/detail/${comic_id}`)} style={{gap: 8, width: 'auto'}}>
             <Icon icon={'mingcute:arrow-left-line'} style={{color: theme.colors.foreground, height: 24, width: 24}}/>
             <Text>Trở về</Text>
           </Button>
@@ -78,9 +78,10 @@ function ControlPanel({hide, onHideChanged}: {hide: boolean, onHideChanged: (isH
               variant={item.id === chapter_id ? 'tertiary' : undefined}
               horizontal
               style={{height: 40, alignItems: 'center'}}
-              onClick={() => navigate(`/comics/${comic_id}/chapters/${item.id}`)}
+              onClick={() => navigate(`/comics/detail/${comic_id}/chapters/${item.id}`)}
             >
-              <Text variant="title" style={{flex: 1, color: item.id === chapter_id ? (item.free ? theme.colors.blue : theme.colors.idigo ) : theme.colors.foreground}}>{item.name}</Text>
+              <Text variant="title" numberOfLines={1} style={{flex: 1, color: item.id === chapter_id ? (item.free ? theme.colors.blue : theme.colors.idigo ) : theme.colors.foreground}}>{item.name}</Text>
+              {item.read && <Icon icon="mingcute:eye-2-line" style={{height: 20, width: 20, color: theme.colors.green}}/>}
               {!item.free && <Icon icon="mingcute:vip-1-line" style={{height: 20, width: 20, color: theme.colors.idigo}}/>}
             </Card>
           ))}

@@ -95,8 +95,8 @@ export type Purchase = {
   id?: number;
   plan: Plan;
   price: number;
-  effective_date: Date;
-  expires_date: Date;
+  effective_at: Date;
+  expires_at: Date;
   payment_method: string;
 }
 

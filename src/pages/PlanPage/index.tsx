@@ -1,4 +1,4 @@
-import {Button, Card, Page, Text, View} from "@components";
+import {Button, Card, Grid, Page, Tag, Text, View} from "@components";
 import {PaymentMethod, Plan, PlanService, PurchaseService} from "@services";
 import {FormEvent, useEffect, useState} from "react";
 import {useQuery} from "react-query";
@@ -16,34 +16,48 @@ import {useNavigate} from "react-router";
 import {useUserProfileQuery} from "@hooks";
 import {useNotifications} from "reapop";
 import {isAxiosError} from "axios";
-import {error} from "console";
+import {Icon} from "@iconify/react";
+import {useTheme} from "styled-components";
 
 
 function PaymentMethodSelectionList({onSelectedItemChanged} : {onSelectedItemChanged?: (item: PaymentMethod) => void}) {
   const paymentMethods = PurchaseService.getAllPaymentMethods();
   const [selectedItem, setSelectedItem] = useState<PaymentMethod | undefined>(paymentMethods[0]);
 
+  const theme = useTheme();
+
   useEffect(() => {
     onSelectedItemChanged && selectedItem && onSelectedItemChanged(selectedItem);
   }, [selectedItem]);
 
   return (
-    <View horizontal wrap gap={8} animation="slideRightIn">
+    <Grid templateColumns="auto auto" gap={8} animation="slideLeftIn">
       {paymentMethods.map((item: PaymentMethod) => (
         <Card
           shadowEffect
-          style={{width: 340, height: 40, justifyContent: 'center', boxShadow: selectedItem?.key == item.key ? 'rgba(99, 99, 99, 0.2) 0px 2px 8px 0px' : 'rgba(99, 99, 99, 0.0) 0px 0px 0px 0px'}}
+          horizontal
+          style={{alignItems: 'center', gap: 8, boxShadow: selectedItem?.key == item.key ? 'rgba(99, 99, 99, 0.2) 0px 2px 8px 0px' : 'rgba(99, 99, 99, 0.0) 0px 0px 0px 0px'}}
           onClick={() => setSelectedItem(item)}
         >
+        <View style={{height: 64, width: 64}}>
+          <Icon icon={'mingcute:bank-card-line'} style={{height: 64, width: 64, color: theme.colors.foreground}} />
+        </View>
+        <View gap={4}>
           <Text variant="title">{item.name}</Text>
+          <Text variant="small" style={{textAlign: 'justify'}}>
+            Chúng tôi cam kết bảo mật thông tin cá nhân và thông tin thanh toán của người dùng. Tất cả dữ liệu sẽ được mã hóa và xử lý thông qua các kênh bảo mật, đảm bảo an toàn tuyệt đối cho giao dịch của người dùng
+          </Text>
+        </View>
         </Card>
       ))}
-    </View>
+    </Grid>
   )
 }
 
 function PlanSelectionList({onSelectedItemChanged} : {onSelectedItemChanged?: (item: Plan) => void}) {
   const [selectedItem, setSelectedItem] = useState<Plan | undefined>();
+
+  const theme = useTheme();
 
   const query = useQuery({
     queryKey: ['plans'],
@@ -69,26 +83,35 @@ function PlanSelectionList({onSelectedItemChanged} : {onSelectedItemChanged?: (i
   }
 
   return (
-    <View horizontal wrap gap={8} animation="slideLeftIn" style={{minHeight: 300}} >
+    <Grid templateColumns="auto auto"  gap={8} animation="slideRightIn" style={{minHeight: 300}} >
       {query.data.plans.map((item: Plan) => (
         <Card
           shadowEffect
-          style={{width: 340, boxShadow: selectedItem?.id == item.id ? 'rgba(99, 99, 99, 0.2) 0px 2px 8px 0px' : 'rgba(99, 99, 99, 0.0) 0px 0px 0px 0px'}}
+          style={{boxShadow: selectedItem?.id == item.id ? 'rgba(99, 99, 99, 0.2) 0px 2px 8px 0px' : 'rgba(99, 99, 99, 0.0) 0px 0px 0px 0px'}}
           onClick={() => setSelectedItem(item)}
         >
-          <Text variant="medium-title">{item.name}</Text>
-          <Text><b>Thời lượng: </b>{item.value / 24} ngày</Text>
-          <Text><b>Giá: </b>{item.price}đ</Text>
-          <Text><b>Mô tả: </b>{item.description}</Text>
+          <Text variant="title">{item.name}</Text>
+          <Text variant="small" style={{textAlign: 'justify'}}>{item.description}</Text>
+          <View flex={1} horizontal gap={4} style={{justifyContent: 'flex-end', alignItems: 'flex-end'}}>
+            <Tag variant={{ct: 'tertiary'}} style={{gap: 9, color: theme.colors.idigo}}>
+              <Icon icon={'mingcute:calendar-day-line'} style={{height: 16, width: 16, color: theme.colors.idigo}} />
+              {item.value / 24} ngày
+            </Tag>
+            <Tag variant={{ct: 'tertiary'}} style={{gap: 8, color: theme.colors.idigo}}>
+              <Icon icon={'mingcute:wallet-4-line'} style={{height: 16, width: 16, color: theme.colors.idigo}} />
+              {new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(item.price)}
+            </Tag>
+          </View>
         </Card>
       ))}
-    </View>
+    </Grid>
   )
 }
 
 const CheckoutForm = ({onSubmitted}: {onSubmitted: (token: string) => void}) => {
   const stripe = useStripe();
   const elements = useElements();
+  const theme = useTheme();
 
   const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -105,7 +128,26 @@ const CheckoutForm = ({onSubmitted}: {onSubmitted: (token: string) => void}) => 
   return (
     <form onSubmit={handleSubmit}>
       <View gap={8}>
-        <CardElement/>
+        <Card variant="tertiary" style={{paddingTop: 12, paddingBottom: 12}}>
+          <CardElement options={{
+            hidePostalCode: true,
+            style: {
+              base: {
+                fontSize: '1.0em',
+                color: theme.colors.foreground,
+                '::placeholder': {
+                  color: theme.colors.quinaryForeground
+                },
+                backgroundColor: theme.colors.background,
+                padding: '8px 12px',
+              },
+              invalid: {
+                color: theme.colors.red,
+              }
+            },
+          }}
+          />
+        </Card>
         <Button variant="primary" type="submit" disabled={!stripe || !elements}>Thanh toán</Button>
       </View>
     </form>
@@ -122,13 +164,14 @@ function PlanPage() {
   const {notify} = useNotifications();
 
   const navigate = useNavigate();
+  const theme = useTheme();
 
   useEffect(() => {
     setProcessStatus({isLoading: true, isError: false});
     PurchaseService.getStripeKeyAsync()
       .then((response) => {
         console.log(response)
-        setStripePromise(loadStripe(response.key))
+        setStripePromise(loadStripe(response.key, {locale: 'vi'}))
         setProcessStatus({isLoading: false, isError: false});
       })
       .catch((error) => {
@@ -180,7 +223,7 @@ function PlanPage() {
     <Page.Container>
       <Page.Content>
         <View horizontal gap={16}>
-          <View gap={16} flex={1}>
+          <View gap={32} flex={1}>
             <View gap={8}>
               <Text variant="medium-title">Các gói</Text>
               <PlanSelectionList onSelectedItemChanged={(item) => setPlan(item)} />
@@ -192,14 +235,20 @@ function PlanPage() {
           </View>
           <View gap={8}>
             <Text variant="medium-title">Thanh toán</Text>
-            <Card style={{width: 340}} animation="slideTopIn">
-              <Text><b>Tổng tiền: </b>{plan?.price}đ</Text>
-              <Text><b>Phương thức thanh toán: </b>{paymentMethod?.name}</Text>
-              <View>
-                <Elements stripe={stripePromise || null}>
-                  <CheckoutForm onSubmitted={cardPayment} />
-                </Elements>
+            <Card style={{width: 340, gap: 8}} animation="slideTopIn">
+              <View horizontal gap={4}>
+                <Tag variant={{ct: 'tertiary'}} style={{gap: 8, color: theme.colors.idigo}}>
+                  <Icon icon={'mingcute:wallet-4-line'} style={{height: 16, width: 16, color: theme.colors.idigo}} />
+                  {new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(plan?.price || 0)}
+                </Tag>
+                <Tag variant={{ct: 'tertiary'}} style={{gap: 8}}>
+                  <Icon icon={'mingcute:bank-card-line'} style={{height: 16, width: 16, color: theme.colors.foreground}} />
+                  {paymentMethod?.key == 'card' ? 'Master/Visa' : 'Không rõ'}
+                </Tag>
               </View>
+              <Elements stripe={stripePromise || null}>
+                <CheckoutForm onSubmitted={cardPayment} />
+              </Elements>
             </Card>
           </View>
         </View>

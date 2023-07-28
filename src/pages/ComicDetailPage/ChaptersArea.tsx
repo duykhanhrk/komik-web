@@ -44,7 +44,7 @@ function ChaptersArea() {
           <View gap={4}>
             {chapters?.map((item: Chapter) => (
               <View gap={4} animation="slideRightIn">
-                <Link to={`/comics/${comic_id}/chapters/${item.id}`} style={{textDecoration: 'none'}}>
+                <Link to={`/comics/detail/${comic_id}/chapters/${item.id}`} style={{textDecoration: 'none'}}>
                   <Card horizontal style={{alignItems: 'center'}} shadowEffect>
                     <Text variant="title" style={{flex: 1}}>{item.name}</Text>
                     {item.read &&

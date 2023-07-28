@@ -9,6 +9,7 @@ interface ViewProps {
   centerContent?: boolean;
   scrollable?: boolean;
   ebonsaiShelf?: boolean;
+  shadowEffect?: boolean;
   variant?: 'primary' | 'secondary' | 'tertiary' | 'quaternary' | 'quinary';
   animation?: 'slideBottomIn' | 'slideLeftIn' | 'slideRightIn' | 'slideTopIn';
   animationDuration?: number;
@@ -55,6 +56,11 @@ const View = styled.div<ViewProps>`
   } ease;
   ${props => props.scrollable ? 'overflow: auto;' : ''}
   ${props => props.ebonsaiShelf ? 'padding: 8px; gap: 8px;' : ''}
+
+  ${props => props.shadowEffect ?  'transition: box-shadow 0.5s;' : ''};
+  &:hover, &:focus {
+    ${props => props.shadowEffect ?  'box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;' : ''}
+  }
 `;
 
 export default View;

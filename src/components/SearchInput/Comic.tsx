@@ -106,7 +106,7 @@ function Comic() {
             gap: 8,
             display: searchDropdownOpen === 'search' && (suggestion.keyword !== '' || keywords.length !== 0) ? 'flex' : 'none',
         }}>
-          <View gap={8} animation="slideTopIn">
+          <View gap={8} animation="slideTopIn" style={{overflow: 'hidden'}}>
             <View horizontal style={{alignItems: 'center'}}>
               <View horizontal gap={4} flex={1} style={{alignItems: 'center'}}>
                 <Tag
@@ -153,9 +153,9 @@ function Comic() {
               ))}
             </View>
             <View
-              gap={8}
+              gap={4}
               scrollable
-              style={{display: suggestions.length !== 0 || keywords.length !== 0 ? 'flex' : 'none'}}
+              style={{padding: 2, display: suggestions.length !== 0 || keywords.length !== 0 ? 'flex' : 'none'}}
             >
               {suggestions.length !== 0 && suggestions.map((item: Suggestion) => (
                 <Card

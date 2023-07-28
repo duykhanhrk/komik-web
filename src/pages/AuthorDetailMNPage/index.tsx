@@ -1,4 +1,4 @@
-import {Button, Card, ComicItem, Input, Page, Text, View} from "@components";
+import {Button, Card, ComicItem, DateInput, Input, Page, RichEditor, Text, View} from "@components";
 import {useTheme} from "styled-components";
 import {useNavigate} from "react-router";
 import {useNotifications} from "reapop";
@@ -12,10 +12,7 @@ import LoadingPage from "../LoadingPage";
 import ErrorPage from "../ErrorPage";
 import {actCUDHelper} from "@helpers/CUDHelper";
 import {Icon} from "@iconify/react";
-import 'react-quill/dist/quill.snow.css';
-import './style.scss';
 import moment from "moment";
-import ReactQuill from "react-quill";
 
 function hexToRgb(hex: string): number[] | null {
   const regex = /^#?([a-f\d])([a-f\d])([a-f\d])$/i;
@@ -205,36 +202,18 @@ function InfoSection({query}: {query: UseQueryResult<any, any>}) {
         </View>
         <View horizontal style={{alignItems: 'center'}}>
           <Text style={{width: 180}}>Sinh nhật</Text>
-          <Input
-            flex={1}
+          <DateInput
             variant="tertiary"
-            type="date"
-            value={moment(author?.birthday).format('YYYY-MM-DD')}
-            placeholder="Sinh nhật"
-            onChange={(e) => setAuthor({...author!, birthday: new Date(e.target.value)})}
+            flex={1}
+            value={author?.birthday}
+            onValueChange={(value) => setAuthor({...author!, birthday: new Date(value)})}
           />
         </View>
         <View horizontal style={{alignItems: 'center'}}>
           <Text style={{width: 180}}>Giới thiệu</Text>
-          <ReactQuill
-                style={{flex: 1}}
-                value={author?.introduction}
-                modules={{
-                  toolbar: [
-                    [{ 'header': [1, 2, false] }],
-                    ['bold', 'italic', 'underline','strike', 'blockquote'],
-                    [{'list': 'ordered'}, {'list': 'bullet'}, {'indent': '-1'}, {'indent': '+1'}],
-                    ['link', 'image']
-                  ]
-                }}
-                formats={[
-                  'header',
-                  'bold', 'italic', 'underline', 'strike', 'blockquote',
-                  'list', 'bullet', 'indent',
-                  'link', 'image'
-                ]}
-                onChange={(value) => setAuthor({...author!, introduction: value})}
-              />
+          <View variant="tertiary" style={{flex: 1, height: 800, borderRadius: 8}}>
+            <RichEditor value={author?.introduction || ''} onChange={(value) => setAuthor({...author!, introduction: value})} />
+          </View>
         </View>
       </View>
     </View>
@@ -300,10 +279,31 @@ function ActionsSection({query}: {query: UseQueryResult<any, any>}) {
   )
 }
 
+function IntroductionEditor({_data, onChange}: {_data: Author, onChange?: (value: Author) => void}) {
+  const [data, setData] = useState<Author>(_data);
+
+  useEffect(() => {
+    setData(_data);
+  }, [_data]);
+
+  return (
+    <View style={{height: 'calc(100vh - 16px)', overflow: 'hidden'}}>
+      <Button>Trờ về</Button>
+      <View variant="secondary" style={{flex: 1, overflow: 'hidden'}}>
+        <RichEditor
+          value={_data?.introduction}
+          onChange={(value) => {
+            setData({...data, introduction: value});
+            onChange && onChange({...data, introduction: value});
+          }}
+        />
+      </View>
+    </View>
+  )
+}
+
 function AuthorDetailMNPage() {
   const theme = useTheme();
-  const navigate = useNavigate();
-  const noti = useNotifications();
   const { id } = useParams();
 
   const query = useQuery({
@@ -312,9 +312,13 @@ function AuthorDetailMNPage() {
     retry: 0
   });
 
-  const remove = useMutation({
-    mutationFn: () => AuthorMNService.deleteAsync(parseInt(id || ''))
-  })
+  if (query.isLoading) {
+    return <LoadingPage />
+  }
+
+  if (query.isError) {
+    return <ErrorPage error={query.error} />
+  }
 
   return (
     <Page.Container>

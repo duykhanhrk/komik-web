@@ -14,6 +14,7 @@ import {actCUDHelper} from "@helpers/CUDHelper";
 import {Icon} from "@iconify/react";
 import InfiniteScroll from "react-infinite-scroller";
 import Modal from 'react-modal';
+import InfoSection from "../ComicMNPage/InfoSection";
 
 function hexToRgb(hex: string): number[] | null {
   const regex = /^#?([a-f\d])([a-f\d])([a-f\d])$/i;
@@ -137,114 +138,6 @@ function ImageSection({query}: {query: UseQueryResult<any, any>}) {
         </View>
       }
     </View>
-  )
-}
-
-function InfoSection({query}: {query: UseQueryResult<any, any>}) {
-  const [comic, setComic] = useState<Comic | undefined>();
-
-  const noti = useNotifications();
-
-  const categoryQuery = useQuery({
-    queryKey: ['admin', 'comics', 'categories'],
-    queryFn: () => CategoryService.getAllAsync(),
-  });
-
-  useEffect(() => {
-    if (query.data && query.data.comic) {
-      setComic({...query.data.comic, category_ids: query.data.comic.categories.map((item: Comic) => item.id)});
-    }
-  }, [query.data]);
-
-  const update = useMutation({
-    mutationFn: () => ComicMNService.updateAsync(comic!),
-    onSettled: query.refetch,
-  })
-
-  if (query.isLoading || categoryQuery.isLoading) {
-    return <LoadingPage />
-  }
-
-  if (query.isError) {
-    return <ErrorPage error={query.error} />
-  }
-
-  if (categoryQuery.isError) {
-    return <ErrorPage error={categoryQuery.error} />
-  }
-
-  return (
-  <>
-    <View horizontal style={{alignItems: 'center'}}>
-          <Text variant="medium-title" style={{flex: 1}}>Thông tin</Text>
-          <Button
-            variant="primary"
-            style={{gap: 8, width: 120}}
-            onClick={() => actCUDHelper(update, noti, 'update')}
-          >
-            <Icon icon={'mingcute:save-line'} style={{color: 'inhirit', height: 20, width: 20}}/>
-            <Text variant="inhirit">Cập nhật</Text>
-          </Button>
-        </View>
-    <View gap={8}>
-      <View gap={8}>
-        <View horizontal style={{alignItems: 'center'}}>
-          <Text style={{width: 180}}>Tên</Text>
-          <Input
-            flex={1}
-            variant="tertiary"
-            type="text"
-            value={comic?.name}
-            placeholder="Họ"
-            onChange={(e) => comic && setComic({...comic, name: e.target.value})}
-          />
-        </View>
-        <View horizontal style={{alignItems: 'center'}}>
-          <Text style={{width: 180}}>Tên khác</Text>
-          <Input
-            flex={1}
-            variant="tertiary"
-            type="text"
-            value={comic?.other_names}
-            placeholder="Tên"
-            onChange={(e) => comic && setComic({...comic, other_names: e.target.value})}
-          />
-        </View>
-        <View horizontal style={{alignItems: 'center'}}>
-          <Text style={{width: 180}}>Trạng thái</Text>
-          <Button
-            variant="tertiary"
-            style={{flex: 1}}
-            onClick={() => comic && setComic({...comic, status: comic.status == 'finished' ? 'unfinished' : 'finished'})}
-          >{comic?.status === 'finished' ? 'Đã hoàn thành' : 'Chưa hoàn thành'}</Button>
-        </View>
-        <View horizontal style={{alignItems: 'center'}}>
-          <Text style={{width: 180}}>Thể loại</Text>
-          <View flex={1} horizontal gap={4} wrap>
-            {categoryQuery.data.categories.map((item: Category) => (
-              <Tag
-                variant={{ct: comic?.category_ids?.includes(item.id!) ? 'quinary' : 'tertiary'}}
-                key={item.id}
-                style={{width: 120}}
-                onClick={() => comic && setComic({...comic, category_ids: !comic?.category_ids?.includes(item.id!) ? comic?.category_ids?.concat([item.id!]) : comic?.category_ids?.filter((id) => id !== item.id)})}
-              >{item.name}</Tag>
-            ))}
-          </View>
-        </View>
-        <View horizontal style={{alignItems: 'center'}}>
-          <Text style={{width: 180}}>Mô tả</Text>
-          <TextArea
-            variant="tertiary"
-            value={comic?.description}
-            rows={12}
-            placeholder="Mô tả"
-            onChange={(e) => comic && setComic({...comic, description: e.target.value})}
-            style={{flex: 1}}
-          />
-        </View>
-      </View>
-    </View>
-    </>
   )
 }
 
@@ -409,15 +302,16 @@ function ChaptersSection({comic_id}: {comic_id: number}) {
   }
 
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    let file = e.target.files?.[0] || null;
-    if (!file) return;
+    let files = e.target.files;
+    if (!files) return;
+
     if (insertAction.type === 'new') {
-      setImages(images.concat([file]));
+      setImages(images.concat(Array.from(files)));
     } else if (insertAction.type === 'insert')  {
-      images.splice(insertAction.toIndex || 0, 0, file);
+      images.splice(insertAction.toIndex || 0, 0, ...Array.from(files));
       setImages(images);
     } else if (insertAction.type === 'replace') {
-      images.splice(insertAction.toIndex || 0, 1, file);
+      images.splice(insertAction.toIndex || 0, 1, ...Array.from(files));
       setImages(images);
     }
   };
@@ -436,7 +330,7 @@ function ChaptersSection({comic_id}: {comic_id: number}) {
       >
         <View gap={16} animation="slideTopIn">
           <View gap={8}>
-            <input type="file" style={{ "display": "none" }} onChange={handleImageChange} ref={fileInput} />
+            <input type="file" multiple style={{ "display": "none" }} onChange={handleImageChange} ref={fileInput} />
             <Button
               variant="tertiary"
               onClick={() => {
@@ -632,8 +526,6 @@ function ChaptersSection({comic_id}: {comic_id: number}) {
 
 function ComicDetailMNPage() {
   const theme = useTheme();
-  const navigate = useNavigate();
-  const noti = useNotifications();
   const { comic_id } = useParams();
 
   const query = useQuery({
@@ -642,9 +534,13 @@ function ComicDetailMNPage() {
     retry: 0
   });
 
-  const remove = useMutation({
-    mutationFn: () => ComicMNService.deleteAsync(parseInt(comic_id || ''))
-  })
+  if (query.isLoading) {
+    return <LoadingPage />
+  }
+
+  if (query.isError) {
+    return <ErrorPage error={query.error} />
+  }
 
   return (
     <Page.Container>
@@ -657,7 +553,7 @@ function ComicDetailMNPage() {
           <ImageSection query={query} />
         </Card>
         <Card shadowEffect animation="slideRightIn">
-          <InfoSection query={query} />
+          <InfoSection _data={query.data.comic} query={query}/>
         </Card>
         <Card shadowEffect animation="slideLeftIn">
           <Text variant="medium-title">Danh sách chương</Text>

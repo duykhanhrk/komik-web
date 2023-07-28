@@ -1,20 +1,14 @@
-import {Button, Card, Input, Page, PreText, Tag, Text, View} from "@components"
+import {Button, Card, Input, Page, Text, View} from "@components"
 import {Icon} from "@iconify/react";
 import {Author, AuthorMNService} from "@services";
 import {useEffect, useMemo, useState} from "react";
 import InfiniteScroll from "react-infinite-scroller";
-import {useInfiniteQuery, useMutation, UseMutationResult} from "react-query";
-import {useNotifications} from "reapop";
+import {useInfiniteQuery} from "react-query";
 import styled, { useTheme } from "styled-components";
-import Modal from 'react-modal';
 import LoadingPage from "../LoadingPage";
 import ErrorPage from "../ErrorPage";
-import { actCUDHelper } from "@helpers/CUDHelper";
-import ReactQuill from 'react-quill';
-import 'react-quill/dist/quill.snow.css';
-import './style.scss';
-import moment from "moment";
-import { useNavigate } from "react-router";
+import {useNavigate} from "react-router";
+import AuthorModal from "./AuthorModal";
 
 const Avatar = styled.img`
   height: 40px;
@@ -24,34 +18,10 @@ const Avatar = styled.img`
 
 function AuthorPage() {
   const [searchText, setSearchText] = useState<string>('');
-  const [selectedItem, setSelectedItem] = useState<Author | undefined>();
   const [modalMode, setModalMode] = useState<'create' | 'update' | 'close'>('close');
 
-  const [isVerifyModalOpen, setIsVerifyModalOpen] = useState<boolean>(false);
-  const [verfiyPassword, setVerifyPassword] = useState<string>('');
-
   const theme = useTheme();
-  const noti = useNotifications();
   const navigate = useNavigate();
-
-  const customStyles = {
-    content: {
-      top: '50%',
-      left: '50%',
-      right: 'auto',
-      bottom: 'auto',
-      marginRight: '-50%',
-      transform: 'translate(-50%, -50%)',
-      border: `0 solid ${theme.colors.secondaryBackground}`,
-      borderRadius: 8,
-      padding: 16,
-      backgroundColor: theme.colors.secondaryBackground,
-      overflow: 'hidden'
-    },
-    overlay: {
-      backgroundColor: `${theme.colors.background}99`
-    }
-  };
 
   const query = useInfiniteQuery({
     queryKey: ['admin', 'authors'],
@@ -63,16 +33,6 @@ function AuthorPage() {
 
       return lastPage.paginate.page + 1;
     }
-  });
-
-  const create: UseMutationResult = useMutation({
-    mutationFn: () => AuthorMNService.createAsync(selectedItem!),
-    onSettled: query.refetch
-  })
-
-  const update = useMutation({
-    mutationFn: () => AuthorMNService.updateAsync(selectedItem!),
-    onSettled: query.refetch
   });
 
   useEffect(() => {query.refetch()}, [searchText])
@@ -89,113 +49,14 @@ function AuthorPage() {
 
   return (
     <Page.Container>
-      <Modal
-        isOpen={modalMode !== 'close' && !isVerifyModalOpen}
-        onRequestClose={() => setModalMode('close')}
-        style={customStyles}
-      >
-        <View gap={16} animation="slideTopIn">
-          <View gap={16}>
-            <View gap={16} horizontal>
-              <View gap={8}>
-                <Text variant="title">Tên</Text>
-                <Input
-                  variant="tertiary"
-                  placeholder="Họ"
-                  value={selectedItem?.lastname}
-                  onChange={(e) => selectedItem && setSelectedItem({...selectedItem, lastname: e.target.value})}
-                />
-              </View>
-              <View gap={8}>
-                <Text variant="title">Họ</Text>
-                <Input
-                  variant="tertiary"
-                  placeholder="Tên"
-                  value={selectedItem?.firstname}
-                  onChange={(e) => selectedItem && setSelectedItem({...selectedItem, firstname: e.target.value})}
-                />
-              </View>
-            </View>
-            <View gap={16} horizontal>
-              <View gap={8}>
-                <Text variant="title">Sinh nhật</Text>
-                <Input
-                  variant="tertiary"
-                  placeholder="Sinh nhật"
-                  type="date"
-                  value={moment(selectedItem?.birthday).format('YYYY-MM-DD')}
-                  onChange={(e) => selectedItem && setSelectedItem({...selectedItem, birthday: new Date(e.target.value)})}
-                  style={{flex: 1}}
-                />
-              </View>
-            </View>
-          </View>
-          <View horizontal gap={8}>
-            <Button
-              variant="primary"
-              style={{flex: 1, gap: 8}}
-              onClick={() => setIsVerifyModalOpen(true)}>
-              <Icon icon={'mingcute:save-line'} style={{height: 20, width: 20, color: theme.colors.themeForeground}} />
-              <Text variant="inhirit">{modalMode === 'create' ? 'Tạo' : 'Cập nhật'}</Text>
-            </Button>
-            <Button variant="tertiary" style={{flex: 1}} onClick={() => setModalMode('close')}>Đóng</Button>
-          </View>
-        </View>
-      </Modal>
-      <Modal
-        isOpen={isVerifyModalOpen}
-        onRequestClose={() => setIsVerifyModalOpen(false)}
-        style={customStyles}
-      >
-        <View gap={16} animation="slideTopIn">
-          <View gap={8}>
-            <Text variant="title">Nhập mật khẩu để xác nhận</Text>
-            <Input
-              type="password"
-              variant="tertiary"
-              placeholder="Mật khẩu"
-              value={verfiyPassword}
-              onChange={(e) => setVerifyPassword(e.target.value)}
-            />
-          </View>
-          <View horizontal gap={8}>
-            <Button
-              variant="primary"
-              style={{flex: 1}}
-              onClick={() => {
-                modalMode === 'create' ?
-                  actCUDHelper(create, noti, 'create').then(() => {
-                    setIsVerifyModalOpen(false);
-                    setVerifyPassword('');
-                    setModalMode('close');
-                  })
-                :
-                  actCUDHelper(update, noti, 'update').then(() => {
-                    setIsVerifyModalOpen(false);
-                    setVerifyPassword('');
-                    setModalMode('close');
-                  })
-              }}
-            >Xác nhận</Button>
-            <Button variant="tertiary" style={{flex: 1}} onClick={() => {setIsVerifyModalOpen(false); setVerifyPassword('');}}>Hủy</Button>
-          </View>
-        </View>
-      </Modal>
+      <AuthorModal mode={modalMode} query={query} onModeChange={(mode) => setModalMode(mode)} />
       <Page.Content gap={0}>
         <View style={{position: 'sticky', top: 0, marginTop: -8, paddingTop: 8, paddingBottom: 8, backgroundColor: theme.colors.background}} horizontal>
           <View horizontal flex={1}>
             <Button
               shadowEffect
               style={{width: 120}}
-              onClick={() => {
-                setSelectedItem({
-                  firstname: '',
-                  lastname: '',
-                  introduction: '',
-                  birthday: new Date()
-                });
-                setModalMode('create');
-              }}
+              onClick={() => {setModalMode('create')}}
             >
               <Icon icon={'mingcute:add-line'} style={{height: 20, width: 20, color: theme.colors.foreground}} />
               <Text style={{marginLeft: 8, color: theme.colors.foreground}}>Thêm</Text>

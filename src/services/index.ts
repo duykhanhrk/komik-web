@@ -15,6 +15,7 @@ import * as UserMNService from './UserMNService';
 import * as FeedbackMNService from './FeedbackMNService';
 import * as ComicMNService from './ComicMNService';
 import * as AuthorMNService from './AuthorMNService';
+import * as DocumentMNService from './DocumentMNService';
 
 export {
   SessionService,
@@ -33,7 +34,8 @@ export {
   UserMNService,
   FeedbackMNService,
   ComicMNService,
-  AuthorMNService
+  AuthorMNService,
+  DocumentMNService
 };
 
 export * from './Types';

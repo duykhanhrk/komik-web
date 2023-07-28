@@ -23,7 +23,7 @@ function IntroductionPage() {
   return (
     <Page.Container>
       <Page.Content>
-        <View gap={8} style={{textAlign: 'justify'}} dangerouslySetInnerHTML={{ __html: query.data.introduction.value }}>
+        <View className="ql-editor" gap={8} dangerouslySetInnerHTML={{ __html: query.data.introduction.value }}>
         </View>
       </Page.Content>
     </Page.Container>

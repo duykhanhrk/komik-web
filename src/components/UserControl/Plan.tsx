@@ -2,6 +2,7 @@ import {useUserProfileQuery} from "@hooks"
 import {Icon} from "@iconify/react";
 import {LoadingPage} from "@pages";
 import {Purchase, PurchaseService} from "@services";
+import moment from "moment";
 import Moment from 'moment';
 import {useMemo} from "react";
 import InfiniteScroll from "react-infinite-scroller";
@@ -10,6 +11,7 @@ import {useNavigate} from "react-router";
 import {useTheme} from "styled-components";
 import Button from "../Button";
 import Card from "../Card";
+import Tag from "../Tag";
 import Text from "../Text";
 import View from "../View"
 
@@ -41,7 +43,7 @@ function History() {
   }
 
   return (
-    <View scrollable style={{height: 320}}>
+    <View scrollable style={{padding: 2}}>
       <InfiniteScroll
         loadMore={() => query.fetchNextPage()}
         hasMore={query.hasNextPage}
@@ -51,10 +53,18 @@ function History() {
           {purchases?.map((item: Purchase) => (
             <Card variant="tertiary">
               <Text variant="title">{item.plan.name}</Text>
-              <Text><b>Ngày có hiệu lực: </b>{Moment(item.effective_date).format('DD/MM/YY HH:mm:ss')}</Text>
-              <Text><b>Ngày có hết hạn: </b>{Moment(item.expires_date).format('DD/MM/YY HH:mm:ss')}</Text>
-              <Text><b>{'Tổng tiền: '}</b>{item.price.toString() + 'đ'}</Text>
-              <Text><b>{'Phương thức TT: '}</b>{item.payment_method == 'card' ? 'Thẻ Master/Visa' : 'Không rõ'}</Text>
+              <Text variant="small"><b>Ngày hiệu lực: </b>{moment(item.effective_at).format('DD-MM-YYYY HH:mm:ss')}</Text>
+              <Text variant="small"><b>Ngày hết hạn: </b>{moment(item.expires_at).format('DD-MM-YYYY HH:mm:ss')}</Text>
+              <View horizontal gap={4}>
+                <Tag variant={{ct: 'secondary'}} style={{gap: 8, color: theme.colors.idigo}}>
+                  <Icon icon={'mingcute:wallet-4-line'} style={{height: 16, width: 16, color: theme.colors.idigo}} />
+                  {new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(item.price)}
+                </Tag>
+                <Tag variant={{ct: 'secondary'}} style={{gap: 8}}>
+                  <Icon icon={'mingcute:bank-card-line'} style={{height: 16, width: 16, color: theme.colors.foreground}} />
+                  {item.payment_method == 'card' ? 'Master/Visa' : 'Không rõ'}
+                </Tag>
+              </View>
             </Card>
           ))}
         </View>
@@ -73,7 +83,7 @@ function Plan() {
   }
 
   return (
-    <View gap={8} flex={1} animation="slideTopIn">
+    <View gap={8} flex={1} animation="slideTopIn" style={{overflow: 'hidden'}}>
       <View horizontal gap={8} style={{alignItems: 'center'}}>
         <View style={{height: 100, width: 100}}>
           <Icon icon={'mingcute:vip-1-fill'} style={{height: 100, width: 100, color: theme.colors.idigo}} />
@@ -82,15 +92,13 @@ function Plan() {
           <Text variant="large-title">Gói</Text>
           <Text variant="small" style={{color: theme.colors.tertiaryForeground}}>
           {query.data.user.current_plan
-            ? 'Cảm ơn bạn đã sử dụng dịch vụ của chúng tôi. Gói hiện tại của bạn có giá trị sử dụng đến ' + Moment(query.data.user.current_plan.expires_at).format('DD/MM/YY HH:mm:ss')
-            : 'Bạn đã sẵn sàng bước chân vào cuộc hành trình mới đầy phấn khích với gói đăng ký độc đáo của chúng tôi?'
+            ? <>Cảm ơn bạn đã sử dụng dịch vụ của chúng tôi. Gói hiện tại của bạn có giá trị sử dụng đến <b>{moment(query.data.user.current_plan.expires_at).format('DD-MM-YYYY HH:mm:ss')}</b></>
+            : <>Bạn đã sẵn sàng bước chân vào cuộc hành trình mới đầy phấn khích với gói đăng ký độc đáo của chúng tôi?</>
           }
           </Text>
-
         </View>
       </View>
-      { query.data.user.current_plan
-      ?  null
+      { query.data.user.current_plan ? null
       :
         <Button
           variant="primary"

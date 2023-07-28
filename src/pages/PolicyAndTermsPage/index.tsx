@@ -4,6 +4,7 @@ import {useQuery} from "react-query";
 import {useTheme} from "styled-components";
 import ErrorPage from "../ErrorPage";
 import LoadingPage from "../LoadingPage";
+import 'react-quill/dist/quill.snow.css';
 
 function PolicyAndTermsPage() {
   const theme = useTheme();
@@ -23,7 +24,7 @@ function PolicyAndTermsPage() {
   return (
     <Page.Container>
       <Page.Content>
-        <View gap={8} style={{textAlign: 'justify', color: theme.colors.foreground}} dangerouslySetInnerHTML={{ __html: query.data.policy_and_terms.value }}>
+        <View className="ql-editor" gap={8} style={{textAlign: 'unset', color: theme.colors.foreground}} dangerouslySetInnerHTML={{ __html: query.data.policy_and_terms.value }}>
         </View>
       </Page.Content>
     </Page.Container>

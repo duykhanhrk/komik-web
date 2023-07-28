@@ -114,18 +114,13 @@ function ReviewsArea() {
         <View gap={8} style={{width: 520}}>
           <View horizontal gap={8} style={{alignItems: 'center'}} animation="slideBottomIn">
             <View style={{height: 120, width: 120}}>
-              <Icon icon={'mingcute:comment-fill'} style={{height: 120, width: 120, color: theme.colors.quaternaryBackground}} />
+              <Icon icon={'mingcute:comment-fill'} style={{height: 120, width: 120, color: theme.colors.yellow}} />
             </View>
             <View gap={4}>
               <Text variant="large-title">Đánh giá</Text>
               <Text variant="small" style={{color: theme.colors.tertiaryForeground}}>
                 Hãy đánh giá truyện của bạn và truyền cảm hứng cho những người khác cùng thưởng thức và khám phá!
               </Text>
-              {modalMode === 'update' &&
-              <Text variant="small" style={{color: theme.colors.red, fontWeight: 'bold'}}>
-                Cảnh báo! Nếu bạn cập nhật lại đánh giá, các đánh giá của người dùng khác cho đánh giá của bạn sẽ bị xóa!
-              </Text>
-              }
             </View>
           </View>
           <View gap={16} animation="slideLeftIn">

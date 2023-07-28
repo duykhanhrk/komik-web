@@ -1,6 +1,6 @@
 import ApiService from './ApiService';
 
-export const getAllPaymentMethods = () => [{ key: 'master-visa-card', name: 'Thẻ master/Visa' }];
+export const getAllPaymentMethods = () => [{ key: 'card', name: 'Master/Visa' }];
 
 export const getStripeKeyAsync = () => {
   return ApiService.get('/app/purchases/stripe_key');

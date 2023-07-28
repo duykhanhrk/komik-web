@@ -18,6 +18,7 @@ import ReportMNPage from "./pages/ReportMNPage";
 import NotFoundPage from "./pages/NotFoundPage";
 import { useLocation, matchPath } from "react-router";
 import {setRole} from "@redux/sessionSlice";
+import DocumentMNPage from "./pages/DocumentMNPage";
 
 function Content() {
   const { userTokens, currentRole } = useAppSelector(state => state.session);
@@ -34,6 +35,7 @@ function Content() {
       <Route path="/admin/plans" element={isAuthenticated ? (isAdmin ? <PlanMNPage /> : <NotFoundPage />) : <Navigate to={'/sign_in'} />}/>
       <Route path="/admin/users" element={isAuthenticated ? (isAdmin ? <UserMNPage /> : <NotFoundPage />) : <Navigate to={'/sign_in'} />}/>
       <Route path="/admin/feedbacks" element={isAuthenticated ? (isAdmin ? <FeedbackMNPage /> : <NotFoundPage />) : <Navigate to={'/sign_in'} />}/>
+      <Route path="/admin/documents" element={isAuthenticated ? (isAdmin ? <DocumentMNPage /> : <NotFoundPage />) : <Navigate to={'/sign_in'} />}/>
       <Route path="/admin/comics" element={isAuthenticated ? (isAdmin ? <ComicMNPage /> : <NotFoundPage />) : <Navigate to={'/sign_in'} />}/>
       <Route path="/admin/comics/:comic_id" element={isAuthenticated ? (isAdmin ? <ComicDetailMNPage /> : <NotFoundPage />) : <Navigate to={'/sign_in'} />}/>
       <Route path="/admin/reports" element={isAuthenticated ? (isAdmin ? <ReportMNPage /> : <NotFoundPage />) : <Navigate to={'/sign_in'} />}/>

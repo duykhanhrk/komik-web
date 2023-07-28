@@ -133,19 +133,27 @@ function NavArea() {
           </>
         )}
       </NavLink>
-      <NavLink to="/admin/reports" style={({isActive}) => isActive ? navItemActiveStyle : navItemStyle}>
-        {({isActive}) => (
-          <>
-            <Icon icon={isActive ? 'mingcute:chart-line-fill' : 'mingcute:chart-line-fill'} style={{color: 'inhirit', height: 20, width: 20}}/>
-            <Text variant="inhirit">Thống kê</Text>
-          </>
-        )}
-      </NavLink>
       <NavLink to="/admin/feedbacks" style={({isActive}) => isActive ? navItemActiveStyle : navItemStyle}>
         {({isActive}) => (
           <>
             <Icon icon={isActive ? 'mingcute:message-2-fill' : 'mingcute:message-2-line'} style={{color: 'inhirit', height: 20, width: 20}}/>
             <Text variant="inhirit">Phản hồi</Text>
+          </>
+        )}
+      </NavLink>
+      <NavLink to="/admin/documents" style={({isActive}) => isActive ? navItemActiveStyle : navItemStyle}>
+        {({isActive}) => (
+          <>
+            <Icon icon={isActive ? 'mingcute:documents-fill' : 'mingcute:documents-line'} style={{color: 'inhirit', height: 20, width: 20}}/>
+            <Text variant="inhirit">Tài liệu</Text>
+          </>
+        )}
+      </NavLink>
+      <NavLink to="/admin/reports" style={({isActive}) => isActive ? navItemActiveStyle : navItemStyle}>
+        {({isActive}) => (
+          <>
+            <Icon icon={isActive ? 'mingcute:chart-line-fill' : 'mingcute:chart-line-fill'} style={{color: 'inhirit', height: 20, width: 20}}/>
+            <Text variant="inhirit">Thống kê</Text>
           </>
         )}
       </NavLink>
