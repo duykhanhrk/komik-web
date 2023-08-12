@@ -19,7 +19,10 @@ export {default as SessionLayout } from './SessionLayout';
 export {default as Layout } from './Layout';
 export {default as RichEditor } from './RichEditor';
 export {default as DateInput } from './DateInput';
+
 export * as ComicItem  from './ComicItem';
 export * as UserControl from './UserControl';
 export * as SearchInput from './SearchInput';
-export * as Modal from './Modal';
+
+import Board, {ConfirmationBoard} from "./Board";
+export {Board, ConfirmationBoard};

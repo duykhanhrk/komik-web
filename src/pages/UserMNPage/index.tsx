@@ -272,7 +272,7 @@ function UserMNPage() {
               <Card
                 horizontal
                 shadowEffect
-                animation={index % 2 == 0 ? "slideLeftIn" : "slideRightIn"}
+                animation={"slideLeftIn"}
                 onClick={() => {
                   setSelectedItem(item);
                   setModalMode('update');

@@ -47,9 +47,10 @@ const Card = styled.div<CardProps>`
 
   ${props => props.ebonsai || props.ebonsaiSnippet ? `
     padding: 4px;
-    flex-direction: row;
+    flex-direction: ${props.horizontal === false ? 'column' : 'row'};
     align-items: center;
-    height: 44px;
+    ${props.horizontal === false ? 'width: 44px;' : ''}
+    ${props.horizontal === false ? '' : 'height: 44px;'}
   ` : ''}
 
   animation: ${

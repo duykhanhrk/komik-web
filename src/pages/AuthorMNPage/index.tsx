@@ -84,7 +84,7 @@ function AuthorPage() {
               <Card
                 horizontal
                 shadowEffect
-                animation={index % 2 == 0 ? "slideLeftIn" : "slideRightIn"}
+                animation={"slideLeftIn"}
                 onClick={() => {navigate(`/admin/authors/${item.id}`)}}
               >
                 <View

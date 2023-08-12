@@ -6,8 +6,6 @@ import {useQueryClient} from "react-query";
 import {useNavigate} from "react-router";
 import styled, {useTheme} from "styled-components";
 import Button from "../Button";
-import Card from "../Card";
-import Tag from "../Tag";
 import Text from "../Text";
 import View from "../View";
 
@@ -44,7 +42,7 @@ function MainPanel(props: MainPanelProps) {
     <View gap={8} animation="slideTopIn">
       <View gap={4}>
         <Button
-          variant="tertiary"
+          variant="secondary"
           onClick={() => {
             props.onItemClick && props.onItemClick();
             navigate('/profile');
@@ -55,7 +53,7 @@ function MainPanel(props: MainPanelProps) {
           <Text style={{color: theme.colors.foreground}}>Hồ sơ</Text>
         </Button>
         <Button
-          variant="tertiary"
+          variant="secondary"
           onClick={() => {
             props.onItemClick && props.onItemClick();
             navigate('/feedbacks');
@@ -66,7 +64,7 @@ function MainPanel(props: MainPanelProps) {
           <Text style={{color: theme.colors.foreground}}>Phản hồi</Text>
         </Button>
         <Button
-          variant="tertiary"
+          variant="secondary"
           onClick={() => {
             props.onItemClick && props.onItemClick();
             navigate('/introduction');
@@ -77,7 +75,7 @@ function MainPanel(props: MainPanelProps) {
           <Text style={{color: theme.colors.foreground}}>Giới thiệu</Text>
         </Button>
         <Button
-          variant="tertiary"
+          variant="secondary"
           onClick={() => {
             props.onItemClick && props.onItemClick();
             navigate('/policy_and_terms');
@@ -96,8 +94,8 @@ function MainPanel(props: MainPanelProps) {
           }}
           style={{columnGap: 8, flex: 1}}
         >
-          <Icon icon={'mingcute:exit-line'} style={{height: 20, width: 20, color: theme.colors.themeForeground}} />
-          <Text style={{color: theme.colors.themeForeground}}>Đăng xuất</Text>
+          <Icon icon={'mingcute:exit-line'} style={{height: 20, width: 20}} />
+          <Text variant="inhirit">Đăng xuất</Text>
         </Button>
       </View>
     </View>

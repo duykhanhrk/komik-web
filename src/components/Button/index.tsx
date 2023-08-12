@@ -2,7 +2,10 @@ import styled from "styled-components";
 import {default as Animations} from '../Animations';
 
 export interface ButtonProps {
-  variant?: 'primary' | 'secondary' | 'tertiary' | 'quaternary' | 'quinary' | 'transparent';
+  variant?: 'red' | 'green' | 'blue' | 'yellow' | 'purple' | 'idigo' | 'orange' |
+    'create' | 'update' | 'delete' | 'close' |
+    'primary' | 'secondary' | 'tertiary' | 'quaternary' | 'quinary' | 'transparent';
+  flex?: number;
   shadowEffect?: boolean;
   selected?: boolean;
   ebonsai?: boolean;
@@ -13,6 +16,7 @@ export interface ButtonProps {
 
 const Button = styled.button<ButtonProps>`
   display: flex;
+  ${props => props.flex ? `flex: ${props.flex}` : ''};
   flex-direction: row;
   align-items: center;
   justify-content: center;
@@ -24,8 +28,18 @@ const Button = styled.button<ButtonProps>`
   border-radius: ${props => props.theme.dimensions.borderRadius};
   opacity: 1;
   color: ${
-    props => props.variant && props.variant === 'primary'?
-      props.theme.colors.themeForeground
+    props => props.variant && props.variant === 'primary' ? props.theme.colors.themeForeground
+      : props.variant === 'red' ? props.theme.colors.red
+      : props.variant === 'green' ? props.theme.colors.green
+      : props.variant === 'blue' ? props.theme.colors.blue
+      : props.variant === 'yellow' ? props.theme.colors.yellow
+      : props.variant === 'purple' ? props.theme.colors.purple
+      : props.variant === 'idigo' ? props.theme.colors.idigo
+      : props.variant === 'orange' ? props.theme.colors.orange
+      : props.variant === 'create' ? props.theme.colors.blue
+      : props.variant === 'update' ? props.theme.colors.blue
+      : props.variant === 'delete' ? props.theme.colors.red
+      : props.variant === 'close' ? props.theme.colors.themeColor
       : props.theme.colors.foreground
   };
   background-color: ${
@@ -35,7 +49,18 @@ const Button = styled.button<ButtonProps>`
       : props.variant === 'quaternary' ? props.theme.colors.quaternaryBackground
       : props.variant === 'quinary' ? props.theme.colors.quinaryBackground
       : props.variant === 'transparent' ? 'transparent'
-      : props.theme.colors.themeBackground
+      : props.variant === 'red' ? `${props.theme.colors.red}22`
+      : props.variant === 'green' ? `${props.theme.colors.green}22`
+      : props.variant === 'blue' ? `${props.theme.colors.blue}22`
+      : props.variant === 'yellow' ? `${props.theme.colors.yellow}22`
+      : props.variant === 'purple' ? `${props.theme.colors.purple}22`
+      : props.variant === 'idigo' ? `${props.theme.colors.idigo}22`
+      : props.variant === 'orange' ? `${props.theme.colors.orange}22`
+      : props.variant === 'create' ? `${props.theme.colors.blue}22`
+      : props.variant === 'update' ? `${props.theme.colors.blue}22`
+      : props.variant === 'delete' ? `${props.theme.colors.red}22`
+      : props.variant === 'close' ? `${props.theme.colors.themeColor}22`
+      : props.theme.colors.themeColor
   };
 
   ${props => props.ebonsai ? `

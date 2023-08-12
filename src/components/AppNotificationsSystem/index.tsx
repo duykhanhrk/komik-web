@@ -43,6 +43,7 @@ function AppNotificationsSystem() {
           marginBottom: '16px',
           cursor: notification.dismissible && !notification.showDismissButton ? 'pointer' : '',
           zIndex: 999,
+          overflow: 'hidden'
       }),
       notificationIcon: (notification: Notification) => ({
           display: notification.image ? 'none' : 'flex',
@@ -92,11 +93,12 @@ function AppNotificationsSystem() {
           height: '40px',
           backgroundSize: 'cover',
       }),
-      notificationButtons: () => ({}),
+      notificationButtons: () => ({
+      }),
       notificationButton: (
           notification: Notification,
           position: number,
-          state: {isHovered: boolean; isActive: boolean}
+          state: {isHovered: boolean; isActive: boolean},
       ) => ({
           display: 'block',
           width: '100%',
@@ -104,15 +106,13 @@ function AppNotificationsSystem() {
           minHeight: '40px',
           boxSizing: 'border-box',
           padding: 0,
-          background: '#2f2f36',
+          background: `${theme.colors.red}22`,
           border: 'none',
-          borderRadius: 0,
-          borderLeft: '1px solid #464c5f',
           outline: 'none',
           textAlign: 'center',
-          color: state.isHovered || state.isActive ? '#349ef3' : '#ffffff',
+          color: state.isHovered || state.isActive ? theme.colors.red : theme.colors.red,
           cursor: 'pointer',
-          borderTop: position === 1 ? '1px solid #464c5f' : 'none',
+          fontWeight: 'bold'
       }),
       notificationButtonText: () => ({
           display: 'block',

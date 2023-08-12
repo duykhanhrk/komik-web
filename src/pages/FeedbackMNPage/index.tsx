@@ -144,7 +144,7 @@ function FeedbackMNPage() {
                   setSelectedItem(item);
                   setModalMode('open');
                 }}
-                animation={index % 2 == 0 ? "slideLeftIn" : "slideRightIn"}
+                animation={"slideLeftIn"}
               >
                 <View flex={1} horizontal gap={8} style={{alignItems: 'center'}}>
                   <Text numberOfLines={1} variant="title">{item.title}</Text>

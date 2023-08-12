@@ -9,7 +9,7 @@ import { useTheme } from "styled-components";
 import Modal from 'react-modal';
 import LoadingPage from "../LoadingPage";
 import ErrorPage from "../ErrorPage";
-import { actCUDHelper } from "@helpers/CUDHelper";
+import { actCUDHelper, deleteConfirmHelper } from "@helpers/CUDHelper";
 
 function CategoryMNPage() {
   const [searchText, setSearchText] = useState<string>('');
@@ -110,15 +110,22 @@ function CategoryMNPage() {
           <View horizontal gap={8}>
             {modalMode === 'update' &&
             <Button
-              variant="primary"
+              variant="delete"
               style={{gap: 8, flex: 1}}
-              onClick={() => actCUDHelper(remove, noti, 'delete', selectedItem?.id).then(() => setModalMode('close'))}
+              onClick={() => {
+                deleteConfirmHelper({
+                  noti,
+                  onConfirm: async () => {
+                    actCUDHelper(remove, noti, 'delete', selectedItem?.id).then(() => setModalMode('close'))
+                  }
+                })
+              }}
             >
-              <Icon icon={'mingcute:delete-2-line'} style={{height: 20, width: 20, color: theme.colors.themeForeground}} />
+              <Icon icon={'mingcute:delete-2-line'} style={{height: 20, width: 20}} />
               <Text variant="inhirit">Xóa</Text>
             </Button>}
             <Button
-              variant="primary"
+              variant="create"
               style={{gap: 8, flex: 1}}
               onClick={() => {
                 modalMode === 'create' ?
@@ -127,10 +134,11 @@ function CategoryMNPage() {
                   actCUDHelper(update, noti, 'update').then(() => setModalMode('close'))
               }}
             >
-              <Icon icon={'mingcute:save-line'} style={{height: 20, width: 20, color: theme.colors.themeForeground}} />
+              <Icon icon={'mingcute:save-line'} style={{height: 20, width: 20}} />
               <Text variant="inhirit">{modalMode === 'create' ? 'Tạo' : 'Cập nhật'}</Text>
             </Button>
-            <Button variant="tertiary" style={{gap: 8, flex: 1}} onClick={() => setModalMode('close')}>
+            <Button variant="close" style={{gap: 8, flex: 1}} onClick={() => setModalMode('close')}>
+              <Icon icon={'mingcute:close-line'} style={{height: 20, width: 20}} />
               <Text>Đóng</Text>
             </Button>
           </View>
@@ -178,7 +186,7 @@ function CategoryMNPage() {
                   setModalMode('update');
                 }}
                 style={{height: 40, justifyContent: 'center'}}
-                animation={index % 2 == 0 ? "slideLeftIn" : "slideRightIn"}
+                animation={"slideLeftIn"}
               >
                 <View flex={1} style={{justifyContent: 'center'}}>
                   <Text variant="title">{item.name}</Text>

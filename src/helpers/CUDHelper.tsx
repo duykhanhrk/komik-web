@@ -2,6 +2,36 @@ import {isAxiosError} from "axios";
 import {UseMutationResult} from "react-query";
 import {NotificationsContext} from "reapop/dist/contexts/reapopNotificationsContext";
 
+export function deleteConfirmHelper({
+  noti,
+  onConfirm,
+  title,
+  message
+}:{
+  noti: NotificationsContext,
+  onConfirm?: () => Promise<any>,
+  title?: string,
+  message?: string
+}) {
+  const notification = noti.notify({
+    title: title || 'Xác nhận',
+    message: message || 'Bạn có chắc chắn muốn xóa?',
+    status: 'info',
+    dismissible: false,
+    dismissAfter: 5000
+  });
+
+  notification.dismissible = true;
+  notification.dismissAfter = 5000;
+  notification.buttons = [
+    {
+      name: 'Xác nhận',
+      onClick: async () => {onConfirm?.(); noti.dismissNotification(notification.id);}
+    },
+  ]
+  noti.notify(notification);
+}
+
 export async function actCUDHelper(
   act: UseMutationResult<any, any, any, any>,
   noti: NotificationsContext,

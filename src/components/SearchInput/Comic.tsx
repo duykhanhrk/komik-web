@@ -61,13 +61,13 @@ function Comic() {
 
   function submitSearch() {
     // Add to recently keywords
-    dispatch(addKeyword(suggestion))
+    dispatch(addKeyword({...suggestion, keyword: suggestion.keyword.trim()}))
 
     // Navigate to search page
     if (suggestion.data && suggestion.data.categoryIds.length > 0) {
-      navigate(`/comics/searching?category_ids=${suggestion.data.categoryIds.join(',')}&query=${suggestion.keyword}`);
+      navigate(`/comics/searching?category_ids=${suggestion.data.categoryIds.join(',')}&query=${suggestion.keyword.trim()}`);
     } else {
-      navigate(`/comics/searching?query=${suggestion.keyword}`);
+      navigate(`/comics/searching?query=${suggestion.keyword.trim()}`);
     }
 
     // Reset search input
@@ -83,12 +83,12 @@ function Comic() {
         placeholder={'Tìm kiếm truyện tranh'}
         value={suggestion.keyword.toLowerCase()}
         onFocus={() => setSearchDropdownOpen('search')}
-        onKeyPress={(event) => suggestion.keyword !== '' && event.key === 'Enter' && submitSearch()}
+        onKeyPress={(event) => suggestion.keyword.trim() !== '' && event.key === 'Enter' && submitSearch()}
         onChange={(e) => {
           setSuggestion({...suggestion, keyword: e.target.value});
 
-          if (e.target.value !== '') {
-            fetchSuggestions(e.target.value);
+          if (e.target.value.trim() !== '') {
+            fetchSuggestions(e.target.value.trim());
             if (searchDropdownOpen !== 'search') {
               setSearchDropdownOpen('search');
             }
@@ -104,76 +104,45 @@ function Comic() {
             width: 'auto',
             minHeight: 'auto',
             gap: 8,
-            display: searchDropdownOpen === 'search' && (suggestion.keyword !== '' || keywords.length !== 0) ? 'flex' : 'none',
+            display: searchDropdownOpen === 'search' && (suggestion.keyword.trim() !== '' || keywords.length !== 0) ? 'flex' : 'none',
         }}>
           <View gap={8} animation="slideTopIn" style={{overflow: 'hidden'}}>
-            <View horizontal style={{alignItems: 'center'}}>
+            <View horizontal style={{alignItems: 'center', display: suggestion.keyword.trim() !== '' ? 'flex' : 'none'}}>
               <View horizontal gap={4} flex={1} style={{alignItems: 'center'}}>
                 <Tag
                   onClick={submitSearch}
-                  style={{gap: 8, display: suggestion.keyword !== '' ? 'flex' : 'none', color: theme.colors.blue}}
+                  style={{gap: 8, color: theme.colors.blue}}
                 >
                   <Icon icon={'mingcute:search-line'} style={{height: 20, width: 20, color: theme.colors.blue}} />
                   {suggestion.keyword}
                 </Tag>
               </View>
-              <View horizontal gap={4} style={{alignItems: 'center', justifyContent: 'flex-end'}}>
-                <Tag
-                  variant={{ct: 'tertiary'}}
-                  style={{gap: 8, color: suggestion.data ? theme.colors.orange : theme.colors.foreground}}
-                  onClick={() => {
-                    setSuggestion({...suggestion, data: suggestion.data ? undefined : {categoryIds: []}});
-                  }}
-                >
-                  <Icon icon={suggestion.data ? 'mingcute:filter-fill' : 'mingcute:filter-line'} style={{height: 20, width: 20, color: theme.colors.orange}} />
-                  Lọc
-                </Tag>
-              </View>
-            </View>
-            <View
-              horizontal
-              gap={4}
-              wrap
-              style={{alignContent: 'flex-start', display: suggestion.data ? 'flex' : 'none'}}
-            >
-              {categoriesQuery.isSuccess && categoriesQuery.data.categories.map((item: Category, index: number) => (
-                <Tag
-                  variant={{ct: 'tertiary'}}
-                  style={{color: suggestion.data && suggestion.data.categoryIds.includes(item.id!) ? theme.colors.orange : theme.colors.foreground}}
-                  onClick={() => {
-                    if (suggestion.data) {
-                      if (suggestion.data.categoryIds.includes(item.id!)) {
-                        setSuggestion({...suggestion, data: {categoryIds: suggestion.data.categoryIds.filter((id)  => id !== item.id)}});
-                      } else {
-                        setSuggestion({...suggestion, data: {categoryIds: [...suggestion.data.categoryIds, item.id!].sort((a, b) => a - b)}});
-                      }
-                    }
-                  }}
-                >{item.name}</Tag>
-              ))}
             </View>
             <View
               gap={4}
               scrollable
-              style={{padding: 2, display: suggestions.length !== 0 || keywords.length !== 0 ? 'flex' : 'none'}}
+              variant="secondary"
+              style={{borderRadius: 8, padding: 2, display: (suggestions.length !== 0 && suggestion.keyword.trim() !== '') || (keywords.length !== 0 && suggestion.keyword.trim() === '') ? 'flex' : 'none'}}
             >
               {suggestions.length !== 0 && suggestions.map((item: Suggestion) => (
                 <Card
-                  variant="tertiary"
+                  variant="secondary"
                   onClick={() => {
                     setSearchDropdownOpen('');
                     navigate(`/comics/searching?query=${item.keyword}`);
                   }}
+                  shadowEffect
                 >
                   <Text>{item.keyword}</Text>
                 </Card>
               ))}
               {keywords.map((item, index) => (
                 <Card
-                  variant="tertiary"
+                  variant="secondary"
                   horizontal
-                  style={{alignItems: 'center', display: suggestion.keyword === '' ? 'flex' : 'none'}}
+                  style={{paddingTop: 4, paddingBottom: 4, paddingLeft: 8, paddingRight: 8, alignItems: 'center', display: suggestion.keyword.trim() === '' ? 'flex' : 'none'}}
                   key={index.toString()}
+                  shadowEffect
                 >
                   <View
                     flex={1}
@@ -196,16 +165,17 @@ function Comic() {
                     </Tag>
                   </View>
                   <Tag
+                    variant={{ct: 'secondary'}}
                     style={{gap: 8}}
                     onClick={() => {
                       setSuggestion(item);
                       inputRef.current?.focus();
                     }}
                   >
-                    <Icon icon={'mingcute:edit-2-line'} style={{height: 16, width: 16, color: theme.colors.foreground}} />
+                    <Icon icon={'mingcute:edit-2-line'} style={{height: 16, width: 16, color: theme.colors.blue}} />
                   </Tag>
-                  <Tag style={{gap: 8}} onClick={() => {dispatch(removeKeyword(item))}}>
-                    <Icon icon={'mingcute:delete-2-line'} style={{height: 16, width: 16, color: theme.colors.foreground}} />
+                  <Tag variant={{ct: 'secondary'}} style={{gap: 8}} onClick={() => {dispatch(removeKeyword(item))}}>
+                    <Icon icon={'mingcute:delete-2-line'} style={{height: 16, width: 16, color: theme.colors.red}} />
                   </Tag>
                 </Card>
               ))}

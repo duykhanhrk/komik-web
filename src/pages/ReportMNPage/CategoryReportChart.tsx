@@ -57,7 +57,7 @@ function CategoryReportChart() {
   }, [])
 
   return (
-    <Card animation="slideLeftIn">
+    <Card animation="slideTopIn">
       <Text variant="medium-title">Thống kê</Text>
       {chart.status === 'loading' ?
         <View style={{height: 480}}>

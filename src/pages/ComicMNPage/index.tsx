@@ -53,8 +53,9 @@ function ComicMNPage() {
         <View style={{position: 'sticky', top: 0, marginTop: -8, paddingTop: 8, paddingBottom: 8, backgroundColor: theme.colors.background}} horizontal>
           <View horizontal flex={1}>
             <Button
-              variant="primary"
+              variant="secondary"
               style={{width: 120}}
+              shadowEffect
               onClick={() => {
                 setModalMode('create');
               }}
@@ -87,7 +88,7 @@ function ComicMNPage() {
                 shadowEffect
                 key={item.id!.toString()}
                 onClick={() => navigate(`/admin/comics/${item.id}`)}
-                animation={index % 2 == 0 ? "slideLeftIn" : "slideRightIn"}
+                animation={"slideLeftIn"}
               >
                 <View flex={1} style={{justifyContent: 'center'}}>
                   <View horizontal gap={8}>

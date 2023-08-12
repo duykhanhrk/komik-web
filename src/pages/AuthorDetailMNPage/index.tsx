@@ -10,7 +10,7 @@ import AvatarEditor from "react-avatar-editor";
 import {isAxiosError} from "axios";
 import LoadingPage from "../LoadingPage";
 import ErrorPage from "../ErrorPage";
-import {actCUDHelper} from "@helpers/CUDHelper";
+import {actCUDHelper, deleteConfirmHelper} from "@helpers/CUDHelper";
 import {Icon} from "@iconify/react";
 import moment from "moment";
 
@@ -266,10 +266,15 @@ function ActionsSection({query}: {query: UseQueryResult<any, any>}) {
       <View horizontal gap={8}>
         <Button
           variant="primary"
+          style={{backgroundColor: theme.colors.red, gap: 8, width: 120}}
           onClick={() => {
-            actCUDHelper(remove, noti, 'delete').then(() => navigate(-1));
+            deleteConfirmHelper({
+              noti,
+              onConfirm: async () => {
+                actCUDHelper(remove, noti, 'delete').then(() => navigate(-1));
+              }
+            })
           }}
-          style={{gap: 8, width: 120}}
         >
           <Icon icon={'mingcute:delete-2-line'} style={{color: 'inhirit', height: 20, width: 20}}/>
           <Text variant="inhirit">Xóa</Text>
@@ -322,7 +327,7 @@ function AuthorDetailMNPage() {
 
   return (
     <Page.Container>
-      <Page.Content style={{flexDirection: 'row', position: 'sticky', top: 0, marginTop: -8, paddingTop: 8, paddingBottom: 8, backgroundColor: theme.colors.background}}>
+      <Page.Content style={{flex: 0, flexDirection: 'row', position: 'sticky', top: 0, marginTop: -8, paddingTop: 8, paddingBottom: 8, backgroundColor: theme.colors.background}}>
         <ActionsSection query={query} />
       </Page.Content>
       <Page.Content gap={16}>

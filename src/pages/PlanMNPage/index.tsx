@@ -9,7 +9,7 @@ import { useTheme } from "styled-components";
 import Modal from 'react-modal';
 import LoadingPage from "../LoadingPage";
 import ErrorPage from "../ErrorPage";
-import { actCUDHelper } from "@helpers/CUDHelper";
+import { actCUDHelper, deleteConfirmHelper } from "@helpers/CUDHelper";
 
 function PlanMNPage() {
   const [searchText, setSearchText] = useState<string>('');
@@ -132,7 +132,14 @@ function PlanMNPage() {
             <Button
               variant="primary"
               style={{gap: 8, flex: 1}}
-              onClick={() => actCUDHelper(remove, noti, 'delete', selectedItem?.id).then(() => setModalMode('close'))}
+              onClick={() => {
+                deleteConfirmHelper({
+                  noti,
+                  onConfirm: async () => {
+                    actCUDHelper(remove, noti, 'delete', selectedItem?.id).then(() => setModalMode('close'))
+                  }
+                })
+              }}
             >
               <Icon icon={'mingcute:delete-2-line'} style={{height: 20, width: 20, color: theme.colors.themeForeground}} />
               <Text variant="inhirit">Xóa</Text>
@@ -193,7 +200,7 @@ function PlanMNPage() {
               <Card
                 horizontal
                 shadowEffect
-                animation={index % 2 == 0 ? "slideLeftIn" : "slideRightIn"}
+                animation={"slideLeftIn"}
                 style={{height: 40}}
                 onClick={() => {
                   setSelectedItem(item);

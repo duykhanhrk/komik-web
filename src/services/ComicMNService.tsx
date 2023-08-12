@@ -50,3 +50,9 @@ export const updateChapterImagesAsync = async (comic_id: number, id: number, ima
     }
   });
 }
+
+export const getAllReviewsAsync = (comic_id: number, params: {page?: number, per_page?: number, query?: string}) => {
+  return ApiService.get(`/admin/comics/${comic_id}/reviews`, {params});
+}
+
+export const deleteReviewAsync = (comic_id: number, id: number) => ApiService.delete(`/admin/comics/${comic_id}/reviews/${id}`);

@@ -114,7 +114,7 @@ function RightArrow() {
                 key={item[0].id.toString()}
                 shadowEffect
                 style={{marginLeft: 4, marginRight: 4, marginTop: 8, marginBottom: 4, height: 40, width: 180, justifyContent: 'center', alignItems: 'center'}}
-                onClick={() => navigate(`/comics?category_id=${item[0].id}`)}
+                onClick={() => navigate(`/comics/categories?category_ids=${item[0].id}`)}
                 animation="slideLeftIn"
               >
                 <Text>{item[0].name}</Text>
@@ -124,7 +124,7 @@ function RightArrow() {
                 key={item[1].id.toString()}
                 shadowEffect
                 style={{marginLeft: 4, marginRight: 4, marginTop: 4, marginBottom: 8, height: 40, width: 180, justifyContent: 'center', alignItems: 'center'}}
-                onClick={() => navigate(`/comics?category_id=${item[1].id}`)}
+                onClick={() => navigate(`/comics/categories?category_ids=${item[1].id}`)}
                 animation="slideLeftIn"
               >
                 <Text>{item[1].name}</Text>

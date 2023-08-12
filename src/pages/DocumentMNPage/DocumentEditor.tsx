@@ -43,7 +43,7 @@ function DocumentEditor({documentKey, documentFn, documentUpdateFn}: {documentKe
   }
 
   return (
-    <View style={{height: '100vh', overflow: 'hidden'}}>
+    <View style={{height: '100vh', overflow: 'hidden'}} animation="slideTopIn">
       <Card variant="secondary" style={{flex: 1, overflow: 'hidden', padding: 0}}>
         <RichEditor
           value={data.value}

@@ -82,7 +82,7 @@ function PlanReportChart() {
   }, [chart.mode, chart.params])
 
   return (
-    <Card animation="slideLeftIn">
+    <Card animation="slideTopIn">
       <Text variant="medium-title">Thống kê</Text>
       <View horizontal gap={8}>
         <Dropdown.SelectionList<{label: string, value: 'subscriptions' | 'revenue'}>

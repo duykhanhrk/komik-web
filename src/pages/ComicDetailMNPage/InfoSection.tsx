@@ -10,8 +10,8 @@ import {Icon} from "@iconify/react";
 import {useTheme} from "styled-components";
 import AuthorsModal from "./AuthorsModal";
 
-function InfoSection({_data, query}: {_data: Comic, query: UseQueryResult<any, any>}) {
-  const [comic, setComic] = useState<Comic | undefined>();
+function InfoSection({_data, onSaveSuccess}: {_data: Comic, onSaveSuccess?: () => void}) {
+  const [comic, setComic] = useState<Comic>(_data);
   const [authorsModalOpen, setAuthorsModalOpen] = useState<boolean>(false);
 
   const noti = useNotifications();
@@ -23,24 +23,16 @@ function InfoSection({_data, query}: {_data: Comic, query: UseQueryResult<any, a
   });
 
   useEffect(() => {
-    if (_data && query.data.comic) {
-      setComic({
-        ..._data,
-        category_ids: query.data.comic.categories.map((item: Comic) => item.id),
-        author_ids: query.data.comic.authors.map((item: Comic) => item.id)
-      });
-    }
-  }, []);
-
-  useEffect(() => {
-    if (_data && query.data.comic) {
-      setComic({..._data, category_ids: query.data.comic.categories.map((item: Comic) => item.id)});
-    }
-  }, [categoryQuery.data]);
+    setComic({
+      ..._data,
+      category_ids: comic.categories ? comic.categories.map((item: Category) => item.id!) : [],
+      author_ids: comic.authors ? comic.authors.map((item: Author) => item.id!) : []
+    });
+  }, [_data]);
 
   const update = useMutation({
     mutationFn: () => ComicMNService.updateAsync(comic!),
-    onSettled: query.refetch,
+    onSettled: onSaveSuccess,
   })
 
   if (categoryQuery.isLoading) {
