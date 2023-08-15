@@ -179,7 +179,17 @@ function UserMNPage() {
             <Button
               variant="primary"
               style={{flex: 1, gap: 8}}
-              onClick={() => setIsVerifyModalOpen(true)}>
+              onClick={() => {
+                modalMode === 'create' ?
+                  actCUDHelper(create, noti, 'create').then(() => {
+                    setModalMode('close');
+                  })
+                :
+                  actCUDHelper(update, noti, 'update').then(() => {
+                    setModalMode('close');
+                  })
+              }}
+            >
               <Icon icon={'mingcute:save-line'} style={{height: 20, width: 20, color: theme.colors.themeForeground}} />
               <Text variant="inhirit">{modalMode === 'create' ? 'Tạo' : 'Cập nhật'}</Text>
             </Button>
