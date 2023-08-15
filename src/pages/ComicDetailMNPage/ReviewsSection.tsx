@@ -69,18 +69,6 @@ function ReviewsSection({comic_id}: {comic_id: number}) {
         onCancel={() => setConfirmationBoardOpen(false)}
       />
 
-      <View horizontal>
-        <View horizontal flex={1}>
-        </View>
-        <View horizontal>
-          <Input
-            variant="secondary"
-            placeholder="Tìm kiếm"
-            value={searchText}
-            onChange={(e) => setSearchText(e.target.value)}
-          />
-        </View>
-      </View>
       <View gap={8} style={{height: 640}} scrollable animation="slideLeftIn">
         {reviews?.length !== 0 ?
         <InfiniteScroll

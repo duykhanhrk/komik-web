@@ -98,6 +98,7 @@ export type Purchase = {
   effective_at: Date;
   expires_at: Date;
   payment_method: string;
+  owner?: User;
 }
 
 export type Notification = {

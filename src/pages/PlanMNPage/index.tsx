@@ -10,6 +10,7 @@ import Modal from 'react-modal';
 import LoadingPage from "../LoadingPage";
 import ErrorPage from "../ErrorPage";
 import { actCUDHelper, deleteConfirmHelper } from "@helpers/CUDHelper";
+import PurchasesArea from "./PurchasesArea";
 
 function PlanMNPage() {
   const [searchText, setSearchText] = useState<string>('');
@@ -214,6 +215,7 @@ function PlanMNPage() {
             ))}
           </View>
         </InfiniteScroll>
+        <PurchasesArea />
       </Page.Content>
     </Page.Container>
   )
