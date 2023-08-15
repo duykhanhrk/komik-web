@@ -1,6 +1,5 @@
 import {Button, Card, Input, Text, View} from "@components";
 import {useAppDispatch} from "@hooks";
-import {Icon} from "@iconify/react";
 import {setUserTokens} from "@redux/sessionSlice";
 import {SessionService} from "@services";
 import {isAxiosError} from "axios";
@@ -20,36 +19,46 @@ function SignInPage() {
 
   const signIn = () => {
     setIsLoading(true);
-    SessionService.signInAsync({
-      username_or_email: usernameOrEmail,
-      password
-    }).then((data) => {
-      dispatch(setUserTokens(data));
-    }).catch((error) => {
-      if (isAxiosError(error)) {
-        if (error.response) {
-          notify({
-            title: 'Đăng nhập không thành công',
-            message: error.response.data.message,
-            status: 'error'
-          });
+
+    // check input
+    if (usernameOrEmail.length === 0 || password.length === 0) {
+       notify({
+         title: 'Đăng nhập không thành công',
+         message: 'Vui lòng nhập đầy đủ thông tin',
+         status: 'error'
+       });
+    } else {
+      SessionService.signInAsync({
+        username_or_email: usernameOrEmail,
+        password
+      }).then((data) => {
+        dispatch(setUserTokens(data));
+      }).catch((error) => {
+        if (isAxiosError(error)) {
+          if (error.response) {
+            notify({
+              title: 'Đăng nhập không thành công',
+              message: error.response.data.message,
+              status: 'error'
+            });
+          } else {
+            notify({
+              title: 'Không thể kết nối',
+              message: 'Vui lòng kiểm tra lại kết nối',
+              status: 'error'
+            });
+          }
         } else {
           notify({
-            title: 'Không thể kết nối',
-            message: 'Vui lòng kiểm tra lại kết nối',
+            title: 'Hệ thống đang bảo trì',
+            message: 'Vui lòng lại kết nối sau',
             status: 'error'
           });
         }
-      } else {
-        notify({
-          title: 'Hệ thống đang bảo trì',
-          message: 'Vui lòng lại kết nối sau',
-          status: 'error'
-        });
-      }
-    }).finally(() => {
-      setIsLoading(false);
-    });
+      })
+    }
+
+    setIsLoading(false);
   }
 
   return (

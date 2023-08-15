@@ -416,6 +416,27 @@ function ChangePasswordSection() {
           variant="primary"
           style={{marginLeft: 180}}
           onClick={() => {
+            if (newPassword.length === 0) {
+              notify({
+                title: 'Lỗi',
+                message: 'Mật khẩu mới không được để trống',
+                status: 'error',
+              });
+
+              return;
+            }
+
+
+            if (newPassword !== newPasswordConfirmation) {
+              notify({
+                title: 'Lỗi',
+                message: 'Mật khẩu mới nhập lại không khớp',
+                status: 'error',
+              });
+
+              return;
+            }
+
             const notification = notify({
               title: 'Thực thi',
               message: 'Đang tải cập nhật',

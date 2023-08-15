@@ -6,7 +6,7 @@ import {Link, matchPath, useLocation, useNavigate, useSearchParams} from "react-
 import { useTheme } from "styled-components";
 
 const currentYear = new Date().getFullYear();
-const years = Array.from({ length: 10 }, (v, i) => currentYear - i);
+const years = Array.from({ length: 20 }, (v, i) => currentYear - i);
 
 function FilterTray() {
   const [params, setParams] = useState<{

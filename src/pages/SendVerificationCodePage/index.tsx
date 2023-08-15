@@ -17,6 +17,18 @@ function SendVerificationCodePage() {
 
   function sendVerificationCode() {
     setIsLoading(true);
+
+    // check input
+    if (email.length === 0) {
+      notify({
+        title: 'Lỗi',
+        message: 'Vui lòng nhập đầy đủ thông tin',
+        status: 'error'
+      });
+      setIsLoading(false);
+      return;
+    }
+
     SessionService.sendVerificationCode(email)
       .then(() => navigate(`/reset_password/${email}`))
       .catch((error) => {

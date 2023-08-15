@@ -35,7 +35,7 @@ function OptionBar() {
     let paramable = searchParams.get('category_ids');
     const category_ids = paramable === null || paramable === '' ? undefined : paramable.split(',').map(item => parseInt(item)).sort((a, b) => a - b);
 
-    paramable = searchParams.get('relase_dates');
+    paramable = searchParams.get('release_dates');
     const release_dates = paramable === null ? undefined : paramable.split(',').map(item => item).sort((a, b) => new Date(a).getFullYear() - new Date(b).getFullYear());
 
     paramable = searchParams.get('sort_by');

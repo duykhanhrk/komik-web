@@ -20,6 +20,18 @@ function SignUpPage() {
 
   const signUp = () => {
     setIsLoading(true);
+
+    // check input
+    if (username.length === 0 || email.length === 0 || password.length === 0) {
+      notify({
+        title: 'Đăng ký không thành công',
+        message: 'Vui lòng nhập đầy đủ thông tin',
+        status: 'error'
+      });
+      setIsLoading(false);
+      return;
+    }
+
     SessionService.signUpAsync({
       email,
       username,
@@ -29,7 +41,7 @@ function SignUpPage() {
     }).catch((error) => {
       if (isAxiosError(error) && error.response) {
         notify({
-          title: 'Lỗi',
+          title: 'Đăng ký không thành công',
           message: error.response.data.message,
           status: 'error'
         });

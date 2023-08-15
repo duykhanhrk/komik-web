@@ -103,6 +103,9 @@ function PlanMNPage() {
               type={'number'}
               variant="tertiary"
               placeholder="Giá"
+              max={1000000000}
+              step={1000}
+              min={1000}
               value={selectedItem?.price}
               onChange={(e) => selectedItem && setSelectedItem({...selectedItem, price: parseInt(e.target.value)})}
             />
@@ -113,6 +116,8 @@ function PlanMNPage() {
               type={'number'}
               variant="tertiary"
               placeholder="Thời gian"
+              max={1000000000}
+              min={1}
               value={selectedItem?.value}
               onChange={(e) => selectedItem && setSelectedItem({...selectedItem, value: parseInt(e.target.value)})}
             />

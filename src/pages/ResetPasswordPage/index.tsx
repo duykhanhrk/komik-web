@@ -20,6 +20,29 @@ function ResetPasswordPage() {
 
   function resetPassword() {
     setIsLoading(true);
+
+    // check input
+    if (verificationCode.length === 0 || newPassword.length === 0 || newPasswordConfirmation.length === 0) {
+      notify({
+        title: 'Lỗi',
+        message: 'Vui lòng nhập đầy đủ thông tin',
+        status: 'error'
+      });
+      setIsLoading(false);
+      return;
+    }
+
+    if (newPassword !== newPasswordConfirmation) {
+      notify({
+        title: 'Lỗi',
+        message: 'Mật khẩu nhập lại không khớp',
+        status: 'error'
+      });
+      setIsLoading(false);
+      return;
+    }
+
+
     SessionService.resetPassword(email || '', verificationCode, newPassword)
       .then(() => {
         notify({
