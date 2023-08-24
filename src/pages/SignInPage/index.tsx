@@ -27,38 +27,41 @@ function SignInPage() {
          message: 'Vui lòng nhập đầy đủ thông tin',
          status: 'error'
        });
-    } else {
-      SessionService.signInAsync({
-        username_or_email: usernameOrEmail,
-        password
-      }).then((data) => {
-        dispatch(setUserTokens(data));
-      }).catch((error) => {
-        if (isAxiosError(error)) {
-          if (error.response) {
-            notify({
-              title: 'Đăng nhập không thành công',
-              message: error.response.data.message,
-              status: 'error'
-            });
-          } else {
-            notify({
-              title: 'Không thể kết nối',
-              message: 'Vui lòng kiểm tra lại kết nối',
-              status: 'error'
-            });
-          }
+
+      setIsLoading(false);
+      return;
+    }
+
+    SessionService.signInAsync({
+      username_or_email: usernameOrEmail,
+      password
+    }).then((data) => {
+      dispatch(setUserTokens(data));
+    }).catch((error) => {
+      if (isAxiosError(error)) {
+        if (error.response) {
+          notify({
+            title: 'Đăng nhập không thành công',
+            message: error.response.data.message,
+            status: 'error'
+          });
         } else {
           notify({
-            title: 'Hệ thống đang bảo trì',
-            message: 'Vui lòng lại kết nối sau',
+            title: 'Không thể kết nối',
+            message: 'Vui lòng kiểm tra lại kết nối',
             status: 'error'
           });
         }
-      })
-    }
-
-    setIsLoading(false);
+      } else {
+        notify({
+          title: 'Hệ thống đang bảo trì',
+          message: 'Vui lòng lại kết nối sau',
+          status: 'error'
+        });
+      }
+    }).finally(() => {
+      setIsLoading(false);
+    })
   }
 
   return (
