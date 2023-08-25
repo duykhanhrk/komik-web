@@ -1,8 +1,8 @@
 
-import {Navigate, Routes, Route} from 'react-router-dom';
-import {AuthorDetailMNPage, AuthorMNPage, ComicDetailPage, ComicPage, ErrorPage, HomePage, IntroductionPage, LoadingPage, PlanPage, ResetPasswordPage, SendVerificationCodePage, SignInPage, SignUpPage, UserProfilePage } from '@pages';
-import {useAppDispatch, useAppSelector} from '@hooks';
-import {Header, Text, AdminNavigation, SessionLayout, Layout} from '@components';
+import { Navigate, Routes, Route } from 'react-router-dom';
+import { AuthorDetailMNPage, AuthorMNPage, ComicDetailPage, ComicPage, ErrorPage, HomePage, IntroductionPage, LoadingPage, PlanPage, ResetPasswordPage, SendVerificationCodePage, SignInPage, SignUpPage, UserProfilePage } from '@pages';
+import { useAppDispatch, useAppSelector } from '@hooks';
+import { Header, Text, AdminNavigation, SessionLayout, Layout, View } from '@components';
 import useTryLogin from './hooks/useTryLogin';
 import {useEffect} from 'react';
 import ReadingPage from './pages/ReadingPage';
@@ -16,9 +16,10 @@ import ComicMNPage from './pages/ComicMNPage';
 import CategoryMNPage from './pages/CategoryMNPage';
 import ReportMNPage from './pages/ReportMNPage';
 import NotFoundPage from './pages/NotFoundPage';
-import {useLocation, matchPath} from 'react-router';
+import { useLocation, matchPath } from 'react-router';
 import {setRole} from '@redux/sessionSlice';
 import DocumentMNPage from './pages/DocumentMNPage';
+import {activeFCMessaging} from '@helpers/FCMessagingHelper';
 
 function Content() {
     const { userTokens, currentRole } = useAppSelector(state => state.session);
@@ -64,17 +65,24 @@ function Content() {
 }
 
 function App() {
-    const { userTokens, userRole, currentRole } = useAppSelector(state => state.session);
-    const { isLoading, isError, tryLogin } = useTryLogin();
-    const dispatch = useAppDispatch();
-    const { pathname } = useLocation();
+  const { userTokens, userRole, currentRole } = useAppSelector(state => state.session);
+  const { isLoading, isError, tryLogin } = useTryLogin();
 
-    const isAdminPath = matchPath('/admin/*', pathname);
-    const isSignInPath = matchPath('/sign_in', pathname);
+  useEffect(() => {
+    if (userTokens.refresh_token && userTokens.access_token) {
+      activeFCMessaging();
+    }
+  }, [userTokens]);
 
-    useEffect(() => {
-        document.getElementById('rootScrollable')?.scrollTo(0, 0);
-    }, [pathname]);
+  const dispatch = useAppDispatch();
+  const { pathname } = useLocation();
+
+  const isAdminPath = matchPath('/admin/*', pathname);
+  const isSignInPath = matchPath('/sign_in', pathname);
+
+  useEffect(() => {
+    document.getElementById('rootScrollable')?.scrollTo(0, 0);
+  }, [pathname]);
 
     if (isLoading) {
         return (
