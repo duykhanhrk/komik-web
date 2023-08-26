@@ -1,4 +1,4 @@
-import styled, {css} from 'styled-components';
+import styled from 'styled-components';
 import {default as Animations} from '../Animations';
 
 interface CardProps {
@@ -25,25 +25,25 @@ const Card = styled.div<CardProps>`
   flex-direction: ${props => props.horizontal ? 'row' : 'column'};
 
   ${props => props.centerContent ?
-    props.centerContent === 'horizontal' ? (props.horizontal ? 'align-items: center;' : 'justify-content: center;')
-    : props.centerContent === 'vertical' ? (props.horizontal ? 'justify-content: center;' : 'align-items: center;')
-    : 'align-items: center; justify-content: center;'
-    : ''
-  }
+        props.centerContent === 'horizontal' ? (props.horizontal ? 'align-items: center;' : 'justify-content: center;')
+            : props.centerContent === 'vertical' ? (props.horizontal ? 'justify-content: center;' : 'align-items: center;')
+                : 'align-items: center; justify-content: center;'
+        : ''
+}
 
   color: ${
     props => props.variant && props.variant === 'primary'?
-      props.theme.colors.themeForeground
-      : props.theme.colors.foreground
-  };
+        props.theme.colors.themeForeground
+        : props.theme.colors.foreground
+};
   background-color: ${
     props => !props.variant || props.variant === 'secondary' ? props.theme.colors.secondaryBackground
-      : props.variant === 'primary' ? props.theme.colors.themeBackground
-      : props.variant === 'tertiary' ? props.theme.colors.tertiaryBackground
-      : props.variant === 'quaternary' ? props.theme.colors.quaternaryBackground
-      : props.variant === 'quinary' ? props.theme.colors.quinaryBackground
-      : props.theme.colors.themeBackground
-  };
+        : props.variant === 'primary' ? props.theme.colors.themeBackground
+            : props.variant === 'tertiary' ? props.theme.colors.tertiaryBackground
+                : props.variant === 'quaternary' ? props.theme.colors.quaternaryBackground
+                    : props.variant === 'quinary' ? props.theme.colors.quinaryBackground
+                        : props.theme.colors.themeBackground
+};
 
   ${props => props.ebonsai || props.ebonsaiSnippet ? `
     padding: 4px;
@@ -55,25 +55,25 @@ const Card = styled.div<CardProps>`
 
   animation: ${
     props => props.animation === 'slideBottomIn'
-      ? Animations.slideBottomIn
-      : props.animation === 'slideLeftIn'
-      ? Animations.slideLeftIn
-      : props.animation === 'slideRightIn'
-      ? Animations.slideRightIn
-      : props.animation === 'slideTopIn'
-      ? Animations.slideTopIn
-      : props.animation === 'SilverSlideTopIn'
-      ? Animations.SilverSlideTopIn
-      : props.animation === 'SilverSlideBottomIn'
-      ? Animations.SilverSlideBottomIn
-      : props.animation === 'SilverSlideLeftIn'
-      ? Animations.SilverSlideLeftIn
-      : props.animation === 'SilverSlideRightIn'
-      ? Animations.SilverSlideRightIn
-      : ''
-  } ${
+        ? Animations.slideBottomIn
+        : props.animation === 'slideLeftIn'
+            ? Animations.slideLeftIn
+            : props.animation === 'slideRightIn'
+                ? Animations.slideRightIn
+                : props.animation === 'slideTopIn'
+                    ? Animations.slideTopIn
+                    : props.animation === 'SilverSlideTopIn'
+                        ? Animations.SilverSlideTopIn
+                        : props.animation === 'SilverSlideBottomIn'
+                            ? Animations.SilverSlideBottomIn
+                            : props.animation === 'SilverSlideLeftIn'
+                                ? Animations.SilverSlideLeftIn
+                                : props.animation === 'SilverSlideRightIn'
+                                    ? Animations.SilverSlideRightIn
+                                    : ''
+} ${
     props => props.animationDuration ? `${props.animationDuration}s` : '0.5s'
-  } ease ${props => props.animationInfinite ? 'infinite' : ''} ${props => props.animationAlternate ? 'alternate' : ''};
+} ease ${props => props.animationInfinite ? 'infinite' : ''} ${props => props.animationAlternate ? 'alternate' : ''};
 
   ${props => props.shadowEffect || props.ebonsaiSnippet ?  'transition: box-shadow 0.5s;' : ''}
 

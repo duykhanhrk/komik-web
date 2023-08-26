@@ -1,4 +1,4 @@
-import styled from "styled-components";
+import styled from 'styled-components';
 
 interface BackgroundImageProps extends React.HTMLProps<HTMLDivElement> {
   src: string;
@@ -35,16 +35,16 @@ const Content = styled.div`
 `;
 
 function BackgroundImage(props: BackgroundImageProps) {
-  const { src, blur, children, style } = props;
+    const { src, blur, children, style } = props;
 
-  return (
-    <Container style={style}>
-      <Image src={src} blur={blur}/>
-      <Content>
-        {children}
-      </Content>
-    </Container>
-  );
+    return (
+        <Container style={style}>
+            <Image src={src} blur={blur}/>
+            <Content>
+                {children}
+            </Content>
+        </Container>
+    );
 }
 
 export default BackgroundImage;

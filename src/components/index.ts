@@ -1,8 +1,8 @@
-export {default as Header} from "./Header";
-export {default as Footer} from "./Footer";
-export {default as Input} from "./Input";
-export {default as Button} from "./Button";
-export {default as Text} from "./Text";
+export {default as Header} from './Header';
+export {default as Footer} from './Footer';
+export {default as Input} from './Input';
+export {default as Button} from './Button';
+export {default as Text} from './Text';
 export {default as Dropdown } from './Dropdown';
 export {default as Page } from './Page';
 export {default as Card } from './Card';
@@ -24,5 +24,5 @@ export * as ComicItem  from './ComicItem';
 export * as UserControl from './UserControl';
 export * as SearchInput from './SearchInput';
 
-import Board, {ConfirmationBoard} from "./Board";
+import Board, {ConfirmationBoard} from './Board';
 export {Board, ConfirmationBoard};

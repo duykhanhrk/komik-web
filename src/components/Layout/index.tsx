@@ -1,4 +1,4 @@
-import styled from "styled-components";
+import styled from 'styled-components';
 
 const AppContainer = styled.div`
   height: 100vh;
@@ -41,7 +41,7 @@ const AppContentContainer = styled.div<{horizontal?: boolean, scalable?: boolean
   align-items: stretch;
   justify-items: center;
   min-height: ${props => props.horizontal ? '100vh' : 'calc(100vh - 60px)'};
-  ${props => props.ebonsaiShelf ? `gap: 8px; padding: 8px;` : ''}
+  ${props => props.ebonsaiShelf ? 'gap: 8px; padding: 8px;' : ''}
 `;
 
 const AppFooterContainer = styled.div`
