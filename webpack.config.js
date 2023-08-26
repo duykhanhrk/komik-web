@@ -66,7 +66,8 @@ module.exports = {
                 './public/haru.jpg',
                 './public/natsu.jpg',
                 './public/aki.jpg',
-                './public/fuyu.jpg'
+                './public/fuyu.jpg',
+                './public/firebase-messaging-sw.js'
             ]
         })
     ],
@@ -74,5 +75,6 @@ module.exports = {
         static: path.join(__dirname, 'dist'),
         port: 8080,
         historyApiFallback: true,
-    },
+    }
+  }
 };
