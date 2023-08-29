@@ -18,17 +18,17 @@ const TextArea = styled.textarea<TextAreaProps>`
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   color: ${
-    props => props.variant && props.variant === 'primary'?
-        props.theme.colors.themeForeground
-        : props.theme.colors.foreground
+  props => props.variant && props.variant === 'primary'?
+    props.theme.colors.themeForeground
+    : props.theme.colors.foreground
 };
   background-color: ${
-    props => !props.variant || props.variant === 'secondary' ? props.theme.colors.secondaryBackground
-        : props.variant === 'primary' ? props.theme.colors.themeBackground
-            : props.variant === 'tertiary' ? props.theme.colors.tertiaryBackground
-                : props.variant === 'quaternary' ? props.theme.colors.quaternaryBackground
-                    : props.variant === 'quinary' ? props.theme.colors.quinaryBackground
-                        : props.theme.colors.themeBackground
+  props => !props.variant || props.variant === 'secondary' ? props.theme.colors.secondaryBackground
+    : props.variant === 'primary' ? props.theme.colors.themeBackground
+      : props.variant === 'tertiary' ? props.theme.colors.tertiaryBackground
+        : props.variant === 'quaternary' ? props.theme.colors.quaternaryBackground
+          : props.variant === 'quinary' ? props.theme.colors.quinaryBackground
+            : props.theme.colors.themeBackground
 };
   ${props => props.shadowEffect ?  'transition: box-shadow 0.5s;' : ''};
 

@@ -64,7 +64,7 @@
     "styled-components": "^5.3.8",
     "typescript": "^4.9.5",
     "web-vitals": "^2.1.0"
-    },
+  },
   "scripts": {
     "start": "webpack serve --config webpack.config.js",
     "build": "webpack --config webpack.config.js",
@@ -72,24 +72,24 @@
     "eject": "react-scripts eject",
     "build-js": "babel src --out-dir dist --extensions .ts,.tsx --source-maps",
     "build-all": "yarn build && yarn build-js"
-    },
+  },
   "eslintConfig": {
     "extends": [
       "react-app",
       "react-app/jest"
-        ]
+    ]
   },
   "browserslist": {
     "production": [
       ">0.2%",
       "not dead",
       "not op_mini all"
-        ],
+    ],
     "development": [
       "last 1 chrome version",
       "last 1 firefox version",
       "last 1 safari version"
-        ]
+    ]
   },
   "devDependencies": {
     "@iconify/react": "^4.1.0",
@@ -117,5 +117,5 @@
     "webpack": "^5.75.0",
     "webpack-cli": "^5.0.1",
     "webpack-dev-server": "^4.11.1"
-    }
+  }
 }

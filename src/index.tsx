@@ -20,22 +20,22 @@ const root = ReactDOM.createRoot(
 
 
 root.render(
-    <React.StrictMode>
-        <Provider store={store}>
-            <QueryClientProvider client={queryClient}>
-                <NotificationsProvider>
-                    <ThemeProvider>
-                        <BrowserRouter>
-                            <ThemeProvider>
-                                <AppNotificationsSystem />
-                                <App />
-                            </ThemeProvider>
-                        </BrowserRouter>
-                    </ThemeProvider>
-                </NotificationsProvider>
-            </QueryClientProvider>
-        </Provider>
-    </React.StrictMode>
+  <React.StrictMode>
+    <Provider store={store}>
+      <QueryClientProvider client={queryClient}>
+        <NotificationsProvider>
+          <ThemeProvider>
+            <BrowserRouter>
+              <ThemeProvider>
+                <AppNotificationsSystem />
+                <App />
+              </ThemeProvider>
+            </BrowserRouter>
+          </ThemeProvider>
+        </NotificationsProvider>
+      </QueryClientProvider>
+    </Provider>
+  </React.StrictMode>
 );
 
 // If you want to start measuring performance in your app, pass a function

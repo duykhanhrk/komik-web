@@ -73,12 +73,12 @@ const SilverSlideBottomIn = keyframes`
 `;
 
 export default {
-    slideRightIn,
-    slideLeftIn,
-    slideTopIn,
-    slideBottomIn,
-    SilverSlideRightIn,
-    SilverSlideLeftIn,
-    SilverSlideTopIn,
-    SilverSlideBottomIn
+  slideRightIn,
+  slideLeftIn,
+  slideTopIn,
+  slideBottomIn,
+  SilverSlideRightIn,
+  SilverSlideLeftIn,
+  SilverSlideTopIn,
+  SilverSlideBottomIn
 };

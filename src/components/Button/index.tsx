@@ -28,39 +28,39 @@ const Button = styled.button<ButtonProps>`
   border-radius: ${props => props.theme.dimensions.borderRadius};
   opacity: 1;
   color: ${
-    props => props.variant && props.variant === 'primary' ? props.theme.colors.themeForeground
-        : props.variant === 'red' ? props.theme.colors.red
-            : props.variant === 'green' ? props.theme.colors.green
-                : props.variant === 'blue' ? props.theme.colors.blue
-                    : props.variant === 'yellow' ? props.theme.colors.yellow
-                        : props.variant === 'purple' ? props.theme.colors.purple
-                            : props.variant === 'idigo' ? props.theme.colors.idigo
-                                : props.variant === 'orange' ? props.theme.colors.orange
-                                    : props.variant === 'create' ? props.theme.colors.blue
-                                        : props.variant === 'update' ? props.theme.colors.blue
-                                            : props.variant === 'delete' ? props.theme.colors.red
-                                                : props.variant === 'close' ? props.theme.colors.themeColor
-                                                    : props.theme.colors.foreground
+  props => props.variant && props.variant === 'primary' ? props.theme.colors.themeForeground
+    : props.variant === 'red' ? props.theme.colors.red
+      : props.variant === 'green' ? props.theme.colors.green
+        : props.variant === 'blue' ? props.theme.colors.blue
+          : props.variant === 'yellow' ? props.theme.colors.yellow
+            : props.variant === 'purple' ? props.theme.colors.purple
+              : props.variant === 'idigo' ? props.theme.colors.idigo
+                : props.variant === 'orange' ? props.theme.colors.orange
+                  : props.variant === 'create' ? props.theme.colors.blue
+                    : props.variant === 'update' ? props.theme.colors.blue
+                      : props.variant === 'delete' ? props.theme.colors.red
+                        : props.variant === 'close' ? props.theme.colors.themeColor
+                          : props.theme.colors.foreground
 };
   background-color: ${
-    props => !props.variant || props.variant === 'secondary' ? props.theme.colors.secondaryBackground
-        : props.variant === 'primary' ? props.theme.colors.themeBackground
-            : props.variant === 'tertiary' ? props.theme.colors.tertiaryBackground
-                : props.variant === 'quaternary' ? props.theme.colors.quaternaryBackground
-                    : props.variant === 'quinary' ? props.theme.colors.quinaryBackground
-                        : props.variant === 'transparent' ? 'transparent'
-                            : props.variant === 'red' ? `${props.theme.colors.red}22`
-                                : props.variant === 'green' ? `${props.theme.colors.green}22`
-                                    : props.variant === 'blue' ? `${props.theme.colors.blue}22`
-                                        : props.variant === 'yellow' ? `${props.theme.colors.yellow}22`
-                                            : props.variant === 'purple' ? `${props.theme.colors.purple}22`
-                                                : props.variant === 'idigo' ? `${props.theme.colors.idigo}22`
-                                                    : props.variant === 'orange' ? `${props.theme.colors.orange}22`
-                                                        : props.variant === 'create' ? `${props.theme.colors.blue}22`
-                                                            : props.variant === 'update' ? `${props.theme.colors.blue}22`
-                                                                : props.variant === 'delete' ? `${props.theme.colors.red}22`
-                                                                    : props.variant === 'close' ? `${props.theme.colors.themeColor}22`
-                                                                        : props.theme.colors.themeColor
+  props => !props.variant || props.variant === 'secondary' ? props.theme.colors.secondaryBackground
+    : props.variant === 'primary' ? props.theme.colors.themeBackground
+      : props.variant === 'tertiary' ? props.theme.colors.tertiaryBackground
+        : props.variant === 'quaternary' ? props.theme.colors.quaternaryBackground
+          : props.variant === 'quinary' ? props.theme.colors.quinaryBackground
+            : props.variant === 'transparent' ? 'transparent'
+              : props.variant === 'red' ? `${props.theme.colors.red}22`
+                : props.variant === 'green' ? `${props.theme.colors.green}22`
+                  : props.variant === 'blue' ? `${props.theme.colors.blue}22`
+                    : props.variant === 'yellow' ? `${props.theme.colors.yellow}22`
+                      : props.variant === 'purple' ? `${props.theme.colors.purple}22`
+                        : props.variant === 'idigo' ? `${props.theme.colors.idigo}22`
+                          : props.variant === 'orange' ? `${props.theme.colors.orange}22`
+                            : props.variant === 'create' ? `${props.theme.colors.blue}22`
+                              : props.variant === 'update' ? `${props.theme.colors.blue}22`
+                                : props.variant === 'delete' ? `${props.theme.colors.red}22`
+                                  : props.variant === 'close' ? `${props.theme.colors.themeColor}22`
+                                    : props.theme.colors.themeColor
 };
 
   ${props => props.ebonsai ? `
@@ -71,17 +71,17 @@ const Button = styled.button<ButtonProps>`
   ` : ''}
 
   animation: ${
-    props => props.animation === 'slideBottomIn'
-        ? Animations.slideBottomIn
-        : props.animation === 'slideLeftIn'
-            ? Animations.slideLeftIn
-            : props.animation === 'slideRightIn'
-                ? Animations.slideRightIn
-                : props.animation === 'slideTopIn'
-                    ? Animations.slideTopIn
-                    : ''
+  props => props.animation === 'slideBottomIn'
+    ? Animations.slideBottomIn
+    : props.animation === 'slideLeftIn'
+      ? Animations.slideLeftIn
+      : props.animation === 'slideRightIn'
+        ? Animations.slideRightIn
+        : props.animation === 'slideTopIn'
+          ? Animations.slideTopIn
+          : ''
 } ${
-    props => props.animationDuration ? `${props.animationDuration}s` : '0.5s'
+  props => props.animationDuration ? `${props.animationDuration}s` : '0.5s'
 } ease;
 
   ${props => props.selected ? 'box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;' : ''}

@@ -1,14 +1,14 @@
-import { initializeApp } from "firebase/app";
-import { getMessaging, getToken, onMessage} from "firebase/messaging";
+import { initializeApp } from 'firebase/app';
+import { getMessaging, getToken, onMessage} from 'firebase/messaging';
 
 export async function activeFCMessaging() {
   const firebaseApp = initializeApp({
-    apiKey: "AIzaSyCccKZHifMjI-Aqsg2XZ52k_2WzOPDfu0k",
-    authDomain: "notification-de481.firebaseapp.com",
-    projectId: "notification-de481",
-    storageBucket: "notification-de481.appspot.com",
-    messagingSenderId: "796008968797",
-    appId: "1:796008968797:web:d80f7b6f5570cbf91f93b4"
+    apiKey: 'AIzaSyCccKZHifMjI-Aqsg2XZ52k_2WzOPDfu0k',
+    authDomain: 'notification-de481.firebaseapp.com',
+    projectId: 'notification-de481',
+    storageBucket: 'notification-de481.appspot.com',
+    messagingSenderId: '796008968797',
+    appId: '1:796008968797:web:d80f7b6f5570cbf91f93b4'
   });
 
   const messaging = getMessaging(firebaseApp);

@@ -19,25 +19,25 @@ import * as DocumentMNService from './DocumentMNService';
 import * as PurchaseMNService from './PurchaseMNService';
 
 export {
-    SessionService,
-    CategoryService,
-    ComicService,
-    PlanService,
-    UserService,
-    PurchaseService,
-    NotificationService,
-    DocumentService,
-    SearchingService,
-    FeedbackService,
+  SessionService,
+  CategoryService,
+  ComicService,
+  PlanService,
+  UserService,
+  PurchaseService,
+  NotificationService,
+  DocumentService,
+  SearchingService,
+  FeedbackService,
 
-    CategoryMNService,
-    PlanMNService,
-    UserMNService,
-    FeedbackMNService,
-    ComicMNService,
-    AuthorMNService,
-    DocumentMNService,
-    PurchaseMNService
+  CategoryMNService,
+  PlanMNService,
+  UserMNService,
+  FeedbackMNService,
+  ComicMNService,
+  AuthorMNService,
+  DocumentMNService,
+  PurchaseMNService
 };
 
 export * from './Types';

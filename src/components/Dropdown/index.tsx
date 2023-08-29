@@ -49,46 +49,46 @@ interface GroupProps {
 }
 
 function Group(props: GroupProps) {
-    const [open, setOpen] = useState(props.open);
-    const dropdownRef = useRef<HTMLDivElement>(null);
+  const [open, setOpen] = useState(props.open);
+  const dropdownRef = useRef<HTMLDivElement>(null);
 
-    useEffect(() => {
-        const handleOutsideClick = (event: MouseEvent) => {
-            if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
-                setOpen('');
-            }
-        };
+  useEffect(() => {
+    const handleOutsideClick = (event: MouseEvent) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
+        setOpen('');
+      }
+    };
 
-        document.addEventListener('click', handleOutsideClick);
+    document.addEventListener('click', handleOutsideClick);
 
-        return () => {
-            document.removeEventListener('click', handleOutsideClick);
-        };
-    }, [dropdownRef]);
+    return () => {
+      document.removeEventListener('click', handleOutsideClick);
+    };
+  }, [dropdownRef]);
 
-    return (
-        <Container ref={dropdownRef} style={props.style}>
-            <View horizontal gap={8}>
-                {props.dropdowns?.map((item) => (
-                    <Button
-                        key={item.name}
-                        style={{...props.buttonStyle, ...item.buttonStyle}}
-                        onClick={() => setOpen(open === item.name ? '' : item.name)}>
-                        {item.buttonContent && item.buttonContent({isActive: false})}
-                    </Button>
-                ))}
-            </View>
-            {props.dropdowns?.map((item) => (
-                <>
-                    {open === item.name &&
+  return (
+    <Container ref={dropdownRef} style={props.style}>
+      <View horizontal gap={8}>
+        {props.dropdowns?.map((item) => (
+          <Button
+            key={item.name}
+            style={{...props.buttonStyle, ...item.buttonStyle}}
+            onClick={() => setOpen(open === item.name ? '' : item.name)}>
+            {item.buttonContent && item.buttonContent({isActive: false})}
+          </Button>
+        ))}
+      </View>
+      {props.dropdowns?.map((item) => (
+        <>
+          {open === item.name &&
             <Content key={item.name} style={{...props.contentStyle, ...item.contentStyle}}>
-                {item.content}
+              {item.content}
             </Content>
-                    }
-                </>
-            ))}
-        </Container>
-    );
+          }
+        </>
+      ))}
+    </Container>
+  );
 }
 
 interface SingleProps {
@@ -103,35 +103,35 @@ interface SingleProps {
 }
 
 function Single(props: SingleProps) {
-    const [isOpen, setIsOpen] = useState(props.isOpen);
-    const dropdownRef = useRef<HTMLDivElement>(null);
+  const [isOpen, setIsOpen] = useState(props.isOpen);
+  const dropdownRef = useRef<HTMLDivElement>(null);
 
-    useEffect(() => {
-        const handleOutsideClick = (event: MouseEvent) => {
-            if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
-                setIsOpen(false);
-            }
-        };
+  useEffect(() => {
+    const handleOutsideClick = (event: MouseEvent) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
+        setIsOpen(false);
+      }
+    };
 
-        document.addEventListener('click', handleOutsideClick);
+    document.addEventListener('click', handleOutsideClick);
 
-        return () => {
-            document.removeEventListener('click', handleOutsideClick);
-        };
-    }, [dropdownRef]);
+    return () => {
+      document.removeEventListener('click', handleOutsideClick);
+    };
+  }, [dropdownRef]);
 
-    return (
-        <Container ref={dropdownRef} style={props.style}>
-            <Button style={props.buttonStyle} onClick={() => setIsOpen(!isOpen)}>
-                {props.buttonContent}
-            </Button>
-            {isOpen &&
+  return (
+    <Container ref={dropdownRef} style={props.style}>
+      <Button style={props.buttonStyle} onClick={() => setIsOpen(!isOpen)}>
+        {props.buttonContent}
+      </Button>
+      {isOpen &&
         <Content style={props.contentStyle}>
-            {props.content}
+          {props.content}
         </Content>
-            }
-        </Container>
-    );
+      }
+    </Container>
+  );
 }
 
 interface SelectionListDrops<T> {
@@ -147,64 +147,64 @@ interface SelectionListDrops<T> {
 }
 
 function SelectionList<T>(props: SelectionListDrops<T>) {
-    const [isOpen, setIsOpen] = useState(props.isOpen);
-    const [selectedItem, setSelectedItem] = useState<T | undefined>(props.selectedItem);
+  const [isOpen, setIsOpen] = useState(props.isOpen);
+  const [selectedItem, setSelectedItem] = useState<T | undefined>(props.selectedItem);
 
-    const dropdownRef = useRef<HTMLDivElement>(null);
+  const dropdownRef = useRef<HTMLDivElement>(null);
 
-    useEffect(() => {
-        setSelectedItem(props.selectedItem);
-    }, [props.selectedItem]);
+  useEffect(() => {
+    setSelectedItem(props.selectedItem);
+  }, [props.selectedItem]);
 
-    useEffect(() => {
-        const handleOutsideClick = (event: MouseEvent) => {
-            if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
-                setIsOpen(false);
-            }
-        };
+  useEffect(() => {
+    const handleOutsideClick = (event: MouseEvent) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
+        setIsOpen(false);
+      }
+    };
 
-        document.addEventListener('click', handleOutsideClick);
+    document.addEventListener('click', handleOutsideClick);
 
-        return () => {
-            document.removeEventListener('click', handleOutsideClick);
-        };
-    }, [dropdownRef]);
+    return () => {
+      document.removeEventListener('click', handleOutsideClick);
+    };
+  }, [dropdownRef]);
 
-    return (
-        <Container ref={dropdownRef} style={props.style}>
-            <Button style={{width: '100%', ...props.buttonStyle}} onClick={() => setIsOpen(!isOpen)}>
-                <View flex={1}>
-                    {props.buttonContent ? props.buttonContent(selectedItem) : null}
-                </View>
-                <Icon icon={'mingcute:down-line'} style={{height: 20, width: 20}} />
-            </Button>
-            {isOpen &&
+  return (
+    <Container ref={dropdownRef} style={props.style}>
+      <Button style={{width: '100%', ...props.buttonStyle}} onClick={() => setIsOpen(!isOpen)}>
+        <View flex={1}>
+          {props.buttonContent ? props.buttonContent(selectedItem) : null}
+        </View>
+        <Icon icon={'mingcute:down-line'} style={{height: 20, width: 20}} />
+      </Button>
+      {isOpen &&
         <Content style={{
-            left: 0,
-            right: 0,
-            width: 'auto',
-            minHeight: 'auto',
-            ...props.contentStyle
+          left: 0,
+          right: 0,
+          width: 'auto',
+          minHeight: 'auto',
+          ...props.contentStyle
         }}
         >
-            { props._data.map((item: T, index: number) => (
-                <View
-                    onClick={() => {
-                        setSelectedItem(item);
-                        setIsOpen(false);
-                        if (props.onItemSelected) {
-                            props.onItemSelected(item);
-                        }
-                    }}
-                    animation="slideTopIn"
-                >
-                    {props.renderItem(item, index)}
-                </View>
-            ))}
+          { props._data.map((item: T, index: number) => (
+            <View
+              onClick={() => {
+                setSelectedItem(item);
+                setIsOpen(false);
+                if (props.onItemSelected) {
+                  props.onItemSelected(item);
+                }
+              }}
+              animation="slideTopIn"
+            >
+              {props.renderItem(item, index)}
+            </View>
+          ))}
         </Content>
-            }
-        </Container>
-    );
+      }
+    </Container>
+  );
 }
 
 export default { Container, Content, Item, SelectionList, Single, Group };

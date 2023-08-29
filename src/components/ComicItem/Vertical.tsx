@@ -27,17 +27,17 @@ const Container = styled.div<{
   width: 241px;
   ${props => props.shadowEffect ?  'transition: box-shadow 0.5s;' : ''};
   animation: ${
-    props => props.animation === 'slideBottomIn'
-        ? Animations.slideBottomIn
-        : props.animation === 'slideLeftIn'
-            ? Animations.slideLeftIn
-            : props.animation === 'slideRightIn'
-                ? Animations.slideRightIn
-                : props.animation === 'slideTopIn'
-                    ? Animations.slideTopIn
-                    : ''
+  props => props.animation === 'slideBottomIn'
+    ? Animations.slideBottomIn
+    : props.animation === 'slideLeftIn'
+      ? Animations.slideLeftIn
+      : props.animation === 'slideRightIn'
+        ? Animations.slideRightIn
+        : props.animation === 'slideTopIn'
+          ? Animations.slideTopIn
+          : ''
 } ${
-    props => props.animationDuration ? `${props.animationDuration}s` : '0.5s'
+  props => props.animationDuration ? `${props.animationDuration}s` : '0.5s'
 } ease;
   &:hover {
     ${props => props.shadowEffect ?  'box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;' : ''}
@@ -48,22 +48,22 @@ const Container = styled.div<{
 `;
 
 function Vertical(props: VerticalProps) {
-    const { _data, style } = props;
+  const { _data, style } = props;
 
-    return (
-        <Link key={_data.id!.toString()} to={`/comics/detail/${_data.id!}`} style={{textDecoration: 'none'}}>
-            <Container
-                shadowEffect={props.shadowEffect}
-                animation={props.animation}
-                animationDuration={props.animationDuration}
-                key={_data.id?.toString()}
-                style={style}
-            >
-                <Image style={{borderRadius: 8}} variant="medium" src={_data.image_url}/>
-                <Text variant="title" numberOfLines={1} style={{textAlign: 'center'}}>{_data.name}</Text>
-            </Container>
-        </Link>
-    );
+  return (
+    <Link key={_data.id!.toString()} to={`/comics/detail/${_data.id!}`} style={{textDecoration: 'none'}}>
+      <Container
+        shadowEffect={props.shadowEffect}
+        animation={props.animation}
+        animationDuration={props.animationDuration}
+        key={_data.id?.toString()}
+        style={style}
+      >
+        <Image style={{borderRadius: 8}} variant="medium" src={_data.image_url}/>
+        <Text variant="title" numberOfLines={1} style={{textAlign: 'center'}}>{_data.name}</Text>
+      </Container>
+    </Link>
+  );
 }
 
 export default Vertical;

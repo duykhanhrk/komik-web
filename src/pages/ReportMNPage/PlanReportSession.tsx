@@ -3,11 +3,11 @@ import PlanReportChart from './PlanReportChart';
 
 function PlanReportPage() {
 
-    return (
-        <View gap={16}>
-            <PlanReportChart />
-        </View>
-    );
+  return (
+    <View gap={16}>
+      <PlanReportChart />
+    </View>
+  );
 }
 
 export default PlanReportPage;

@@ -1,8 +1,19 @@
-export type ResponseFormat<T> = {
-    status: string;
-    message: string;
-    data?: any | T;
-    error?: any;
+export type ErrorResponse = {
+  message: string;
+}
+
+export type SuccessResponse = {
+  message: string;
+}
+
+export type Pagination<DataType=unknown> = {
+  data: Array<DataType>;
+  paginate: {
+    page: number;
+    per_page: number;
+    total_pages: number;
+    total_objects: number;
+  };
 }
 
 export type SignUpForm = {
