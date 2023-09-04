@@ -66,7 +66,7 @@ function PlanSelectionList({onSelectedItemChanged} : {onSelectedItemChanged?: (i
   });
 
   useEffect(() => {
-    if (query.data!.length > 0) {
+    if (query.data && query.data.length > 0) {
       setSelectedItem(query.data![0]);
     }
   }, [query.data]);

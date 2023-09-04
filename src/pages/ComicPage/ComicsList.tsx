@@ -96,7 +96,7 @@ function ComicsList() {
           useWindow={false}
           getScrollParent={() => document.getElementById('rootScrollable')}
         >
-          <View gap={8} horizontal wrap style={{justifyContent: 'flex-start'}}>
+          <View gap={8} horizontal style={{justifyContent: 'flex-start'}}>
             {comics?.map((item: Comic) => <ComicItem.Vertical key={item.id} shadowEffect _data={item} animation="slideLeftIn"/>)}
           </View>
         </InfiniteScroll>
