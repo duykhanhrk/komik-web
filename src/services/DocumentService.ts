@@ -10,11 +10,11 @@ const axiosInstance = axios.create({
 export async function getPolicyAndTermsAsync() {
   const response = await axiosInstance.get('/app/documents/policy_and_terms');
 
-  return response.data.data;
+  return response.data;
 }
 
 export async function getIntroductionAsync() {
   const response = await axiosInstance.get('/app/documents/introduction');
 
-  return response.data.data;
+  return response.data;
 }

@@ -18,12 +18,12 @@ function IntroductionPage() {
     return <ErrorPage />;
   }
 
-  console.log();
+  console.log(query);
 
   return (
     <Page.Container>
       <Page.Content>
-        <View className="ql-editor" gap={8} dangerouslySetInnerHTML={{ __html: query.data.introduction.value }}>
+        <View className="ql-editor" gap={8} dangerouslySetInnerHTML={{ __html: query.data?.value || '' }}>
         </View>
       </Page.Content>
     </Page.Container>

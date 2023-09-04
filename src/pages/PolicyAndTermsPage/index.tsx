@@ -24,7 +24,7 @@ function PolicyAndTermsPage() {
   return (
     <Page.Container>
       <Page.Content>
-        <View className="ql-editor" gap={8} style={{textAlign: 'unset', color: theme.colors.foreground}} dangerouslySetInnerHTML={{ __html: query.data.policy_and_terms.value }}>
+        <View className="ql-editor" gap={8} style={{textAlign: 'unset', color: theme.colors.foreground}} dangerouslySetInnerHTML={{ __html: query.data.value }}>
         </View>
       </Page.Content>
     </Page.Container>
