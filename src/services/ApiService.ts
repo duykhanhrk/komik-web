@@ -91,10 +91,10 @@ export async function _gets<DataType=any>(url: string, config?: AxiosRequestConf
   const pagination: Pagination<DataType> = {
     data: response.data,
     paginate: {
-      page: response.headers['Pagination-Page'],
-      per_page: response.headers['Pagination-Per-Page'],
-      total_pages: response.headers['Pagination-Total-Pages'],
-      total_objects: response.headers['Pagination-Total-Objects']
+      page: parseInt(response.headers['pagination-page']),
+      per_page: parseInt(response.headers['pagination-per-page']),
+      total_pages: parseInt(response.headers['pagination-total-pages']),
+      total_objects: parseInt(response.headers['pagination-total-objects'])
     }
   };
 
