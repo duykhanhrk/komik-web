@@ -10,7 +10,7 @@ import InfiniteScroll from 'react-infinite-scroller';
 import ChapterImagesModal from './ChapterImagesModal';
 import ChapterInfoModal from './ChapterInfoModal';
 
-function ChaptersSection({comic_id}: {comic_id: number}) {
+function ChaptersSection({comicSlug}: {comicSlug: string}) {
   const [searchText, setSearchText] = useState<string>('');
   const [modalMode, setModalMode] = useState<'create' | 'update' | 'images' | 'close'>('close');
   const [selectedItem, setSelectedItem] = useState<Chapter>({name: '', free: false});
@@ -18,8 +18,8 @@ function ChaptersSection({comic_id}: {comic_id: number}) {
   const theme = useTheme();
 
   const query = useInfiniteQuery({
-    queryKey: ['admin', comic_id , 'chapters'],
-    queryFn: ({ pageParam = 1 }) => ComicMNService.getAllChaptersAsync(comic_id, {page: pageParam, query: searchText}),
+    queryKey: ['admin', comicSlug , 'chapters'],
+    queryFn: ({ pageParam = 1 }) => ComicMNService.getAllChaptersAsync(comicSlug, {page: pageParam, query: searchText}),
     getNextPageParam: (lastPage) => {
       if (lastPage.paginate.page >= lastPage.paginate.total_pages) {
         return null;
@@ -47,7 +47,7 @@ function ChaptersSection({comic_id}: {comic_id: number}) {
     <View gap={8}>
       <ChapterImagesModal
         _data={selectedItem.image_urls}
-        comic_id={comic_id}
+        comicSlug={comicSlug}
         chapter_id={selectedItem.id!}
         open={modalMode === 'images'}
         onOpenChange={(open) => setModalMode(open ? 'images' : 'close')}
@@ -58,7 +58,7 @@ function ChaptersSection({comic_id}: {comic_id: number}) {
         _data={selectedItem}
         mode={modalMode === 'create' ? 'create' : modalMode === 'update' ? 'update' : 'close'}
         onModeChange={(mode) => setModalMode(mode)}
-        comic_id={comic_id}
+        comicSlug={comicSlug}
         onSaveSuccess={() => query.refetch()}
       />
 

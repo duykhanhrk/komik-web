@@ -15,16 +15,16 @@ function ControlPanel({hide, onHideChanged}: {hide: boolean, onHideChanged: (isH
   const theme = useTheme();
   const navigate = useNavigate();
   const params = useParams();
-  const comic_id = parseInt(params.comic_id!);
-  const chapter_id = parseInt(params.chapter_id!);
+  const comicSlug = params.comicSlug || '';
+  const chapterId = parseInt(params.chapterId!);
 
   useEffect(() => {
     setIsHide(hide);
   }, [hide]);
 
   const query = useInfiniteQuery({
-    queryKey: ['app', 'comic', comic_id, 'chapters'],
-    queryFn: ({pageParam = 1}) => ComicService.getChaptersAsync(comic_id, {page: pageParam}),
+    queryKey: ['app', 'comic', comicSlug, 'chapters'],
+    queryFn: ({pageParam = 1}) => ComicService.getChaptersAsync(comicSlug, {page: pageParam}),
     getNextPageParam: (lastPage) => {
       if (lastPage.paginate.page >= lastPage.paginate.total_pages) {
         return null;
@@ -48,7 +48,7 @@ function ControlPanel({hide, onHideChanged}: {hide: boolean, onHideChanged: (isH
     <View gap={8} style={{display: isHide ? 'none' : 'flex', position: 'sticky', height: 'calc(100vh - 60px)', left: 0, bottom: 0, top: 60, width: 272, padding: '0px 8px 8px 8px', flexBasis: 272, flexShrink: 0}}>
       <Card horizontal ebonsai animation="slideRightIn">
         <View flex={1} horizontal gap={8}>
-          <Button ebonsai variant="transparent" onClick={() => navigate(`/comics/detail/${comic_id}`)} style={{gap: 8, width: 'auto'}}>
+          <Button ebonsai variant="transparent" onClick={() => navigate(`/comics/detail/${comicSlug}`)} style={{gap: 8, width: 'auto'}}>
             <Icon icon={'mingcute:arrow-left-line'} style={{color: theme.colors.foreground, height: 24, width: 24}}/>
             <Text>Trở về</Text>
           </Button>
@@ -76,12 +76,12 @@ function ControlPanel({hide, onHideChanged}: {hide: boolean, onHideChanged: (isH
             {chapters!.map((item: any) => (
               <Card
                 key={item.id}
-                variant={item.id === chapter_id ? 'tertiary' : undefined}
+                variant={item.id === chapterId ? 'tertiary' : undefined}
                 horizontal
                 style={{height: 40, alignItems: 'center'}}
-                onClick={() => navigate(`/comics/detail/${comic_id}/chapters/${item.id}`)}
+                onClick={() => navigate(`/comics/detail/${comicSlug}/chapters/${item.id}`)}
               >
-                <Text variant="title" numberOfLines={1} style={{flex: 1, color: item.id === chapter_id ? (item.free ? theme.colors.blue : theme.colors.idigo ) : theme.colors.foreground}}>{item.name}</Text>
+                <Text variant="title" numberOfLines={1} style={{flex: 1, color: item.id === chapterId ? (item.free ? theme.colors.blue : theme.colors.idigo ) : theme.colors.foreground}}>{item.name}</Text>
                 {item.read && <Icon icon="mingcute:eye-2-line" style={{height: 20, width: 20, color: theme.colors.green}}/>}
                 {!item.free && <Icon icon="mingcute:vip-1-line" style={{height: 20, width: 20, color: theme.colors.idigo}}/>}
               </Card>
@@ -99,12 +99,12 @@ function ReadingArea({hide, onHideChanged}: {hide?: boolean, onHideChanged: (isH
   const theme = useTheme();
   const navigate = useNavigate();
   const params = useParams();
-  const comic_id = parseInt(params.comic_id!);
-  const chapter_id = parseInt(params.chapter_id!);
+  const comicSlug = params.comicSlug || '';
+  const chapterId = parseInt(params.chapterId!);
 
   const query = useQuery({
-    queryKey: ['app', 'comics', comic_id, 'chapters', chapter_id],
-    queryFn: () => ComicService.getChapterDetailAsync(comic_id, chapter_id),
+    queryKey: ['app', 'comics', comicSlug, 'chapters', chapterId],
+    queryFn: () => ComicService.getChapterDetailAsync(comicSlug, chapterId),
     retry: 0
   });
 
@@ -141,7 +141,7 @@ function ReadingArea({hide, onHideChanged}: {hide?: boolean, onHideChanged: (isH
       }
       <View horizontal centerContent gap={8} style={{display: isHide ? 'none' : 'flex', paddingTop: 8, position: 'sticky', bottom: 8, left: 0, right: 0}}>
         <Card ebonsai animation="slideTopIn">
-          <Button disabled={!query.isSuccess || (query.isSuccess && query.data.previous_chapter === null)} ebonsai variant="secondary" style={{width: 120}} onClick={() => navigate(`/comics/${comic_id}/chapters/${query.data?.previous_chapter?.id}`)}>
+          <Button disabled={!query.isSuccess || (query.isSuccess && query.data.previous_chapter === null)} ebonsai variant="secondary" style={{width: 120}} onClick={() => navigate(`/comics/${comicSlug}/chapters/${query.data?.previous_chapter?.id}`)}>
             <Icon icon={'mingcute:arrow-left-line'} style={{color: theme.colors.foreground, height: 24, width: 24}}/>
           </Button>
           <Button
@@ -156,7 +156,7 @@ function ReadingArea({hide, onHideChanged}: {hide?: boolean, onHideChanged: (isH
           >
             <Icon icon={'mingcute:layout-left-line'} style={{color: theme.colors.foreground, height: 24, width: 24}}/>
           </Button>
-          <Button disabled={!query.isSuccess || (query.isSuccess && query.data.next_chapter === null)} ebonsai variant="secondary" style={{width: 120}} onClick={() => navigate(`/comics/${comic_id}/chapters/${query.data?.next_chapter?.id}`)}>
+          <Button disabled={!query.isSuccess || (query.isSuccess && query.data.next_chapter === null)} ebonsai variant="secondary" style={{width: 120}} onClick={() => navigate(`/comics/${comicSlug}/chapters/${query.data?.next_chapter?.id}`)}>
             <Icon icon={'mingcute:arrow-right-line'} style={{color: theme.colors.foreground, height: 24, width: 24}}/>
           </Button>
         </Card>

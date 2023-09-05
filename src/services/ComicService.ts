@@ -5,7 +5,7 @@ export const getAllAsync = (params: {page?: number, per_page?: number, category_
   return ApiService._gets<Comic>('/app/comics', {params: {per_page: 20, sort_by: 'last_updated_chapter_at-desc', ...params}});
 };
 
-export const getDetailAsync = (id: number) => ApiService._get<Comic>(`/app/comics/${id}`);
+export const getDetailAsync = (slug: string) => ApiService._get<Comic>(`/app/comics/${slug}`);
 
 export const getFavoritedAsync = (params: {page?: number, per_page?: number}) => {
   return ApiService._gets<Comic>('/app/comics/favorited', {params: {per_page: 20, ...params}});
@@ -23,32 +23,32 @@ export const getReadAsync = (params: {page?: number, per_page?: number}) => {
   return ApiService._gets<Comic>('/app/comics/read', {params: {per_page: 20, ...params}});
 };
 
-export const favoriteAsync = (id: number, like: boolean) => {
+export const favoriteAsync = (id: number | string, like: boolean) => {
   return like ? ApiService._post(`/app/comics/${id}/favorite`) : ApiService._post(`/app/comics/${id}/unfavorite`);
 };
 
-export const followAsync = (id: number, follow: boolean) => {
-  return follow ? ApiService._post(`/app/comics/${id}/follow`) : ApiService._post(`/app/comics/${id}/unfollow`);
+export const followAsync = (slug: string, follow: boolean) => {
+  return follow ? ApiService._post(`/app/comics/${slug}/follow`) : ApiService._post(`/app/comics/${slug}/unfollow`);
 };
 
-export const getChaptersAsync = (comic_id: number, params: {page?: number, per_page?: number}) => {
-  return ApiService._gets<Chapter>(`/app/comics/${comic_id}/chapters`, {params: {per_page: 20, ...params}});
+export const getChaptersAsync = (comic_slug: string, params: {page?: number, per_page?: number}) => {
+  return ApiService._gets<Chapter>(`/app/comics/${comic_slug}/chapters`, {params: {per_page: 20, ...params}});
 };
 
-export const getChapterDetailAsync = (comic_id: number, id: number) => {
-  return ApiService._get<Chapter>(`/app/comics/${comic_id}/chapters/${id}`);
+export const getChapterDetailAsync = (comic_slug: string, id: number) => {
+  return ApiService._get<Chapter>(`/app/comics/${comic_slug}/chapters/${id}`);
 };
 
-export const getReviewsAsync = (id: number, params: {page?: number, per_page?: number}) => {
-  return ApiService._gets<Review>(`/app/comics/${id}/reviews`, {params: {per_page: 20, ...params}});
+export const getReviewsAsync = (comic_slug: string, params: {page?: number, per_page?: number}) => {
+  return ApiService._gets<Review>(`/app/comics/${comic_slug}/reviews`, {params: {per_page: 20, ...params}});
 };
 
-export const getUserReviewAsync = (id: number) => ApiService._get(`/app/comics/${id}/reviews/user_review`);
+export const getUserReviewAsync = (comic_slug: string) => ApiService._get(`/app/comics/${comic_slug}/reviews/user_review`);
 
-export const createReviewAsync = (comic_id: number, review: Review) => ApiService._post(`/app/comics/${comic_id}/reviews`, {review});
+export const createReviewAsync = (comic_slug: string, review: Review) => ApiService._post(`/app/comics/${comic_slug}/reviews`, {review});
 
-export const updateReviewAsync = (comic_id: number, review: Review) => ApiService._put(`/app/comics/${comic_id}/reviews/${review.id}`, {review});
+export const updateReviewAsync = (comic_slug: string, review: Review) => ApiService._put(`/app/comics/${comic_slug}/reviews/${review.id}`, {review});
 
-export const deleteReviewAsync = (comic_id: number, review_id: number) => ApiService._delete(`/app/comics/${comic_id}/reviews/${review_id}`);
+export const deleteReviewAsync = (comic_slug: string, review_id: number) => ApiService._delete(`/app/comics/${comic_slug}/reviews/${review_id}`);
 
-export const evaluateReviewAsync = (comic_id: number, review_id: number, point_of_view: number) => ApiService._post(`/app/comics/${comic_id}/reviews/${review_id}/evaluate`, {evaluate: {point_of_view}});
+export const evaluateReviewAsync = (comic_slug: string, review_id: number, point_of_view: number) => ApiService._post(`/app/comics/${comic_slug}/reviews/${review_id}/evaluate`, {evaluate: {point_of_view}});

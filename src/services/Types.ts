@@ -52,6 +52,7 @@ export type Chapter = {
 
 export type Comic = {
   id?: number;
+  slug?: string;
   name: string;
   other_names: string;
   description: string;

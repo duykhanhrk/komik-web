@@ -13,11 +13,11 @@ import moment from 'moment';
 function ChaptersArea() {
   const theme = useTheme();
   const params = useParams();
-  const comic_id = parseInt(params.comic_id!);
+  const comicSlug = params.comicSlug!;
 
   const query = useInfiniteQuery({
-    queryKey: ['app', 'comic', comic_id, 'chapters'],
-    queryFn: ({pageParam = 1}) => ComicService.getChaptersAsync(comic_id, {page: pageParam}),
+    queryKey: ['app', 'comic', comicSlug, 'chapters'],
+    queryFn: ({pageParam = 1}) => ComicService.getChaptersAsync(comicSlug, {page: pageParam}),
     getNextPageParam: (lastPage) => {
       if (lastPage.paginate.page >= lastPage.paginate.total_pages) {
         return null;
@@ -44,7 +44,7 @@ function ChaptersArea() {
             <View gap={4}>
               {chapters?.map((item: Chapter) => (
                 <View key={item.id} gap={4} animation="slideRightIn">
-                  <Link to={`/comics/detail/${comic_id}/chapters/${item.id}`} style={{textDecoration: 'none'}}>
+                  <Link to={`/comics/detail/${comicSlug}/chapters/${item.id}`} style={{textDecoration: 'none'}}>
                     <Card horizontal style={{alignItems: 'center'}} shadowEffect>
                       <Text variant="title" style={{flex: 1}}>{item.name}</Text>
                       {item.read &&

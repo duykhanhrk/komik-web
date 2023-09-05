@@ -22,21 +22,21 @@ function ComicDetailMNPage() {
   const noti = useNotifications();
   const navigate = useNavigate();
 
-  const { comic_id } = useParams();
+  const { comicSlug } = useParams();
 
   const query = useQuery({
-    queryKey: ['admin', 'comic', comic_id],
-    queryFn: () => ComicMNService.getDetailAsync(parseInt(comic_id || '')),
+    queryKey: ['admin', 'comic', comicSlug],
+    queryFn: () => ComicMNService.getDetailAsync(parseInt(comicSlug || '')),
     retry: 0
   });
 
   const update = useMutation({
-    mutationFn: () => ComicMNService.activeAsync(parseInt(comic_id || ''), !query.data?.active),
+    mutationFn: () => ComicMNService.activeAsync(parseInt(comicSlug || ''), !query.data?.active),
     onSettled: () => query.refetch()
   });
 
   const remove = useMutation({
-    mutationFn: () => ComicMNService.deleteAsync(parseInt(comic_id || ''))
+    mutationFn: () => ComicMNService.deleteAsync(parseInt(comicSlug || ''))
   });
 
   if (query.isLoading) {
@@ -125,8 +125,8 @@ function ComicDetailMNPage() {
             </Card>
           </>
         )}
-        {tab === 'chapters' && (<ChaptersSection comic_id={parseInt(comic_id || '')} />)}
-        {tab === 'reviews' && (<ReviewsSection comic_id={parseInt(comic_id || '')} />)}
+        {tab === 'chapters' && (<ChaptersSection comicSlug={comicSlug || ''} />)}
+        {tab === 'reviews' && (<ReviewsSection comicSlug={comicSlug || ''} />)}
       </Page.Content>
     </Page.Container>
   );
