@@ -11,7 +11,7 @@ import {Icon} from '@iconify/react';
 import {actCUDHelper, deleteConfirmHelper} from '@helpers/CUDHelper';
 import moment from 'moment';
 
-function ReviewsSection({comic_id}: {comic_id: number}) {
+function ReviewsSection({comicSlug}: {comicSlug: string}) {
   const [searchText] = useState<string>('');
   const [selectedItem] = useState<Review | undefined>();
   const [confirmationBoardOpen, setConfirmationBoardOpen] = useState<boolean>(false);
@@ -20,8 +20,8 @@ function ReviewsSection({comic_id}: {comic_id: number}) {
   const theme = useTheme();
 
   const query = useInfiniteQuery({
-    queryKey: ['admin', comic_id , 'reviews'],
-    queryFn: ({ pageParam = 1 }) => ComicMNService.getAllReviewsAsync(comic_id, {page: pageParam, query: searchText}),
+    queryKey: ['admin', comicSlug , 'reviews'],
+    queryFn: ({ pageParam = 1 }) => ComicMNService.getAllReviewsAsync(comicSlug, {page: pageParam, query: searchText}),
     getNextPageParam: (lastPage) => {
       if (lastPage.paginate.page >= lastPage.paginate.total_pages) {
         return null;
@@ -32,12 +32,12 @@ function ReviewsSection({comic_id}: {comic_id: number}) {
   });
 
   const remove = useMutation({
-    mutationFn: (id: number) => ComicMNService.deleteReviewAsync(comic_id, id),
+    mutationFn: (id: number) => ComicMNService.deleteReviewAsync(comicSlug, id),
     onSettled: () => query.refetch()
   });
 
   const evaluate = useMutation({
-    mutationFn: ({review_id, point_of_view}: {review_id: number, point_of_view: number}) => ComicService.evaluateReviewAsync(comic_id, review_id, point_of_view),
+    mutationFn: ({review_id, point_of_view}: {review_id: number, point_of_view: number}) => ComicService.evaluateReviewAsync(comicSlug, review_id, point_of_view),
     onSettled: () => query.refetch()
   });
 

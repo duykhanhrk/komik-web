@@ -66,7 +66,7 @@ function MainPanel(props: MainPanelProps) {
           variant="secondary"
           onClick={() => {
             props.onItemClick && props.onItemClick();
-            navigate('/policy_and_terms');
+            navigate('/policy-and-terms');
           }}
           style={{columnGap: 8, flex: 1, justifyContent: 'flex-start'}}
         >

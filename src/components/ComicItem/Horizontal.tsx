@@ -94,9 +94,9 @@ function Horizontal(props: HorizontalProps) {
   moment.locale('vi');
 
   return (
-    <Link to={`/comics/detail/${_data.id}`} style={{textDecoration: 'none'}}>
+    <Link to={`/comics/detail/${_data.slug}`} style={{textDecoration: 'none'}}>
       <Container
-        key={_data.id?.toString()}
+        key={_data.slug}
         style={style}
         onClick={() => navigate(`/comics/${_data.id}`)}
         variant={props.variant}

@@ -20,21 +20,21 @@ function ComicDetailPage() {
   const navigate = useNavigate();
   const noti = useNotifications();
   const params = useParams();
-  const comic_id = parseInt(params.comic_id!);
+  const comicSlug = params.comicSlug || '';
 
   const query = useQuery({
-    queryKey: ['app', 'comics', comic_id],
-    queryFn: () => ComicService.getDetailAsync(comic_id),
+    queryKey: ['app', 'comics', comicSlug],
+    queryFn: () => ComicService.getDetailAsync(comicSlug),
     retry: 0
   });
 
   const like = useMutation({
-    mutationFn: () => ComicService.favoriteAsync(comic_id, !comic.favorited),
+    mutationFn: () => ComicService.favoriteAsync(comicSlug, !comic.favorited),
     onSettled: () => query.refetch()
   });
 
   const follow = useMutation({
-    mutationFn: () => ComicService.followAsync(comic_id, !comic.followed),
+    mutationFn: () => ComicService.followAsync(comicSlug, !comic.followed),
     onSettled: () => query.refetch()
   });
 
@@ -94,7 +94,7 @@ function ComicDetailPage() {
                   animation="slideLeftIn"
                   onClick={() => {
                     if (comic.reading_chapter) {
-                      navigate(`/comics/detail/${comic_id}/chapters/${comic.reading_chapter.id}`);
+                      navigate(`/comics/detail/${comicSlug}/chapters/${comic.reading_chapter.id}`);
                     }
                   }}
                 >

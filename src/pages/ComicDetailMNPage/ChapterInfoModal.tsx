@@ -8,7 +8,7 @@ import {actCUDHelper, deleteConfirmHelper} from '@helpers/CUDHelper';
 import Modal from 'react-modal';
 
 interface ChapterInfoModalProps {
-  comic_id: number;
+  comicSlug: string;
   _data?: Chapter;
   mode?: 'create' | 'update' | 'close';
   onModeChange?: (mode: 'create' | 'update' | 'close') => void;
@@ -17,7 +17,7 @@ interface ChapterInfoModalProps {
 
 function ChapterInfoModal({
   _data,
-  comic_id,
+  comicSlug,
   mode,
   onModeChange,
   onSaveSuccess
@@ -63,17 +63,17 @@ function ChapterInfoModal({
   };
 
   const create = useMutation({
-    mutationFn: () => ComicMNService.createChapterAsync(comic_id, data),
+    mutationFn: () => ComicMNService.createChapterAsync(comicSlug, data),
     onSettled: onSaveSuccess
   });
 
   const update = useMutation({
-    mutationFn: () => ComicMNService.updateChapterAsync(comic_id, data),
+    mutationFn: () => ComicMNService.updateChapterAsync(comicSlug, data),
     onSettled: onSaveSuccess
   });
 
   const remove = useMutation({
-    mutationFn: () => ComicMNService.deleteChapterAsync(comic_id, data.id!),
+    mutationFn: () => ComicMNService.deleteChapterAsync(comicSlug, data.id!),
     onSettled: onSaveSuccess
   });
 

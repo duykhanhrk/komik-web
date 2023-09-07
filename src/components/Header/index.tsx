@@ -9,7 +9,6 @@ import {default as Dropdown} from '../Dropdown';
 import Card from '../Card';
 import {SearchInput, UserControl} from '@components';
 import {toggleRole} from '@redux/sessionSlice';
-import {useQueryClient} from 'react-query';
 
 const Container = styled.div`
   display: flex;

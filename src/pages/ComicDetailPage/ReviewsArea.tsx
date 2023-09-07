@@ -21,11 +21,11 @@ function ReviewsArea() {
   const theme = useTheme();
   const noti = useNotifications();
   const params = useParams();
-  const comic_id = parseInt(params.comic_id!);
+  const comicSlug = params.comicSlug!;
 
   const query = useInfiniteQuery({
-    queryKey: ['app', 'comic', comic_id, 'reviews'],
-    queryFn: ({ pageParam = 1 }) => ComicService.getReviewsAsync(comic_id, {page: pageParam}),
+    queryKey: ['app', 'comic', comicSlug, 'reviews'],
+    queryFn: ({ pageParam = 1 }) => ComicService.getReviewsAsync(comicSlug, {page: pageParam}),
     getNextPageParam: (lastPage) => {
       if (lastPage.paginate.page >= lastPage.paginate.total_pages) {
         return null;
@@ -37,10 +37,10 @@ function ReviewsArea() {
 
   const fetchUserReview = () => {
     setModalMode('loading');
-    ComicService.getUserReviewAsync(comic_id)
+    ComicService.getUserReviewAsync(comicSlug)
       .then((data) => {
-        if (data) {
-          setReview(data.review);
+        if (data && data.title) {
+          setReview(data);
           setModalMode('update');
         } else {
           setReview({title: '', content: ''});
@@ -54,22 +54,22 @@ function ReviewsArea() {
   };
 
   const create: UseMutationResult = useMutation({
-    mutationFn: () => ComicService.createReviewAsync(comic_id, review),
+    mutationFn: () => ComicService.createReviewAsync(comicSlug, review),
     onSettled: () => query.refetch()
   });
 
   const update: UseMutationResult = useMutation({
-    mutationFn: () => ComicService.updateReviewAsync(comic_id, review),
+    mutationFn: () => ComicService.updateReviewAsync(comicSlug, review),
     onSettled: () => query.refetch()
   });
 
   const remove: UseMutationResult = useMutation({
-    mutationFn: () => ComicService.deleteReviewAsync(comic_id, review.id!),
+    mutationFn: () => ComicService.deleteReviewAsync(comicSlug, review.id!),
     onSettled: () => query.refetch()
   });
 
   const evaluate = useMutation({
-    mutationFn: ({review_id, point_of_view}: {review_id: number, point_of_view: number}) => ComicService.evaluateReviewAsync(comic_id, review_id, point_of_view),
+    mutationFn: ({review_id, point_of_view}: {review_id: number, point_of_view: number}) => ComicService.evaluateReviewAsync(comicSlug, review_id, point_of_view),
     onSettled: () => query.refetch()
   });
 

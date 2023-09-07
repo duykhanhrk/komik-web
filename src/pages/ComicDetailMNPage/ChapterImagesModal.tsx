@@ -9,7 +9,7 @@ import {Icon} from '@iconify/react';
 import Modal from 'react-modal';
 
 interface ChapterImagesModalProps {
-  comic_id: number;
+  comicSlug: string;
   chapter_id: number;
   _data?: Array<string>;
   open?: boolean;
@@ -19,7 +19,7 @@ interface ChapterImagesModalProps {
 
 function ChapterImagesModal({
   _data,
-  comic_id,
+  comicSlug,
   chapter_id,
   open,
   onOpenChange,
@@ -82,7 +82,7 @@ function ChapterImagesModal({
 
 
   const updateImages = useMutation({
-    mutationFn: () => ComicMNService.updateChapterImagesAsync(comic_id, chapter_id, images),
+    mutationFn: () => ComicMNService.updateChapterImagesAsync(comicSlug, chapter_id, images),
     onSettled: onSaveSuccess,
   });
 
