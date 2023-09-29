@@ -40,7 +40,7 @@ function ReviewsArea() {
     ComicService.getUserReviewAsync(comic_id)
       .then((data) => {
         if (data) {
-          setReview(data.review);
+          setReview(data);
           setModalMode('update');
         } else {
           setReview({title: '', content: ''});
@@ -121,7 +121,7 @@ function ReviewsArea() {
                 <Input
                   variant="tertiary"
                   placeholder="Tiêu đề"
-                  value={review.title}
+                  value={review?.title}
                   style={{fontWeight: 'bold'}}
                   onChange={(e) => setReview({...review, title: e.target.value})}
                 />
@@ -132,7 +132,7 @@ function ReviewsArea() {
                   placeholder="Nội dung"
                   rows={12}
                   cols={40}
-                  value={review.content}
+                  value={review?.content}
                   onChange={(e) => setReview({...review, content: e.target.value})}
                 />
               </View>

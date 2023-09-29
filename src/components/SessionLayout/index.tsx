@@ -100,7 +100,7 @@ function PolicyAndTermSuki() {
         <LoadingPage />
         :
         <View flex={1} scrollable animation="slideTopIn">
-          <View className="ql-editor" gap={8} style={{padding: 8, color: theme.colors.foreground}} dangerouslySetInnerHTML={{ __html: query.data.policy_and_terms.value }}>
+          <View className="ql-editor" gap={8} style={{padding: 8, color: theme.colors.foreground}} dangerouslySetInnerHTML={{ __html: query.data.value }}>
           </View>
         </View>
       }
@@ -122,7 +122,7 @@ function IntroductionSuki() {
         <LoadingPage />
         :
         <View flex={1} scrollable animation="slideTopIn">
-          <View gap={8} className="ql-editor" style={{padding: 8, color: theme.colors.foreground}} dangerouslySetInnerHTML={{ __html: query.data.introduction.value }}>
+          <View gap={8} className="ql-editor" style={{padding: 8, color: theme.colors.foreground}} dangerouslySetInnerHTML={{ __html: query.data.value }}>
           </View>
         </View>
       }
