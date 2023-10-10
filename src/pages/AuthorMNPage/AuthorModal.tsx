@@ -107,7 +107,7 @@ function AuthorModal({_data, query, mode, onModeChange}: {
             variant="primary"
             style={{flex: 1, gap: 8}}
             onClick={() => {
-              actCUDHelper(create, noti, 'create').then(() => {onModeChange && onModeChange('close'); setModalMode('close');});
+              actCUDHelper(create, noti, 'create').then(() => {onModeChange && onModeChange('close'); setModalMode('close');}).catch(() => {});
             }}>
             <Icon icon={'mingcute:save-line'} style={{height: 20, width: 20, color: theme.colors.themeForeground}} />
             <Text variant="inhirit">{modalMode === 'create' ? 'Tạo' : 'Cập nhật'}</Text>

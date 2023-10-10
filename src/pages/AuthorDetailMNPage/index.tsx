@@ -38,8 +38,8 @@ function ImageSection({query}: {query: UseQueryResult<any, any>}) {
   const {notify} = useNotifications();
   
   useEffect(() => {
-    if (query.data?.author) {
-      fetch(query.data.author.image_url)
+    if (query.data) {
+      fetch(query.data.image_url)
         .then(response => response.arrayBuffer())
         .then(buffer => {
           const imageFile = new File([buffer], 'image.jpg', { type: 'image/jpeg' });
@@ -92,7 +92,7 @@ function ImageSection({query}: {query: UseQueryResult<any, any>}) {
                           status: 'loading',
                           dismissible: false
                         });
-                        AuthorMNService.updateImageAsync(query.data.author.id!, file)
+                        AuthorMNService.updateImageAsync(query.data.id!, file)
                           .then(() => {
                             query.refetch();
                             notification.title = 'Thành công';
@@ -144,8 +144,8 @@ function InfoSection({query}: {query: UseQueryResult<any, any>}) {
   const noti = useNotifications();
 
   useEffect(() => {
-    if (query.data && query.data.author) {
-      setAuthor(query.data.author);
+    if (query.data) {
+      setAuthor(query.data);
     }
   }, [query.data]);
 
@@ -162,6 +162,8 @@ function InfoSection({query}: {query: UseQueryResult<any, any>}) {
     return <ErrorPage error={query.error} />;
   }
 
+  console.log(author);
+
   return (
     <>
       <View horizontal style={{alignItems: 'center'}}>
@@ -169,7 +171,7 @@ function InfoSection({query}: {query: UseQueryResult<any, any>}) {
         <Button
           variant="primary"
           style={{gap: 8, width: 120}}
-          onClick={() => actCUDHelper(update, noti, 'update')}
+          onClick={() => actCUDHelper(update, noti, 'update').catch(() => {})}
         >
           <Icon icon={'mingcute:save-line'} style={{color: 'inhirit', height: 20, width: 20}}/>
           <Text variant="inhirit">Cập nhật</Text>
