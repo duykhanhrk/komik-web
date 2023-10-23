@@ -19,7 +19,6 @@ function ComicsList() {
   const isReleaseDates = matchPath('/comics/release_dates/*', pathname);
   const isFilters = matchPath('/comics/filter/*', pathname);
 
-
   const [params, setParams] = useState<{
     category_ids?: Array<number>,
     query?: string,
@@ -96,7 +95,7 @@ function ComicsList() {
           useWindow={false}
           getScrollParent={() => document.getElementById('rootScrollable')}
         >
-          <View gap={8} horizontal style={{justifyContent: 'flex-start'}}>
+          <View gap={8} wrap={true} horizontal style={{justifyContent: 'flex-start'}}>
             {comics?.map((item: Comic) => <ComicItem.Vertical key={item.id} shadowEffect _data={item} animation="slideLeftIn"/>)}
           </View>
         </InfiniteScroll>

@@ -2,7 +2,7 @@ import {useAppDispatch, useAppSelector} from '@hooks';
 import {Header, AdminNavigation, SessionLayout, Layout} from '@components';
 import useTryLogin from './hooks/useTryLogin';
 import {useEffect} from 'react';
-import { useLocation, matchPath } from 'react-router';
+import {useLocation, matchPath} from 'react-router';
 import {setRole} from '@redux/sessionSlice';
 import {activeFCMessaging} from '@helpers/FCMessagingHelper';
 import AppRoutes from './routes';
