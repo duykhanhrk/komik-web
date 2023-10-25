@@ -142,7 +142,7 @@ function PlanMNPage() {
                 deleteConfirmHelper({
                   noti,
                   onConfirm: async () => {
-                    actCUDHelper(remove, noti, 'delete', selectedItem?.id).then(() => setModalMode('close'));
+                    actCUDHelper(remove, noti, 'delete', selectedItem?.id).then(() => setModalMode('close')).catch(() => {});
                   }
                 });
               }}
@@ -155,9 +155,9 @@ function PlanMNPage() {
               style={{gap: 8, flex: 1}}
               onClick={() => {
                 modalMode === 'create' ?
-                  actCUDHelper(create, noti, 'create').then(() => setModalMode('close'))
+                  actCUDHelper(create, noti, 'create').then(() => setModalMode('close')).catch(() => {})
                   :
-                  actCUDHelper(update, noti, 'update').then(() => setModalMode('close'));
+                  actCUDHelper(update, noti, 'update').then(() => setModalMode('close')).catch(() => {});
               }}
             >
               <Icon icon={'mingcute:save-line'} style={{height: 20, width: 20, color: theme.colors.themeForeground}} />

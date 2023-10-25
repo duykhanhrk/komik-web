@@ -173,19 +173,23 @@ function Header() {
             dropdowns={[{
               name: 'followed-comics',
               content: <UserControl.FollowedComics />,
-              buttonContent: ({isActive}) => <Icon icon={isActive ? 'mingcute:book-5-fill' : 'mingcute:book-5-line'} style={{color: theme.colors.foreground, height: 24, width: 24}}/>,
+              buttonIcon: 'mingcute:book-5-line',
+              buttonActiveIcon: 'mingcute:book-5-fill'
             }, {
               name: 'liked-comics',
               content: <UserControl.LikedComics />,
-              buttonContent: ({isActive}) => <Icon icon={isActive ? 'mingcute:heart-fill' : 'mingcute:heart-line'} style={{color: theme.colors.foreground, height: 24, width: 24}}/>,
+              buttonIcon: 'mingcute:heart-line',
+              buttonActiveIcon: 'mingcute:heart-fill'
             }, {
               name: 'notifications',
               content: <UserControl.Notification />,
-              buttonContent: ({isActive}) => <Icon icon={isActive ? 'mingcute:notification-fill' : 'mingcute:notification-line'} style={{color: theme.colors.foreground, height: 24, width: 24}}/>,
+              buttonIcon: 'mingcute:notification-line',
+              buttonActiveIcon: 'mingcute:notification-fill'
             }, {
               name: 'plan',
               content: <UserControl.Plan />,
-              buttonContent: ({isActive}) => <Icon icon={isActive ? 'mingcute:vip-4-fill' : 'mingcute:vip-4-line'} style={{color: theme.colors.foreground, height: 24, width: 24}} />,
+              buttonIcon: 'mingcute:vip-4-line',
+              buttonActiveIcon: 'mingcute:vip-4-fill'
             }, {
               name: 'main-panel',
               content: <UserControl.MainPanel />,

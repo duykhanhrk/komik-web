@@ -1,6 +1,6 @@
-import {Icon} from '@iconify/react';
+import { Icon } from '@iconify/react';
 import React, {CSSProperties, ReactNode, useEffect, useRef, useState} from 'react';
-import styled from 'styled-components';
+import styled, {useTheme} from 'styled-components';
 import Button from '../Button';
 import View from '../View';
 
@@ -38,6 +38,8 @@ interface GroupProps {
   dropdowns?: Array<{
     name: string,
     content?: ReactNode;
+    buttonIcon?: string;
+    buttonActiveIcon?: string;
     buttonContent?: ({isActive}: {isActive: boolean}) => ReactNode;
     buttonStyle?: CSSProperties;
     contentStyle?: CSSProperties;
@@ -51,6 +53,7 @@ interface GroupProps {
 function Group(props: GroupProps) {
   const [open, setOpen] = useState(props.open);
   const dropdownRef = useRef<HTMLDivElement>(null);
+  const theme = useTheme();
 
   useEffect(() => {
     const handleOutsideClick = (event: MouseEvent) => {
@@ -66,6 +69,8 @@ function Group(props: GroupProps) {
     };
   }, [dropdownRef]);
 
+  console.log('Rendering: ', open);
+
   return (
     <Container ref={dropdownRef} style={props.style}>
       <View horizontal gap={8}>
@@ -73,8 +78,12 @@ function Group(props: GroupProps) {
           <Button
             key={item.name}
             style={{...props.buttonStyle, ...item.buttonStyle}}
-            onClick={() => setOpen(open === item.name ? '' : item.name)}>
-            {item.buttonContent && item.buttonContent({isActive: false})}
+            onClick={() => setOpen(item.name)}>
+            {item.buttonContent ?
+              item.buttonContent({isActive: false})
+              :
+              <Icon icon={open === item.name ? item.buttonActiveIcon || '' : item.buttonIcon || ''} style={{color: theme.colors.foreground, height: 24, width: 24}}/>
+            }
           </Button>
         ))}
       </View>
