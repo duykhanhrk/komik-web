@@ -4,7 +4,7 @@ import {FormEvent, useEffect, useState} from 'react';
 import {useQuery} from 'react-query';
 import ErrorPage from '../ErrorPage';
 import LoadingPage from '../LoadingPage';
-import {loadStripe} from '@stripe/stripe-js';
+import {loadStripe, Stripe, StripeError} from '@stripe/stripe-js';
 import {
   CardElement,
   Elements,
@@ -114,6 +114,9 @@ const CheckoutForm = ({onSubmitted}: {onSubmitted: (token: string) => void}) => 
   const stripe = useStripe();
   const elements = useElements();
   const theme = useTheme();
+  const {notify} = useNotifications();
+
+  const [isError, setIsError] = useState(true);
 
   const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -121,6 +124,17 @@ const CheckoutForm = ({onSubmitted}: {onSubmitted: (token: string) => void}) => 
     if (elements == null) {
       return;
     }
+
+    if (isError) {
+      notify({
+        title: 'Lỗi',
+        message: 'Vui lòng nhập đầy đủ thông tin',
+        status: 'error'
+      });
+
+      return;
+    }
+
 
     const stripResponse = await stripe!.createToken(elements.getElement(CardElement)!);
 
@@ -147,6 +161,13 @@ const CheckoutForm = ({onSubmitted}: {onSubmitted: (token: string) => void}) => 
                 color: theme.colors.red,
               }
             },
+          }}
+          onChange={(event) => {
+            if (event.error) {
+              setIsError(true)
+            } else {
+              setIsError(false)
+            }
           }}
           />
         </Card>

@@ -111,7 +111,7 @@ function ChapterInfoModal({
               deleteConfirmHelper({
                 noti,
                 onConfirm: async () => {
-                  actCUDHelper(remove, noti, 'delete').then(() => setModalMode('close'));
+                  actCUDHelper(remove, noti, 'delete').then(() => setModalMode('close')).catch(() => {});
                 }
               });
             }}
@@ -122,9 +122,9 @@ function ChapterInfoModal({
             style={{flex: 1}}
             onClick={() => {
               modalMode === 'create' ?
-                actCUDHelper(create, noti, 'create').then(() => setModalMode('close'))
+                actCUDHelper(create, noti, 'create').then(() => setModalMode('close')).catch(() => {})
                 :
-                actCUDHelper(update, noti, 'update').then(() => setModalMode('close'));
+                actCUDHelper(update, noti, 'update').then(() => setModalMode('close')).catch(() => {});
             }}
           >{modalMode === 'create' ? 'Tạo' : 'Cập nhật'}</Button>
           <Button variant="tertiary" style={{flex: 1}} onClick={() => setModalMode('close')}>Đóng</Button>

@@ -153,9 +153,9 @@ function ReviewsArea() {
                 style={{gap: 8, flex: 1}}
                 onClick={() => {
                   modalMode === 'create' ?
-                    actCUDHelper(create, noti, 'create').then(() => setModalMode('close'))
+                    actCUDHelper(create, noti, 'create').then(() => setModalMode('close')).catch(() => {})
                     :
-                    actCUDHelper(update, noti, 'update').then(() => setModalMode('close'));
+                    actCUDHelper(update, noti, 'update').then(() => setModalMode('close')).catch(() => {});
                 }}
               >
                 <Icon icon={'mingcute:save-line'} style={{height: 20, width: 20, color: theme.colors.blue}} />
@@ -207,7 +207,7 @@ function ReviewsArea() {
                             variant={{ct: 'secondary'}}
                             style={{gap: 8, width: 60}}
                             onClick={() => {
-                              actCUDHelper(evaluate, noti, 'update', {review_id: item?.id, point_of_view: 1});
+                              actCUDHelper(evaluate, noti, 'update', {review_id: item?.id, point_of_view: 1}).catch(() => {});
                             }}
                           >
                             <Icon icon={'mingcute:thumb-up-line'} style={{height: 16, width: 16, color: theme.colors.green}} />
@@ -217,7 +217,7 @@ function ReviewsArea() {
                             variant={{ct: 'secondary'}}
                             style={{gap: 8, width: 60}}
                             onClick={() => {
-                              actCUDHelper(evaluate, noti, 'update', {review_id: item?.id, point_of_view: 2});
+                              actCUDHelper(evaluate, noti, 'update', {review_id: item?.id, point_of_view: 2}).catch(() => {});
                             }}
                           >
                             <Icon icon={'mingcute:thumb-down-line'} style={{height: 16, width: 16, color: theme.colors.blue}} />
@@ -227,7 +227,7 @@ function ReviewsArea() {
                             variant={{ct: 'secondary'}}
                             style={{gap: 8, width: 60}}
                             onClick={() => {
-                              actCUDHelper(evaluate, noti, 'update', {review_id: item?.id, point_of_view: 3});
+                              actCUDHelper(evaluate, noti, 'update', {review_id: item?.id, point_of_view: 3}).catch(() => {});
                             }}
                           >
                             <Icon icon={'mingcute:warning-line'} style={{height: 16, width: 16, color: theme.colors.red}} />

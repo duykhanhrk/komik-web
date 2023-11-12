@@ -178,7 +178,7 @@ function ChapterImagesModal({
           <Button
             variant="update"
             style={{flex: 1}}
-            onClick={() => {actCUDHelper(updateImages, noti, 'update').then(() => setOpen(false));}}
+            onClick={() => {actCUDHelper(updateImages, noti, 'update').then(() => setOpen(false)).catch(() => {});}}
           >Lưu</Button>
           <Button variant="close" style={{flex: 1}} onClick={() => setOpen(false)}>Đóng</Button>
         </View>
